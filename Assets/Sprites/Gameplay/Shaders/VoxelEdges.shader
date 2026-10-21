@@ -6,6 +6,7 @@ Shader "BeeHarvest/VoxelEdges"
   _Metallic ("Metallic", Range(0,1)) = 0
   _Smoothness ("Smoothness", Range(0,1)) = .4
   _EdgeWidth ("Black edge / half block", Range(.005,.15)) = .11
+  _EdgeColor ("Edge color", Color) = (0,0,0,1)
   _VoxelCenter ("Mesh bounds center", Vector) = (0,0,0,0)
   _VoxelExtents ("Mesh bounds extents", Vector) = (.5,.5,.5,0)
  }
@@ -16,7 +17,7 @@ Shader "BeeHarvest/VoxelEdges"
   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
   CBUFFER_START(UnityPerMaterial)
-   half4 _BaseColor;
+   half4 _BaseColor, _EdgeColor;
    half _Metallic, _Smoothness;
    float _EdgeWidth;
    float4 _VoxelCenter, _VoxelExtents;
@@ -86,7 +87,7 @@ Shader "BeeHarvest/VoxelEdges"
     float edge=min(max(d.x,d.y),min(max(d.y,d.z),max(d.z,d.x)));
     float aa=max(fwidth(edge),.0001);
     float face=smoothstep(_EdgeWidth-aa*.5,_EdgeWidth+aa*.5,edge);
-    color.rgb=MixFog(color.rgb*face,input.fog);
+    color.rgb=MixFog(lerp(_EdgeColor.rgb,color.rgb,face),input.fog);
     return half4(color.rgb,1);
    }
    ENDHLSL

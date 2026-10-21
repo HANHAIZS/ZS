@@ -27,13 +27,13 @@ namespace BeeHarvest {
    destination.sharedMaterial=source.sharedMaterial;source.GetPropertyBlock(block);destination.SetPropertyBlock(block);
   }
   /// <summary>Instantiates Blender art and resolves stable voxel identities once.</summary>
-  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false){
+  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false,Color? outlineColor=null){
    model=state;assets=repo;hiveView=sources;flower=repo.Spawn(modelKey,transform).transform;flower.localScale=Vector3.one*.86f;flower.position=new Vector3(0,7.85f,0);
    flightCamera=Camera.main;if(flightCamera==null)throw new System.InvalidOperationException("Level requires a MainCamera");
    cubes=new Transform[model.Cubes.Count];cubeRenderers=new Renderer[cubes.Length];var all=flower.GetComponentsInChildren<Transform>(true);
    var byName=new Dictionary<string,Transform>(all.Length);foreach(var t in all)byName[t.name]=t;
    for(int i=0;i<cubes.Length;i++){Transform cube;if(!byName.TryGetValue(model.Cubes[i].Data.name,out cube))throw new System.InvalidOperationException("Missing source cube "+i);cubes[i]=cube;cubeRenderers[i]=cube.GetComponent<Renderer>();}
-   if(outlineEdges){voxelEdges=new VoxelEdgeVisuals(cubes[0].GetComponent<MeshFilter>().sharedMesh.bounds);foreach(var renderer in cubeRenderers)voxelEdges.Apply(renderer);}
+   if(outlineEdges){voxelEdges=new VoxelEdgeVisuals(cubes[0].GetComponent<MeshFilter>().sharedMesh.bounds,outlineColor);foreach(var renderer in cubeRenderers)voxelEdges.Apply(renderer);}
    Bounds shell=cubeRenderers[0].bounds;foreach(var renderer in cubeRenderers)shell.Encapsulate(renderer.bounds);
    // Center the entire voxel art between the top collector and slot row, including off-center stems/leaves.
    var center=flightCamera.WorldToViewportPoint(shell.center);center.x=.5f;center.y=.66f+LayoutViewportYOffset;

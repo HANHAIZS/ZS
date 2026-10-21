@@ -70,3 +70,20 @@ LevelOneAssets.cs显示开关；HomeArtworkSetup.cs按钮样式/构建；MainMen
 
 ## 2026-10-21 关卡按钮首字母大写
 用户要求主界面按钮level 1首字母改为L；将所有动态关号统一显示为Level N，同步Editor默认值与Prefab。仅文案大小写改变，样式/布局/玩法和其他文字保持。不新增单元测试，现有4份Runtime测试的相关预期同步为Level N，以原生运行读回与编译/规范检查验证。原字体图集缺少大写L，使用Unity TMP原生TryAddCharacters仅补L后恢复Static；字符49→50、图集仍2张、既有glyphRect全保持，按钮颜色/字号/材质不变。验证完成：真实Home运行读回Level 1、truncated=false、FredokaBoldSDF/48/白色/原深绿材质保持；1080×1920原生截图已目视检查大写L正常显示。Unity编译无CS错误、project validator通过0警告；相关既有测试预期已更新但本次未重跑测试套件。预览隔离/Editor设置已恢复、停止Play回MainMenu。证据[主界面](/Users/zhangshuai/Documents/Codex/2026-10-09/wo/outputs/capital-home-button/home-1920.png)。
+
+
+## 2026-10-21 第2关描边调浅
+用户要求只把第2关组成方块的黑色描边调浅，颜色过深。第2关使用中性深灰色(Shader RGB 0.2)，保持_EdgeWidth=0.11、原色面/mesh/数量/布局/玩法。第5、6及96–105关仍纯黑边，其他关无描边；主界面字体不变。
+
+Shader增加_EdgeColor，默认黑色；LevelOneAssets提供第2关显示颜色，经LevelOneController与HarvestBoardView传给VoxelEdgeVisuals；按原色共享的运行材质写入颜色，搬运继续复用同一材质。默认黑色的lerp公式等价于原color*face。不修改原材质资产/Prefab/Scene/JSON、不新增资源或每帧查找/分配。只做本地提交，不推送GitHub。
+
+验收：原生第2关画面中描边更浅、粗细不变；第5/6/96关读回仍黑色；所有2190块mesh/色面保留、搬运复制保留灰边；Shader编译无错误、相关原有GPU黑边测试、规范校验通过。此次低影响视觉参数不新增镜像单元测试，原生断言与实际渲染验证参数作用域。验证完成：
+
+- 原有ChickVoxelEdgeTests PlayMode作业e4f515af859646c5857e38c4db8a569b，两项2/2通过：真实GPU黑边/无三角对角线、原mesh/色面/共享材质/重开/释放。修改仅第2关专用颜色后无需重复默认黑色测试。
+- 最终第2关2190/2190方块使用RGB(0.2,0.2,0.2)灰边，宽度仍0.11、3份按原色共享的材质；逐方块mesh/BaseColor和原Prefab一致，搬运CopyPickupVisual继承灰边。
+- 第5关2840、第6关870、第96关1291块均逐Renderer确认_EdgeColor黑色、宽0.11、原mesh/色面不变；最终全105关配置读回只有第2关有颜色覆盖。
+- 首次RGB0.06预览对比显示调浅幅度偏小，最后调整到0.2；最终1080×1920原生截图已目视检查灰色棱边更柔和。[第2关效果](/Users/zhangshuai/Documents/Codex/2026-10-09/wo/outputs/level02-soft-edges/level2.png)。原始黑色对照保留在outputs/level02-05-edges-home-button/level2.png。
+- Shader支持正常、ShaderUtil编译消息0条；最终Console错误/警告0条，含base HEAD的规范校验通过0警告。游戏Scene/Prefab/JSON/源模型/材质资产/UI/Packages无修改；仅4份C#、VoxelEdges.shader和本Spec。
+- 文件职责：Utilities/Harvest/LevelOneAssets.cs给出按关显示参数；ViewControllers/Harvest/LevelOneController.cs传参、HarvestBoardView.cs初始化显示、VoxelEdgeVisuals.cs复用材质写入颜色；Shaders/VoxelEdges.shader保持黑色默认并混合边线色。
+- 无新增资源/Inspector绑定、每帧查找或实例化，仍按颜色共享运行时材质并由原Dispose清理；无手机真机性能结论。
+- 预览经济/设置隔离与Editor重载设置均恢复，停止Play回MainMenu。本次仅本地Git提交，不推送远端。

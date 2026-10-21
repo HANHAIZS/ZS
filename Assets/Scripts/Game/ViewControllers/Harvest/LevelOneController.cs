@@ -32,7 +32,7 @@ namespace BeeHarvest
             hives = GetComponent<HiveModelView>();
             hives.Initialize(model, rules, assets, Hud);
             board = GetComponent<HarvestBoardView>();
-            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), LevelOneAssets.HasVoxelEdges(LevelNumber));
+            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), LevelOneAssets.HasVoxelEdges(LevelNumber), LevelOneAssets.VoxelEdgeColor(LevelNumber));
             bees = GetComponent<BeeFlightView>();
             bees.Initialize(model, board, assets);
             hop = GetComponent<HiveHopController>();

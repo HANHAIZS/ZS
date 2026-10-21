@@ -6,17 +6,19 @@ namespace BeeHarvest {
  public sealed class VoxelEdgeVisuals : IDisposable {
   readonly Material template;
   readonly Bounds bounds;
+  readonly Color edgeColor;
   readonly Dictionary<Material,Material> palettes=new Dictionary<Material,Material>();
-  public VoxelEdgeVisuals(Bounds meshBounds){
+  public VoxelEdgeVisuals(Bounds meshBounds,Color? outlineColor=null){
    template=Resources.Load<Material>("Materials/ChickVoxelOutline");
    if(template==null||template.shader==null||!template.shader.isSupported)throw new InvalidOperationException("Missing supported Chick voxel-outline material");
-   bounds=meshBounds;
+   bounds=meshBounds;edgeColor=outlineColor??Color.black;
   }
   public void Apply(Renderer renderer){
    var source=renderer.sharedMaterial;Material palette;
    if(!palettes.TryGetValue(source,out palette)){
     palette=new Material(template){name=source.name+"_VoxelEdges",enableInstancing=true};
     palette.SetColor("_BaseColor",source.GetColor("_BaseColor"));
+    palette.SetColor("_EdgeColor",edgeColor);
     palette.SetFloat("_Metallic",source.GetFloat("_Metallic"));palette.SetFloat("_Smoothness",source.GetFloat("_Smoothness"));
     palette.SetVector("_VoxelCenter",bounds.center);palette.SetVector("_VoxelExtents",bounds.extents);
     palettes.Add(source,palette);
