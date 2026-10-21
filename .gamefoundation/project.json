@@ -1,0 +1,12 @@
+{
+    "schemaVersion": 1,
+    "generatedByVersion": "0.6.0",
+    "projectName": "BeeHarvest",
+    "rootNamespace": "BeeHarvest",
+    "codeRoot": "Assets/Scripts/Game",
+    "architectureFile": "Assets/Scripts/Game/Architecture/BeeHarvestApp.cs",
+    "controllerFile": "Assets/Scripts/Game/Architecture/BeeHarvestController.cs",
+    "uiConventionProfile": "Assets/Settings/GameFoundation/BeeHarvestUiPrefabConvention.asset",
+    "contentPackageName": "DefaultPackage",
+    "contentRoot": "Assets/GameContent"
+}

@@ -1,0 +1,58 @@
+# Unity-generated caches, local editor state and build output
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/Captures/
+/TestResults/
+/TestResults*.xml
+/Assets/InitTestScene*.unity
+/Assets/InitTestScene*.unity.meta
+
+# Generated IDE projects and per-machine settings
+/.vs/
+/.idea/
+/.vscode/
+/*.csproj
+/*.sln
+/*.slnx
+/*.suo
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+/*.unityproj
+/*.tmp
+/*.svd
+
+# OS metadata and tooling caches
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local secrets and signing files; templates can be versioned
+.env
+.env.*
+!.env.example
+!.env.template
+*.keystore
+*.jks
+*.p12
+*.pfx
+
+# Unity crash dumps and generated debug symbols
+sysinfo.txt
+*.stackdump
+*.apk
+*.aab
+*.ipa

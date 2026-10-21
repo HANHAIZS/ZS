@@ -1,0 +1,5 @@
+Source: https://github.com/CoplayDev/unity-mcp
+Branch: main
+Commit: aa5fc638d623f56178d50329d9ad8c541a57fe66
+Version: 10.3.0
+Installation: embedded UPM package

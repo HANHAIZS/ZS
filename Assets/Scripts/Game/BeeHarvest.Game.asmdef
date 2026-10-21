@@ -1,0 +1,15 @@
+{
+  "name": "BeeHarvest.Game",
+  "rootNamespace": "BeeHarvest",
+  "references": [
+    "QFramework",
+    "GameFoundation.Core",
+    "GameFoundation.Save",
+    "GameFoundation.HotUpdate",
+    "GameFoundation.Sdk",
+    "GameFoundation.UI",
+    "Unity.ugui",
+    "Unity.TextMeshPro"
+  ],
+  "autoReferenced": true
+}

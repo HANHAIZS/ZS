@@ -1,0 +1,16 @@
+{
+  "name": "BeeHarvest.PlayTests",
+  "references": [
+    "BeeHarvest.Game",
+    "QFramework",
+    "Unity.ugui",
+    "Unity.TextMeshPro",
+    "GameFoundation.UI",
+    "GameFoundation.Core",
+    "GameFoundation.Save"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}
