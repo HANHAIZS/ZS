@@ -1,7 +1,7 @@
 ---
 id: repository-ignore-policy
 title: 仓库忽略本机Skill与生成文件
-status: Verifying
+status: Verified
 owner: Project
 created: 2026-10-21
 updated: 2026-10-21
@@ -35,7 +35,7 @@ GitHub Actions沿用原workflow，干净checkout可通过规范校验；缺少�
 - [x] 当前索引不含.agents/skills及两份本机报告，本机字节仍与原版本相同。
 - [x] 缓存/工具临时目录忽略，游戏文件/依赖及.meta保持跟踪。
 - [x] 无个人skill的干净索引导出通过validator；关键文档缺失仍被拒绝；原项目/base校验通过。
-- [ ] 独立清理提交推送并核对GitHub最新提交一致。
+- [x] 独立清理提交推送并核对GitHub最新提交一致。
 
 ## Verification matrix
 | Boundary | Evidence | Result |
@@ -46,7 +46,7 @@ GitHub Actions沿用原workflow，干净checkout可通过规范校验；缺少�
 
 ## Definition of Done
 - [x] 范围与本机保留/源码完整有证据。
-- [ ] 校验与远端提交核对通过。
+- [x] 校验与远端提交核对通过。
 
 
 ## Verification results
@@ -56,3 +56,4 @@ GitHub Actions沿用原workflow，干净checkout可通过规范校验；缺少�
 - 使用git checkout-index完整导出当前暂存快照到临时目录，确认不包含.agents、onboarding-report、MCP本机来源报告；在该干净副本运行validator通过，0警告。
 - 临时副本删除Docs/Foundation/Architecture.md后validator按预期拒绝，仍保留共享治理检查。临时副本已清理；真实项目含base HEAD的规范校验同样通过，0警告。
 - 本次不启动Unity或跑玩法测试，因为无Unity/游戏文件修改；验证覆盖Git跟踪和校验工具实际边界。
+- 清理提交375d103已普通推送到origin/main；远端refs/heads/main精确读回375d10344c316362bbc7129f0c232714b26ceb8f，与本地清理提交一致，未强推或重写历史。
