@@ -4,7 +4,7 @@ title: 胜利结算庆祝特效、通关音效和奖励数字
 status: Verified
 owner: Project
 created: 2026-10-20
-updated: 2026-10-20
+updated: 2026-10-21
 ---
 
 # 胜利结算庆祝特效、通关音效和奖励数字
@@ -78,3 +78,22 @@ updated: 2026-10-20
 - Level01–15场景、原VictoryArtwork、其他UI、音频、关卡和工程设置与本次基线一致，见final-changes.json。
 
 - 临时截图采样探针产生的原生Prefab模拟记录已单独清理；随后真实PlayMode复验3/3通过、干净控制台0条错误/警告。最终停在MainMenu编辑场景，临时经济/设置隔离已还原。
+
+
+## 2026-10-21 奖励数字移至金币右下角
+用户要求把金币下方60移到金币右下角。只调整RewardAmount布局，原60文字/白色/FredokaBoldSDF/84字号/材质/非射线与Continue/Victory/粒子/音效/发奖规则保持。用VictoryArtwork内非绘制RewardArea配合原生AspectRatioFitter.FitInParent，按实际Sprite比例对齐绘制区域；奖励数字位于图案归一化(.73,.155)附近，对不同竖屏比例保持金币右下角关系。
+
+所有105关继承原VictoryPopup.prefab；Editor构建方法同步复现，不改Runtime/Scene/JSON。该可逆低影响布局不新增单元测试，以Native prefab精确读回、两种竖屏截图、编译/Console/validator与Git局部diff核验。
+
+- [x] 白色60位于金币右下角，原字体与字号不变。
+- [x] 标准和长屏竖屏布局一致，其他UI/效果/玩法保持。
+- [x] 原生资产读回、预览/编译/规范检查通过，修改范围限定为本布局与记录。
+
+验证：原生Prefab读回确认父节点RewardArea、锚点(.63,.075)–(.83,.235)，原TMP文字60/FredokaBoldSDF/84/白色与材质保持；Unity脚本编译完成。隔离展示样例通过正式Start/Activate/Advance命令得到Won，截图确认两种分辨率的金币右下角位置，读回归一化中心均(.73,.155)，RewardArea比例均0.9540498。
+
+- [1080×1920预览](/Users/zhangshuai/Documents/Codex/2026-10-09/wo/outputs/victory-reward-corner/victory-1920.png)
+- [1080×2340预览](/Users/zhangshuai/Documents/Codex/2026-10-09/wo/outputs/victory-reward-corner/victory-2340.png)
+
+首次预览因Editor禁用域/场景重载而复用了失效依赖，未采用其截图；改用正常重载后Won与弹窗IsOpen均为true。截图探针粒子固定采样产生2条“Instantiate Particle System Prefabs before trying to play/simulate them”诊断，来自execute_code采样，不作为生产逻辑或音效/粒子测试结论。预览经济/设置隔离与原Editor重载选项已恢复，停在MainMenu编辑模式。未改变生产运行时代码、关卡数据、原图或存档；本次只验证布局。
+
+规范validator通过（0警告）；Git局部diff仅Editor构建方法、VictoryPopup.prefab与本Spec。
