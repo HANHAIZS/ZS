@@ -66,3 +66,7 @@ Assets/Resources/Prefabs/UI/MainMenuPage.prefab仅StartGameButton/Label文字颜
 
 ## Final implemented files
 LevelOneAssets.cs显示开关；HomeArtworkSetup.cs按钮样式/构建；MainMenuPage.prefab仅标签颜色与材质；LevelButtonLabel.mat及meta；本Spec。未新增Runtime组件、Scene/JSON/模型修改、Shader修改或Inspector待办。
+
+
+## 2026-10-21 关卡按钮首字母大写
+用户要求主界面按钮level 1首字母改为L；将所有动态关号统一显示为Level N，同步Editor默认值与Prefab。仅文案大小写改变，样式/布局/玩法和其他文字保持。不新增单元测试，现有4份Runtime测试的相关预期同步为Level N，以原生运行读回与编译/规范检查验证。原字体图集缺少大写L，使用Unity TMP原生TryAddCharacters仅补L后恢复Static；字符49→50、图集仍2张、既有glyphRect全保持，按钮颜色/字号/材质不变。验证完成：真实Home运行读回Level 1、truncated=false、FredokaBoldSDF/48/白色/原深绿材质保持；1080×1920原生截图已目视检查大写L正常显示。Unity编译无CS错误、project validator通过0警告；相关既有测试预期已更新但本次未重跑测试套件。预览隔离/Editor设置已恢复、停止Play回MainMenu。证据[主界面](/Users/zhangshuai/Documents/Codex/2026-10-09/wo/outputs/capital-home-button/home-1920.png)。

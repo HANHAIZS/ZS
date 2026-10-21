@@ -35,7 +35,7 @@ namespace BeeHarvest.Tests {
    app.SendCommand(new RefillHarvestBoosterCommand(1));level.Hud.Boosters.Buttons[1].onClick.Invoke();int count=Model.BoosterCount(1);Assert.IsTrue(Model.SpeedBoost);
    Assert.IsTrue(level.TryRetryLevel());yield return null;yield return null;Assert.AreEqual(812,Model.Remaining);Assert.AreEqual(count,Model.BoosterCount(1));Assert.IsFalse(Model.SpeedBoost);
    yield return HiveInputFixture.Click(level.Hud,0);var settings=Object.FindObjectOfType<SettingsPopupController>();settings.OpenButton.onClick.Invoke();settings.HomeButton.onClick.Invoke();settings.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();yield return null;
-   int generation=Model.Generation,remaining=Model.Remaining;var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("level 3",page.StartGameButton.GetComponentInChildren<TMP_Text>().text);
+   int generation=Model.Generation,remaining=Model.Remaining;var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level 3",page.StartGameButton.GetComponentInChildren<TMP_Text>().text);
    page.StartGameButton.onClick.Invoke();yield return null;yield return null;Assert.AreEqual("Level03",SceneManager.GetActiveScene().name);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual(remaining,Model.Remaining);Assert.AreEqual(count,Model.BoosterCount(1));
   }
   [UnityTest] public IEnumerator SecondLevelVictoryActuallyLoadsBananaAndConsumesContinueOnce(){

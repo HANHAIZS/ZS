@@ -36,7 +36,7 @@ namespace BeeHarvest.Tests {
     int generation=Model.Generation;var settings=Object.FindObjectOfType<SettingsPopupController>();
     settings.OpenButton.onClick.Invoke();settings.HomeButton.onClick.Invoke();settings.LeaveButton.onClick.Invoke();
     yield return PopupMotionTestWait.Close();yield return null;
-    var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("level "+(i+6),page.StartGameButton.GetComponentInChildren<TMP_Text>(true).text);
+    var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level "+(i+6),page.StartGameButton.GetComponentInChildren<TMP_Text>(true).text);
     Assert.AreEqual(generation+1,Model.Generation);Assert.AreEqual(Counts[i],Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.IsTrue(Model.Paused);
     page.StartGameButton.onClick.Invoke();yield return null;yield return null;
     Assert.AreEqual("Level"+(i+6).ToString("00"),SceneManager.GetActiveScene().name);Assert.IsFalse(Model.Paused);

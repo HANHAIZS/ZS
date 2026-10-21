@@ -26,7 +26,7 @@ namespace BeeHarvest.Tests {
     Assert.IsFalse(settings.IsOpen);Assert.IsTrue(m.Paused);Assert.IsFalse(hud.gameObject.activeSelf);
     var page=GameObject.Find("MainMenuPage");Assert.IsNotNull(page);
     var start=page.GetComponentsInChildren<Button>().Single(b=>b.name=="StartGameButton");
-    Assert.AreEqual("level 1",start.GetComponentInChildren<TMP_Text>().text);
+    Assert.AreEqual("Level 1",start.GetComponentInChildren<TMP_Text>().text);
     Assert.IsTrue(page.GetComponentsInChildren<TMP_Text>().All(t=>t.font.name=="FredokaBoldSDF"));
     var p=new PointerEventData(EventSystem.current){position=RectTransformUtility.WorldToScreenPoint(null,hud.QueueButtons[0].transform.position)};
     var hits=new List<RaycastResult>();EventSystem.current.RaycastAll(p,hits);

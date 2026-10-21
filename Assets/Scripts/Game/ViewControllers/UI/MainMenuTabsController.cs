@@ -54,7 +54,7 @@ namespace BeeHarvest {
    Background.sprite=tab==MainMenuTab.Shop?ShopBackground:settingsTab?GalleryBackground:HomeBackground;
    if(backgroundFitter!=null)backgroundFitter.aspectRatio=Background.sprite.rect.width/Background.sprite.rect.height;
    Page.StartGameButton.gameObject.SetActive(tab==MainMenuTab.Home);
-   StartLevelLabel.text="level "+Page.DisplayedLevel;
+   StartLevelLabel.text="Level "+Page.DisplayedLevel;
    ShopContent.SetActive(tab==MainMenuTab.Shop);GalleryContent.SetActive(settingsTab);
    Page.Economy.gameObject.SetActive(!settingsTab);Page.SettingsButton.gameObject.SetActive(false);
    NavigationBar.Render(tab,immediate);

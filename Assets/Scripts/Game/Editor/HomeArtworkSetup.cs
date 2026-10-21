@@ -30,12 +30,12 @@ namespace BeeHarvest.Editor {
    if(importer==null)throw new InvalidOperationException("Home background is missing: "+SpritePath);
    importer.textureType=TextureImporterType.Sprite;importer.spriteImportMode=SpriteImportMode.Single;importer.mipmapEnabled=false;importer.isReadable=false;importer.maxTextureSize=2048;importer.wrapMode=TextureWrapMode.Clamp;importer.textureCompression=TextureImporterCompression.CompressedHQ;importer.SaveAndReimport();
    var sprite=AssetDatabase.LoadAssetAtPath<Sprite>(SpritePath);if(sprite==null)throw new InvalidOperationException("Home background Sprite is missing");
-   foreach(char c in "level 12")if(!font.characterLookupTable.ContainsKey(c))throw new InvalidOperationException("level button font glyph is missing: "+c);
+   foreach(char c in "Level 12")if(!font.characterLookupTable.ContainsKey(c))throw new InvalidOperationException("level button font glyph is missing: "+c);
    var old=safe.Find("HomeArtwork");if(old!=null)UnityEngine.Object.DestroyImmediate(old.gameObject);
    var tabs=page.Tabs;tabs.HomeBackground=sprite;tabs.Background.sprite=sprite;
    var fitter=tabs.Background.GetComponent<UnityEngine.UI.AspectRatioFitter>();if(fitter!=null)fitter.aspectRatio=sprite.rect.width/sprite.rect.height;
    var label=page.StartGameButton.GetComponentInChildren<TMP_Text>(true);if(label==null)throw new InvalidOperationException("Start button level label is missing");
-   label.text="level 1";label.raycastTarget=false;StyleLevelButton(label,font);tabs.StartLevelLabel=label;
+   label.text="Level 1";label.raycastTarget=false;StyleLevelButton(label,font);tabs.StartLevelLabel=label;
    page.SettingsButton.gameObject.SetActive(false);
   }
  }
