@@ -17,6 +17,14 @@ namespace BeeHarvest.Editor {
    var report=GameFoundation.UI.Editor.UiPrefabValidator.Validate(PrefabPath,profile,GameFoundation.UI.UiPrefabKind.Page);
    if(!report.IsValid)throw new InvalidOperationException(report.ToMultilineString());
   }
+  public static void StyleLevelButton(TMP_Text label,TMP_FontAsset font){
+   const string path="Assets/Sprites/UI/MainMenu/LevelButtonLabel.mat";
+   var material=AssetDatabase.LoadAssetAtPath<Material>(path);
+   if(material==null){material=new Material(font.material){name="LevelButtonLabel"};AssetDatabase.CreateAsset(material,path);}
+   material.SetColor("_FaceColor",Color.white);material.SetColor("_OutlineColor",new Color(0,106f/255,11f/255));
+   material.SetFloat("_OutlineWidth",.2f);material.SetFloat("_OutlineSoftness",0);material.EnableKeyword("OUTLINE_ON");EditorUtility.SetDirty(material);
+   label.font=font;label.color=Color.white;label.fontSharedMaterial=material;label.UpdateMeshPadding();
+  }
   public static void Build(MainMenuPage page,Transform safe,TMP_FontAsset font){
    var importer=AssetImporter.GetAtPath(SpritePath) as TextureImporter;
    if(importer==null)throw new InvalidOperationException("Home background is missing: "+SpritePath);
@@ -27,7 +35,7 @@ namespace BeeHarvest.Editor {
    var tabs=page.Tabs;tabs.HomeBackground=sprite;tabs.Background.sprite=sprite;
    var fitter=tabs.Background.GetComponent<UnityEngine.UI.AspectRatioFitter>();if(fitter!=null)fitter.aspectRatio=sprite.rect.width/sprite.rect.height;
    var label=page.StartGameButton.GetComponentInChildren<TMP_Text>(true);if(label==null)throw new InvalidOperationException("Start button level label is missing");
-   label.text="level 1";label.raycastTarget=false;MainMenuNavigationBarSetup.StyleLabel(label,font);tabs.StartLevelLabel=label;
+   label.text="level 1";label.raycastTarget=false;StyleLevelButton(label,font);tabs.StartLevelLabel=label;
    page.SettingsButton.gameObject.SetActive(false);
   }
  }
