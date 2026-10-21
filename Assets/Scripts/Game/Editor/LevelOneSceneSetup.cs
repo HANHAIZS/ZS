@@ -43,6 +43,7 @@ namespace BeeHarvest.Editor {
    new GameObject("EventSystem",typeof(EventSystem),typeof(StandaloneInputModule));
    PlayerSettings.defaultInterfaceOrientation=UIOrientation.Portrait;PlayerSettings.allowedAutorotateToLandscapeLeft=false;PlayerSettings.allowedAutorotateToLandscapeRight=false;PlayerSettings.productName="BeeHarvest";
    var pipeline=AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/Settings/GameFoundation/LevelOnePipeline.asset");if(pipeline==null){var renderer=ScriptableObject.CreateInstance<UniversalRendererData>();AssetDatabase.CreateAsset(renderer,"Assets/Settings/GameFoundation/LevelOneRenderer.asset");pipeline=UniversalRenderPipelineAsset.Create(renderer);AssetDatabase.CreateAsset(pipeline,"Assets/Settings/GameFoundation/LevelOnePipeline.asset");}GraphicsSettings.defaultRenderPipeline=pipeline;QualitySettings.renderPipeline=pipeline;
+   SourceLevelSceneSetup.ApplyVoxelLighting(1);
    if(System.IO.File.Exists(LevelOneBackgroundSetup.TexturePath))LevelOneBackgroundSetup.Apply();
    LevelOneTitleSetup.Apply();
    LevelOneSmallHiveSetup.Apply();

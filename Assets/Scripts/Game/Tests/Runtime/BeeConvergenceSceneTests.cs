@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests {
   static void Draw(){Object.FindObjectOfType<HiveModelView>().Sync();Board.Sync();Object.FindObjectOfType<BeeFlightView>().RenderFlights();}
   static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
   [UnityTest] public IEnumerator ModelIsSmallerAndEmptyDepartureBeeIsLargerThanPickupBee(){
-   yield return Load();Assert.AreEqual(.86f,GameObject.Find("Flower(Clone)").transform.localScale.x,.001f,"Give the transport routes more space");
+   yield return Load();Assert.AreEqual(.86f*1.04f,GameObject.Find("Flower(Clone)").transform.localScale.x,.001f,"Keep the requested modest model enlargement");
    BeeHarvestApp.Interface.SendCommand(new ActivateHiveCommand(0));Draw();float near=Body(Actor(0)).lossyScale.x;
    BeeSceneSteps.Until(()=>M.Flights[0].Reached&&M.Flights[0].Progress>=AdvanceHarvestCommand.ApproachSeconds);float far=Body(Actor(0)).lossyScale.x;
    Assert.Greater(near/far,1.4f,"Near departure bees need a clear depth hierarchy");

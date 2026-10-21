@@ -25,7 +25,7 @@ namespace BeeHarvest.Tests {
    while(f.Stage==1){
     Assert.Less(Vector3.Distance(cargo.lossyScale,scale),.001f,"Cargo size is constant from handoff through entry");
     Assert.Less(Vector3.Distance(cargo.position,grip.position),.001f,"Turning must carry the block with the belly");
-    Assert.AreEqual(local,grip.localPosition);Assert.AreSame(source.sharedMaterial,cargo.GetComponent<Renderer>().sharedMaterial);
+    Assert.AreEqual(local,grip.localPosition);Assert.AreEqual("Universal Render Pipeline/Lit",cargo.GetComponent<Renderer>().sharedMaterial.shader.name);Assert.Less(Vector4.Distance(source.sharedMaterial.GetColor("_BaseColor"),cargo.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor")),.00001f,"Cargo preserves the palette without model-local cavity shading");
     foreach(var limb in body.GetComponentsInChildren<Transform>().Where(t=>t.name.Contains("_Limb_"))){var tip=limb.GetComponentsInChildren<Transform>().First(t=>t.name.Contains("_GripTip_"));Assert.Less(Vector3.Distance(limb.position,tip.position),.19f,"No rubber-band legs: "+limb.name);var knee=limb.Find("GripKnee");Assert.AreEqual(body.lossyScale.x*.525f,Vector3.Distance(limb.position,knee.position),.001f);Assert.AreEqual(body.lossyScale.x*.525f,Vector3.Distance(knee.position,tip.position),.001f);}
     Tick(.02f);checks++;
    }

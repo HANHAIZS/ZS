@@ -47,7 +47,8 @@ namespace BeeHarvest.Tests
                 "The visible block must start where it left the flower, not teleport underneath the bee");
             Assert.Less(Vector3.Distance(originalScale, cargo.transform.lossyScale), .001f, "No sudden resize at handoff");
             Assert.Less(Quaternion.Angle(originalRotation, cargo.transform.rotation), .01f);
-            Assert.AreSame(source.sharedMaterial, cargo.sharedMaterial);
+            Assert.AreEqual("Universal Render Pipeline/Lit",cargo.sharedMaterial.shader.name,"Detached cargo leaves model-local cavity shading behind");
+            Assert.Less(Vector4.Distance(source.sharedMaterial.GetColor("_BaseColor"),cargo.sharedMaterial.GetColor("_BaseColor")),.00001f);
             var begin = cargo.transform.position;
             var prior = cargo.transform.position;
             for (int i = 0; i < 14; i++)

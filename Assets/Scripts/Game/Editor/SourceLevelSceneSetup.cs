@@ -23,11 +23,25 @@ namespace BeeHarvest.Editor {
      EditorUtility.SetDirty(font);
     }
     title.text=caption;if(number!=106)OkaUiRefreshSetup.StyleBoosterBar(level.Hud.Boosters);
+    ApplyVoxelLighting(number);
     EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
     var entries=EditorBuildSettings.scenes.ToList();var entry=entries.FirstOrDefault(s=>s.path==scenePath);
     if(entry==null)entries.Add(new EditorBuildSettingsScene(scenePath,true));else entry.enabled=true;
     EditorBuildSettings.scenes=entries.ToArray();AssetDatabase.SaveAssets();return name+" "+LevelOneAssets.SceneName(number)+" ready";
    }finally{EditorSceneManager.RestoreSceneManagerSetup(previous);}
+  }
+  /// <summary>Sets per-scene presentation lighting; ordinary cloned levels retain the original lighting.</summary>
+  public static void ApplyVoxelLighting(int number){
+   bool depth=LevelOneAssets.HasVoxelSeparation(number);
+   RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Flat;
+   RenderSettings.ambientLight=depth?new Color(.48f,.52f,.63f):new Color(.65f,.7f,.85f);
+   var light=GameObject.Find("KeyLight").GetComponent<Light>();light.shadows=depth?LightShadows.Soft:LightShadows.None;
+   light.shadowStrength=depth?.3f:1;light.shadowBias=depth?.04f:.05f;light.shadowNormalBias=depth?.2f:.4f;
+   if(depth){
+    var pipeline=AssetDatabase.LoadAssetAtPath<UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset>("Assets/Settings/GameFoundation/LevelOnePipeline.asset");
+    var serialized=new SerializedObject(pipeline);serialized.FindProperty("m_SoftShadowsSupported").boolValue=true;serialized.ApplyModifiedPropertiesWithoutUndo();
+   }
+   EditorUtility.SetDirty(light);
   }
   [MenuItem("BeeHarvest/Levels/Build Lightweight Levels 06-15")]
   public static void ApplyAdditional(){for(int number=6;number<=15;number++)Apply(number);}
