@@ -13,7 +13,7 @@ namespace BeeHarvest.Editor {
    var previous=EditorSceneManager.GetSceneManagerSetup();
    try{
     CubeLandLevelSetup.ApplyLevel(number);
-    if(!AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath)&&!AssetDatabase.CopyAsset("Assets/Scenes/Level02.unity",scenePath))throw new InvalidOperationException("Could not create source scene: "+scenePath);
+    if(!AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath)&&!AssetDatabase.CopyAsset(number==106?"Assets/Scenes/Level06.unity":"Assets/Scenes/Level02.unity",scenePath))throw new InvalidOperationException("Could not create source scene: "+scenePath);
     var scene=EditorSceneManager.OpenScene(scenePath);var level=UnityEngine.Object.FindObjectOfType<LevelOneController>();level.LevelNumber=number;
     var title=level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>();var font=title.font;string caption="Level "+number;
     if(!font.HasCharacters(caption)){
@@ -22,7 +22,7 @@ namespace BeeHarvest.Editor {
      finally{font.atlasPopulationMode=mode;}
      EditorUtility.SetDirty(font);
     }
-    title.text=caption;OkaUiRefreshSetup.StyleBoosterBar(level.Hud.Boosters);
+    title.text=caption;if(number!=106)OkaUiRefreshSetup.StyleBoosterBar(level.Hud.Boosters);
     EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
     var entries=EditorBuildSettings.scenes.ToList();var entry=entries.FirstOrDefault(s=>s.path==scenePath);
     if(entry==null)entries.Add(new EditorBuildSettingsScene(scenePath,true));else entry.enabled=true;

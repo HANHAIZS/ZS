@@ -22,5 +22,17 @@ namespace BeeHarvest.Tests {
     level.RestartLevel();level.Hud.Sync();board.Sync();Assert.AreEqual(Counts[i],Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.AreEqual(Counts[i],renderers.Count(r=>r.enabled));Assert.AreEqual(n,level.LevelNumber);
    }
   }
+  [UnityTest] public IEnumerator ReplicatedChick106KeepsContentAndGrayCargoThenRestartsAndReleasesMaterials(){
+   Assert.IsTrue(Application.CanStreamedLevelBeLoaded("Level106"));SceneManager.LoadScene("Level106");yield return null;yield return null;
+   var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var board=level.GetComponent<HarvestBoardView>();board.AutoRotate=false;board.ResetRotation();var root=GameObject.Find("Chick(Clone)");var renderers=root.GetComponentsInChildren<Renderer>();
+   Assert.AreEqual(106,level.LevelNumber);Assert.AreEqual("Level 106",level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>().text);Assert.AreEqual(870,Model.Cubes.Count);Assert.AreEqual(3,Model.ColumnCount);Assert.AreEqual(5,Model.Slots.Count);
+   var assets=new LevelOneAssets();Assert.AreEqual(JsonUtility.ToJson(assets.Level(6)),JsonUtility.ToJson(assets.Level(106)));Assert.AreEqual(870,renderers.Length);var materials=renderers.Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.AreEqual(4,materials.Length);
+   var originals=Resources.Load<GameObject>("Prefabs/Gameplay/Chick").GetComponentsInChildren<MeshFilter>().ToDictionary(f=>f.name);
+   foreach(var r in renderers){Assert.AreEqual("BeeHarvest/VoxelEdges",r.sharedMaterial.shader.name);Assert.Less(Vector4.Distance(new Color(.2f,.2f,.2f,1),r.sharedMaterial.GetColor("_EdgeColor")),.00001f);Assert.AreEqual(.11f,r.sharedMaterial.GetFloat("_EdgeWidth"));Assert.AreSame(originals[r.name].sharedMesh,r.GetComponent<MeshFilter>().sharedMesh);Assert.Less(Vector4.Distance(originals[r.name].GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor"),r.sharedMaterial.GetColor("_BaseColor")),.00001f);}
+   var app=BeeHarvestApp.Interface;var rules=app.GetSystem<HarvestSystem>();int selected=-1;for(int turn=0;turn<8&&selected<0;turn++){board.PublishCameraView();for(int c=0;c<3;c++){int h=rules.Front(c);if(h>=0&&rules.CanSelectHive(h)&&rules.FindTarget(Model.Hives[h].Data.color)>=0){selected=c;break;}}if(selected<0)root.transform.Rotate(0,45,0);}
+   Assert.GreaterOrEqual(selected,0);app.SendCommand(new ActivateHiveCommand(selected));level.GetComponent<HiveModelView>().Sync();board.Sync();level.GetComponent<BeeFlightView>().RenderFlights();BeeSceneSteps.FirstPickup();var cargo=GameObject.Find("BlenderBeeCarrier_0").transform.Find("CarriedVoxel").GetComponent<Renderer>();Assert.Less(Vector4.Distance(new Color(.2f,.2f,.2f,1),cargo.sharedMaterial.GetColor("_EdgeColor")),.00001f);BeeSceneSteps.Until(()=>Model.Deposited>0,40);
+   level.RestartLevel();level.Hud.Sync();board.Sync();Assert.AreEqual(870,Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.AreEqual(870,renderers.Count(r=>r.enabled));CollectionAssert.AreEquivalent(materials,renderers.Select(r=>r.sharedMaterial).Distinct());
+   SceneManager.LoadScene("Level06");yield return null;yield return null;Assert.IsTrue(materials.All(m=>m==null));Assert.IsTrue(GameObject.Find("Chick(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.GetColor("_EdgeColor")==Color.black));
+  }
  }
 }

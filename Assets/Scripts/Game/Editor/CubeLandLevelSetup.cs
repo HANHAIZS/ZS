@@ -34,6 +34,8 @@ namespace BeeHarvest.Editor {
    BuildModel(number,mesh);AssetDatabase.SaveAssets();
   }
   static void BuildModel(int number,Mesh mesh){
+    // Level106 shares the exact authored Chick, including Level06's orientation.
+    if(number==106){if(!AssetDatabase.LoadAssetAtPath<GameObject>(Prefabs+"Chick.prefab"))BuildModel(6,mesh);return;}
     var text=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Levels/Level"+number.ToString("00")+".json");var data=JsonUtility.FromJson<LevelData>(text.text);
     var min=new Vector3(data.cubes.Min(c=>c.x),data.cubes.Min(c=>c.y),data.cubes.Min(c=>c.z));var max=new Vector3(data.cubes.Max(c=>c.x),data.cubes.Max(c=>c.y),data.cubes.Max(c=>c.z));var size=max-min+Vector3.one;float cell=Mathf.Min(4.8f/size.y,4.6f/size.x,4.6f/size.z);var center=(min+max)*.5f;
     string name=LevelOneAssets.ModelKey(number);var root=new GameObject(name);Transform parent=root.transform;
