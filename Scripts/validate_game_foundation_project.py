@@ -90,12 +90,9 @@ def load_configuration(project_root: Path, report: ValidationReport) -> dict[str
 
 
 def validate_governance_files(project_root: Path, report: ValidationReport) -> None:
-    """Verify that AI instructions, workflow templates, skills, scripts, and CI are installed."""
+    """Verify shared project governance; personal skills may remain local-only."""
     required = (
         "AGENTS.md",
-        ".agents/skills/specify-foundation-feature/SKILL.md",
-        ".agents/skills/develop-foundation-feature/SKILL.md",
-        ".agents/skills/normalize-figma-unity-ui/SKILL.md",
         "Docs/Foundation/Architecture.md",
         "Docs/Features/README.md",
         "Docs/Features/FEATURE_TEMPLATE.md",

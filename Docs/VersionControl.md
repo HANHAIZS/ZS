@@ -33,4 +33,13 @@ git diff HEAD~1 HEAD -- Assets/Scripts/Game
 - `.gitignore` 排除 Unity 的 `Library`、`Temp`、日志、用户设置、构建物、生成的 IDE 工程、本机设置及 `Captures` 截图输出。
 - 本地环境变量和签名文件不纳入；Unity YAML 与源码使用文本差异，图片、声音和模型使用二进制属性。
 
-目前只配置本地仓库，没有远程地址。若要云端备份，另行绑定用户指定的远程仓库后再推送。本地 Git 记录历史，但不能代替异地备份。
+远程仓库为 [HANHAIZS/ZS](https://github.com/HANHAIZS/ZS)，`origin/main` 跟踪本地 `main`。GitHub HTTPS 登录保存在 macOS 钥匙串。当前网络需要代理时，单次使用 `git -c http.proxy=http://127.0.0.1:7897 push`；不把代理或凭据写入项目文件。
+
+## 2026-10-21 忽略目录整理
+
+- Unity 缓存、日志、用户设置、截图与 IDE 自动生成文件已从首次提交排除，本次没有把它们重新上传。
+- 补充忽略构建/导出/性能采样目录、AI工具本机状态、实验和验证输出、Python/Node缓存与DCC备份。
+- `.gamefoundation/onboarding-report.json` 与 `Packages/unity-mcp-install-source.txt` 是本机生成报告，使用 `git rm --cached` 停止跟踪，本机文件保留。`.gamefoundation/project.json` 继续纳入。
+- 用户明确要求个人 `.agents/skills` 不上传：停止跟踪并加入忽略，本机13份skill文件保留。校验脚本不再强制要求这3个本机skill入口，AGENTS.md提供项目文档替代流程。
+- `.github`、`Docs`、`Scripts` 与 AGENTS.md 是共享项目校验/说明文件，继续保留；嵌入 `Packages` 为依赖源码；`Assets/LevelSources` 为关卡重建来源，均保留。没有忽略整个 `Assets`、`Packages` 或 `ProjectSettings`，也没有忽略 `.meta`。
+- 以普通清理提交推送，不重写已发布历史。忽略规则作用于当前目录与未来提交，历史版本中的报告仍可回看。

@@ -56,3 +56,41 @@ sysinfo.txt
 *.apk
 *.aab
 *.ipa
+
+# Additional generated build, export and profiler directories
+/[Ee]xported[Oo]bj/
+/[Aa]rtifacts/
+/[Bb]uild[Cc]ache/
+/[Bb]urst[Dd]ebug[Ii]nformation*/
+/[Uu]nity[Cc]apture/
+/ProfilerCaptures/
+/[Ss]ysinfo.txt
+
+# Local assistant sessions, personal skills, experiments and verification output
+/.agents/skills/
+/.codex/
+/.claude/
+/.cursor/
+/.cache/
+/.local/
+/work/
+/outputs/
+/coverage/
+/htmlcov/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+
+# Machine-generated setup and installation reports (keep project.json)
+/.gamefoundation/onboarding-report.json
+/Packages/unity-mcp-install-source.txt
+
+# DCC/editor backup copies; keep original source assets and their metadata
+*.blend1
+*.blend1.meta
+*.blend2
+*.blend2.meta
+*.orig
+*.orig.meta
+*.rej
+*.rej.meta

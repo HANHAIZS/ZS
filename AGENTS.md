@@ -29,8 +29,8 @@ Read before behavior-changing work:
 ## Required feature workflow
 
 - Every behavior-changing requirement must create or update one Feature Spec under `Docs/Features` before implementation.
-- Use `.agents/skills/specify-foundation-feature` to classify scope, ownership, acceptance criteria, failure paths, and verification.
-- Use `.agents/skills/develop-foundation-feature` for project code and `.agents/skills/normalize-figma-unity-ui` for imported Figma UI.
+- Personal skills under `.agents/skills` are local-only and are not required in a clone. When installed, use `specify-foundation-feature` for scope and acceptance, `develop-foundation-feature` for project code, and `normalize-figma-unity-ui` for imported Figma UI.
+- When those skills are absent, follow `Docs/Features/FEATURE_TEMPLATE.md`, `Docs/Foundation/Architecture.md`, and `Docs/Foundation/ResourceLoading.md` directly; preserve the same specification, ownership, asset, verification, and completion requirements.
 - Keep the Feature Spec status current and mark it `Verified` only after its acceptance criteria and Definition of Done have evidence.
 - Run `python3 Scripts/validate_game_foundation_project.py --project .` before completion. CI applies the same check to pull-request diffs.
 
