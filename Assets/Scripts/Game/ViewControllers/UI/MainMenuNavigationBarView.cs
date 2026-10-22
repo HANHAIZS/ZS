@@ -6,6 +6,7 @@ namespace BeeHarvest {
  public sealed class MainMenuNavigationBarView : BeeHarvestController {
   const float TransitionDuration=.25f;
   public RectTransform Selection;
+  public RectTransform SelectionFrame;
   public RectTransform[] Icons;
   public TMP_Text[] Labels;
   readonly float[] weights=new float[3],startWeights=new float[3];
@@ -14,8 +15,8 @@ namespace BeeHarvest {
   bool hasPose,animating;
 
   public void ValidateBindings() {
-   if(Selection==null||Icons==null||Labels==null||Icons.Length!=3||Labels.Length!=3)
-    throw new InvalidOperationException("Bottom navigation requires its selection, three icons and labels.");
+   if(Selection==null||SelectionFrame==null||Icons==null||Labels==null||Icons.Length!=3||Labels.Length!=3)
+    throw new InvalidOperationException("Bottom navigation requires its selection, outer frame, three icons and labels.");
    for(int i=0;i<3;i++)if(Icons[i]==null||Labels[i]==null)
     throw new InvalidOperationException("Bottom navigation has an unbound icon or label.");
   }
@@ -51,6 +52,8 @@ namespace BeeHarvest {
   void ApplyPose() {
    Selection.anchorMin=new Vector2(center-1f/6,0);Selection.anchorMax=new Vector2(center+1f/6,0);
    Selection.offsetMin=Vector2.zero;Selection.offsetMax=new Vector2(0,185);
+   SelectionFrame.anchorMin=Selection.anchorMin;SelectionFrame.anchorMax=Selection.anchorMax;
+   SelectionFrame.offsetMin=Selection.offsetMin;SelectionFrame.offsetMax=Selection.offsetMax;
    for(int i=0;i<3;i++) {
     Icons[i].sizeDelta=Vector2.one*Mathf.Lerp(110,142,weights[i]);
     Icons[i].anchoredPosition=new Vector2(0,Mathf.Lerp(75,126,weights[i]));

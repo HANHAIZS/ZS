@@ -21,6 +21,7 @@ namespace BeeHarvest.Editor {
   }
   public static void Build(MainMenuPage page) {
    var safe=page.transform.Find("Content/SafeArea");var tabs=page.Tabs;
+   foreach(string name in new[]{"GoldRimLayer","GoldSelectionFrame"}) {var old=safe.Find(name);if(old!=null)UnityEngine.Object.DestroyImmediate(old.gameObject);}
    var view=page.GetComponent<MainMenuNavigationBarView>();if(view==null)view=page.gameObject.AddComponent<MainMenuNavigationBarView>();tabs.NavigationBar=view;
    var back=safe.Find("BottomNavigation").GetComponent<Image>();
    var b=back.rectTransform;b.anchorMin=Vector2.zero;b.anchorMax=new Vector2(1,0);b.pivot=new Vector2(.5f,0);b.sizeDelta=new Vector2(0,147);b.anchoredPosition=Vector2.zero;
@@ -58,7 +59,52 @@ namespace BeeHarvest.Editor {
     StyleLabel(text,text.font);view.Labels[i]=text;
    }
    tabs.NavigationSelection=view.Selection;tabs.NavigationBase=back;tabs.NavigationInset=inset;
-   view.ValidateBindings();view.Render(MainMenuTab.Home,true);
+   ArrangeOuterRim(page);view.ValidateBindings();view.Render(MainMenuTab.Home,true);
+  }
+  [MenuItem("BeeHarvest/UI/Apply Navigation Outer Rim Boundary")]
+  public static void ApplyRimBoundary() {
+   if(Application.isPlaying||EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop Play Mode first.");
+   var root=PrefabUtility.LoadPrefabContents(Prefab);
+   try {
+    var page=root.GetComponent<MainMenuPage>();ArrangeOuterRim(page);
+    page.Tabs.NavigationBar.ValidateBindings();
+    PrefabUtility.SaveAsPrefabAsset(root,Prefab);
+   } finally {PrefabUtility.UnloadPrefabContents(root);}
+  }
+  static void ArrangeOuterRim(MainMenuPage page) {
+   var safe=page.transform.Find("Content/SafeArea");
+   var back=(RectTransform)safe.Find("BottomNavigation");
+   var selection=(RectTransform)safe.Find("HomeSelection");
+   var flatLayer=RimLayer(safe,"GoldRimLayer");
+   flatLayer.anchorMin=back.anchorMin;flatLayer.anchorMax=back.anchorMax;flatLayer.pivot=back.pivot;
+   flatLayer.sizeDelta=back.sizeDelta;flatLayer.anchoredPosition=back.anchoredPosition;
+   var frame=RimLayer(safe,"GoldSelectionFrame");frame.pivot=selection.pivot;
+   frame.anchorMin=selection.anchorMin;frame.anchorMax=selection.anchorMax;
+   frame.offsetMin=selection.offsetMin;frame.offsetMax=selection.offsetMax;
+   // Both gold layers render behind the purple sprites, preserving their top edge/highlight.
+   int first=Math.Min(back.GetSiblingIndex(),Math.Min(flatLayer.GetSiblingIndex(),frame.GetSiblingIndex()));
+   flatLayer.SetSiblingIndex(first);frame.SetSiblingIndex(first+1);back.SetSiblingIndex(first+2);
+   var flat=MoveRim(back,flatLayer,"GoldRim");
+   flat.anchorMin=new Vector2(0,1);flat.anchorMax=Vector2.one;flat.pivot=new Vector2(.5f,0);
+   // The bottom 8 pixels in each rim slice are shadow, not the visible gold edge.
+   float flatY=-8f*19.3f/22f;
+   float curveY=147f-185f+55.3f-8f*55.3f/63f;
+   flat.sizeDelta=new Vector2(0,19.3f);flat.anchoredPosition=new Vector2(0,flatY);
+   var left=MoveRim(selection,frame,"RimLeft");left.anchoredPosition=new Vector2(39.5f,curveY);
+   var right=MoveRim(selection,frame,"RimRight");right.anchoredPosition=new Vector2(13.1f,curveY);
+   var center=MoveRim(selection,frame,"RimCenter");
+   center.offsetMin=new Vector2(39.5f,curveY-12.3f);center.offsetMax=new Vector2(-39.5f,curveY);
+   page.Tabs.NavigationBar.SelectionFrame=frame;
+  }
+  static RectTransform RimLayer(Transform parent,string name) {
+   var layer=parent.Find(name) as RectTransform;
+   if(layer==null){layer=new GameObject(name,typeof(RectTransform)).GetComponent<RectTransform>();layer.SetParent(parent,false);}
+   return layer;
+  }
+  static RectTransform MoveRim(Transform oldParent,Transform layer,string name) {
+   var rim=oldParent.Find(name)??layer.Find(name);
+   if(rim==null)throw new InvalidOperationException("Missing navigation rim: "+name);
+   rim.SetParent(layer,false);return (RectTransform)rim;
   }
   public static void StyleLabel(TMPro.TMP_Text text,TMPro.TMP_FontAsset font) {
    text.font=font;text.color=new Color(1,.985f,.96f);text.fontSharedMaterial=LabelMaterial(font);text.UpdateMeshPadding();

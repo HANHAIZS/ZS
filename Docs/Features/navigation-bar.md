@@ -4,7 +4,7 @@ title: Purple Bottom Navigation
 status: Verified
 owner: Project
 created: 2026-10-15
-updated: 2026-10-19
+updated: 2026-10-22
 ---
 
 # Purple Bottom Navigation
@@ -75,3 +75,20 @@ Final implementation and visual evidence:
 - Existing `Assets/Resources/Prefabs/UI/MainMenuPage.prefab`, every scene and all baseline UI prefabs are byte-identical to the starting snapshot. Full Editor tests regenerate the menu asset as a side effect; both menu assets were restored exactly through Unity FileUtil and the final full PlayMode suite ran on the originals. `final-preservation.json` records the final hashes. No Inspector changes, new art, Resources keys or asset lifecycle changes.
 - Actual Unity renders: `outputs/navigation-bar-animation/{Home,Shop,Gallery}-{1920,2340}.png`, 40 transition frames, `current-three-states.png` and `current-navigation-animation.gif`. The GIF crops the real rendered bottom bar; page content stays Home in this presentation preview. Actual page switching is exercised in PlayMode tests. Both portrait layouts and intermediate frames were inspected.
 - No per-frame collections, dependency lookups, loading or coroutine allocation: two three-element arrays are cached per view; idle Tick returns immediately. No device profiling or physical-device testing performed.
+
+
+## 2026-10-22 Purple boundary outside gold rim
+用户要求按参考图二保留顶部紫色边界，黄色外圈不再盖住紫色边界。修正仅限当前MainMenuPage导航框层级/贴边位置，使用已有Bar/Rim原图，不重画UI或更改图标/字号/三等分/命中区/选中板高度/0.25秒动效/页面行为。
+
+将平直GoldRim与选中曲线外圈置于两个无Graphic父层，作为紫色底板/选中板之前的同级背景绘制。按原图底部8像素阴影余量对齐可见金色轮廓；平直金边与曲线端点的可见金色底缘贴齐紫色横栏顶缘，凸起部分藏于紫色前景背后；紫色图始终在前，原顶部深紫边和高光完整保留。选择外圈Rect通过现有ApplyPose与选择板同步；不新增Update、材质、贴图或Raycast目标。新Rect层无Graphic，不增加绘制图元。原生成器和针对性native修正入口都复用相同布局，避免重建恢复旧遮挡。
+
+资源仍为Resources键Prefabs/UI/MainMenuPage，原Bar/Rim/图标/字体/材质引用不变。只通过Unity原生Prefab API修改；保留用户已改的Game及BeePalette19/HivePalette11原字节，不提交其修改。验证原生深度/贴边位置、三选中态和切换中间帧、原动效与输入生命周期、Prefab/项目规范及Console；不截图录屏、不上传GitHub。
+
+- [x] 原生绘制深度证明金边不覆盖紫色顶缘，直边/凸起金边向外贴合。
+- [x] 三个选中态与快速切换过程中外圈和底板同步，无图标/文字/命中区或原图改写。
+- [x] 既有导航动效/输入回归、原生引用、Prefab/项目规范通过；记录限制。
+
+
+验证证据（2026-10-22）：修改前原生Canvas深度为紫色120/124、金边121/128，确认覆盖原因；修正后Home/Shop/Gallery三态金边depth1–4、紫色从5开始，快速切换中间帧外圈anchor与选中板一致。平直金边与曲线端点可见金色底缘均为147，金色顶缘159.281815/159.2889（差0.008以内），消除原图阴影余量造成的接缝。针对性Apply连续两次及完整Build连续两次，仍各一个背景层/选择层，四张金边图，无重复层或新增Graphic。
+
+既有EditMode导航动画4/4通过（job `3016ffba5bb84c9aab0ef0fb47f7b478`）；最终PlayMode导航交互及动画7/7通过（job `dfa58380cb764f87984eb2b85bf39db3`）。Prefab规范零问题；项目验证零警告；最终Console零错误/警告。独立审查发现原图阴影边距引起接缝偏移，已按像素轮廓校正。起始哈希比对仅MainMenuPage.prefab、导航生成器、导航View及原测试fixture改变；图片/字体/材质/所有场景及用户已有修改均保持起始字节。证据：`/Users/zhangshuai/Documents/Codex/2026-10-09/wo/work/nav-rim-boundary/final-preservation.json`。未截图、录屏或做真机目测；本次以原生运行时层级/几何及交互测试验证，仍建议用户在Game视图查看最终观感。没有新增每帧循环、绘制图元、依赖查找或资源加载，现有ApplyPose多同步一个Rect；未做性能profiling。
