@@ -6,6 +6,8 @@
 
 打开Game，选中LevelOne对象，在LevelOneController的PreviewLevel输入关号，然后进入Play。首次直接运行Game使用该预览号；从主页进入、下一关及继续游戏使用导航关号，优先于Inspector预览值。
 
+每次新的Play会话会清理上一次的临时导航关号，因此开启禁用域/场景重载的快速运行时也能按PreviewLevel预览。请先停止Play，再修改PreviewLevel后重新运行；运行中修改该字段不会即时切关。游戏内正常进入和下一关仍按导航关号加载。
+
 需要在编辑状态更新标题和灯光时，使用菜单`BeeHarvest > Levels > Preview Game Inspector Level`。Preview不替换场景中的骨架，也不重写模型。
 
 ## 关卡数据

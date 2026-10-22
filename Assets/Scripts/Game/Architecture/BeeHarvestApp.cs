@@ -9,6 +9,14 @@ namespace BeeHarvest
 {
     public sealed class BeeHarvestApp : Architecture<BeeHarvestApp>
     {
+        // This callback runs for every new Play session even when Unity skips domain and scene reloads.
+        // It does not run for ordinary Game-to-Game loads, which must retain the selected next level.
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void ResetNavigationSession()
+        {
+            Interface.SendCommand(new ResetMenuNavigationSessionCommand());
+        }
+
         /// <summary>
         /// Registers shared infrastructure before project-owned models and systems.
         /// </summary>

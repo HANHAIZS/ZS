@@ -1,5 +1,11 @@
 using QFramework;
 namespace BeeHarvest {
+ /// <summary>Resets transient selection once per application/Editor Play session, without notifying old scene listeners.</summary>
+ public sealed class ResetMenuNavigationSessionCommand : AbstractCommand {
+  protected override void OnExecute(){
+   var nav=this.GetModel<MenuNavigationModel>();nav.Initialized=false;nav.CurrentLevel=1;nav.IsHome=false;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
+  }
+ }
  public sealed class InitializeMenuNavigationCommand : AbstractCommand {
   readonly bool home;readonly int levelNumber;
   public InitializeMenuNavigationCommand(bool value,int number=1){home=value;levelNumber=number;}

@@ -94,3 +94,13 @@ updated: 2026-10-22
 - 独立复核初见两触摸测试过滤器和严格配置验证缺口，均已处理；同一复核者确认无Critical/Important残留。当前原始114份JSON、所有Gameplay prefab和原始来源等807份内容资产SHA全部不变。
 - 测试原生序列化变化MainMenuScene/Page/SettingsPopup及BeePalette14/HivePalette11已通过Unity FileUtil从工作前Git字节恢复。最终所有仍存在的旧非脚本/非asmdef Assets逐字节保持；唯一旧资源删除是228个Scene/meta。范围报告共享工作区outputs/two-scenes/scope.json。旧C#测试改动只为按关号加载真实Game和识别逻辑关号；新验收直接检查物理场景，未伪造Unity物理结果。
 - 不截图录屏、不推GitHub，不新增Save schema或网络运行依赖；未进行iPhone打包/真机性能测试。只做本地Git保存。
+
+
+## Fast Play preview regression — 2026-10-22
+用户报告Preview73却运行112；现场确认Editor开启DisableDomainReload+DisableSceneReload，静态导航Initialized=true/CurrentLevel112跨Play保留，覆盖Inspector当前Preview103。修复范围为每个新Play会话清空临时导航初始化状态（通过Command，无跨场景重置）；直接Game启动采用Preview，正常主页/下一关保留导航优先。保留用户当前Game资产中的Preview103及全部Editor快速运行设置，不提交用户Scene修改。新增真实Enter/ExitPlay两次回归后记录证据。
+
+- RED5440cea9653740e9b876a87237a20ad4：真实EditorEnterPlayMode(false)保留同一导航Model，preview73/actual112/navigation112，按预期失败。
+- 修复：BeeHarvestApp的BeforeSceneLoad运行时初始化回调只在新应用/EditorPlay会话发送ResetMenuNavigationSessionCommand，清空临时导航Initialized/关号/Home/恢复暂停/页签；不通知旧Scene监听者，不改Harvest/Economy/存档，普通LoadScene下一关不执行此回调。
+- GREEN83283fdb5fff468cba26434390d7c2dd：相同Game场景不重开、保持禁用域/场景重载和同一Model对象，连续两次73/35均加载正确方块数/标题/导航号。
+- 最终BeeHarvest.Tests EditMode486063d87e034e658cf2f90ca80a13cb：257/257通过（含真实跨Play两次回归）；PlayMode3dfd1b154caa47bf88db12329fcb278c：冷预览/导航优先、主页35、1/6/111/113/114下一关与末关Home1三个检查通过。
+- 同一独立复核者确认无Critical/Important。保持用户当前Game.unity的Preview103原字节及DisableDomainReload+DisableSceneReload设置；仅恢复测试导致的3份旧菜单序列化变化，不提交用户场景改动。Foundation0warnings，Console无新增错误。
