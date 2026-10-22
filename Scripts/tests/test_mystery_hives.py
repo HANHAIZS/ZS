@@ -16,6 +16,18 @@ class MysteryHiveImportTests(unittest.TestCase):
     column=[j for j,v in enumerate(data['hives']) if v['column']==h['column']]
     self.assertEqual(h['column']+2 if number in (6,8,106) else 1,column.index(i));self.assertFalse(h['connected'])
   self.assertEqual([6,8,12,15,18,106],found)
+ def test_new_original_mystery_models_keep_each_source_hive_identity(self):
+  for number,name,count in [(112,'Rabbit',15),(113,'Astronaut',16),(114,'Hourglass',12)]:
+   raw=json.loads((ROOT/f'Assets/LevelSources/CubeLand/{name}.json').read_text())
+   actual=json.loads((ROOT/f'Assets/Resources/Levels/Level{number}.json').read_text())
+   self.assertEqual(convert(raw,number),actual)
+   refs={str(ref['rid']):ref['data'] for ref in raw['references']['RefIds']}
+   self.assertEqual(count,sum(bool(h.get('isHidden')) for h in actual['hives']))
+   for hive in actual['hives']:
+    source=refs[hive['sourceRid']]
+    self.assertEqual(bool(source.get('isHidden')),bool(hive.get('isHidden')))
+    self.assertEqual((source['bulletCount'],source['color']),(hive['quota'],hive['sourceColor']))
+
  def test_source_hidden_flag_is_preserved_without_changing_color_or_quota(self):
   source=json.loads((ROOT/'Assets/LevelSources/CubeLand/plant_flower.json').read_text())
   ref=source['references']['RefIds'][0];ref['data']['isHidden']=True

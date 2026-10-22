@@ -34,7 +34,7 @@ namespace BeeHarvest
             board = GetComponent<HarvestBoardView>();
             board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), LevelOneAssets.HasVoxelEdges(LevelNumber), LevelOneAssets.VoxelEdgeColor(LevelNumber),LevelOneAssets.HasVoxelCavity(LevelNumber),LevelOneAssets.HasVoxelSeparation(LevelNumber));
             bees = GetComponent<BeeFlightView>();
-            bees.Initialize(model, board, assets, LevelNumber == 6);
+            bees.Initialize(model, board, assets, LevelNumber == 6 || (LevelNumber >= 112 && LevelNumber <= 114));
             hop = GetComponent<HiveHopController>();
             hop.Initialize(model, rules, hives, Hud);
             Hud.Initialize(model, rules, hop.ClickWaiting, RetryFromHud, this);

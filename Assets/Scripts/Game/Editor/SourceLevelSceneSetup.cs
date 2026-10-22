@@ -13,8 +13,9 @@ namespace BeeHarvest.Editor {
    var previous=EditorSceneManager.GetSceneManagerSetup();
    try{
     CubeLandLevelSetup.ApplyLevel(number);
-    bool useSoftDepthTemplate=number>=106&&number<=111;
-    string template=number==106?"Assets/Scenes/Level06.unity":useSoftDepthTemplate?"Assets/Scenes/Level106.unity":"Assets/Scenes/Level02.unity";
+    bool useSixTemplate=number>=112&&number<=114;
+    bool useSoftDepthTemplate=number>=106&&number<=111||useSixTemplate;
+    string template=number==106||useSixTemplate?"Assets/Scenes/Level06.unity":useSoftDepthTemplate?"Assets/Scenes/Level106.unity":"Assets/Scenes/Level02.unity";
     if(!AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath)&&!AssetDatabase.CopyAsset(template,scenePath))throw new InvalidOperationException("Could not create source scene: "+scenePath);
     var scene=EditorSceneManager.OpenScene(scenePath);var level=UnityEngine.Object.FindObjectOfType<LevelOneController>();level.LevelNumber=number;
     var title=level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>();var font=title.font;string caption="Level "+number;
