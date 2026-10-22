@@ -38,7 +38,7 @@ namespace BeeHarvest {
   public int FindTarget(string color){RefreshVisibility();for(int i=0;i<model.Cubes.Count;i++)if(model.Cubes[i].Stage==0&&model.Cubes[i].Data.color==color&&visible[i])return i;return -1;}
   // Prefer an unoccupied neighborhood, but reserve every available color even if it must wait locally.
   public int FindDispatchTarget(string color){
-   RefreshVisibility();int fallback=-1;
+   RefreshVisibility();if(model.DispersedCollection)return FindSpreadTarget(color);int fallback=-1;
    for(int i=0;i<model.Cubes.Count;i++){
     if(model.Cubes[i].Stage!=0||model.Cubes[i].Data.color!=color||!visible[i])continue;
     if(fallback<0)fallback=i;bool near=false;
@@ -46,14 +46,27 @@ namespace BeeHarvest {
     if(!near)return i;
    }return fallback;
   }
+  // Maximise the nearest projected source distance, including reserved and extracting tasks.
+  // Never reject a dense-only candidate: the existing collection permit remains the final safety gate.
+  int FindSpreadTarget(string color){
+   int best=-1;float bestDistance=-1;
+   for(int i=0;i<model.Cubes.Count;i++){
+    if(model.Cubes[i].Stage!=0||model.Cubes[i].Data.color!=color||!visible[i])continue;
+    float nearest=float.PositiveInfinity;
+    foreach(var f in model.Flights)if(AtSource(f))nearest=Mathf.Min(nearest,ProjectedDistanceSquared(i,f.Cube));
+    if(nearest>bestDistance){best=i;bestDistance=nearest;}
+   }return best;
+  }
+  static bool AtSource(FlightState f)=>f.Stage==0||(f.Stage==1&&(f.TransportPhase<2||(f.TransportPhase==2&&!f.ClearedSource)));
+  float ProjectedDistanceSquared(int a,int b){var x=model.Cubes[a].Data;var y=model.Cubes[b].Data;var delta=new Vector3(x.x-y.x,x.y-y.y,x.z-y.z);delta-=model.ViewDirection*Vector3.Dot(delta,model.ViewDirection);return delta.sqrMagnitude;}
   public Vector3 PickupNormal(int id){RefreshVisibility();return id>=0&&id<pickupNormals.Length?pickupNormals[id]:Vector3.back;}
   public int ApproachLane(int id){RefreshVisibility();var d=model.Cubes[id].Data;var right=Vector3.Cross(model.ViewDirection,Vector3.up).normalized;if(right.sqrMagnitude<.1f)right=Vector3.right;return Vector3.Dot((Vector3)new Vector3Int(d.x,d.y,d.z)-(Vector3)(min+max)*.5f,right)<0?0:1;}
-  bool Neighbors(int a,int b){var x=model.Cubes[a].Data;var y=model.Cubes[b].Data;var delta=new Vector3(x.x-y.x,x.y-y.y,x.z-y.z);delta-=model.ViewDirection*Vector3.Dot(delta,model.ViewDirection);return delta.sqrMagnitude<2.25f;}
+  bool Neighbors(int a,int b)=>ProjectedDistanceSquared(a,b)<2.25f;
   // A permit covers only the final approach, grasp and short source clearance, never a half-screen lane.
   public bool CollectionFree(FlightState task){
    foreach(var f in model.Flights){
     if(f==task||!f.CollectionGranted||f.Stage==2)continue;
-    bool atSource=f.Stage==0||(f.Stage==1&&(f.TransportPhase<2||(f.TransportPhase==2&&!f.ClearedSource)));
+    bool atSource=AtSource(f);
     if(atSource&&Neighbors(task.Cube,f.Cube))return false;
    }return true;
   }

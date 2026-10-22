@@ -95,6 +95,13 @@ namespace BeeHarvest {
    p.y=Mathf.Clamp(p.y+.018f+(task%3)*.008f,.43f,.86f);
    return FlightPoint(flightCamera.ViewportToWorldPoint(p));
   }
+  /// <summary>Slow staggered circuits on the foreground side of the current model silhouette.</summary>
+  public Vector3 CollectionWaitingPoint(Vector3 outside,int lane,int task,float age){
+   var p=flightCamera.WorldToViewportPoint(outside);float phase=age*.85f+task*2.399963f;
+   p.x=Mathf.Clamp(p.x+(lane==0?-1:1)*(.014f+.009f*Mathf.Sin(phase)),.06f,.94f);
+   p.y=.49f+Mathf.Repeat(task*.618034f+.17f,1)*.28f+Mathf.Cos(phase)*.028f;
+   return FlightPoint(flightCamera.ViewportToWorldPoint(p));
+  }
   /// <summary>Fan upward below the model before joining its outside corridor, rather than crossing a flat shelf.</summary>
   public Vector3 DepartureTurn(Vector3 emergence,Vector3 outside){
    float bottom=float.PositiveInfinity;

@@ -28,7 +28,8 @@ namespace BeeHarvest
             public Vector3 DetachFrom;
             public Quaternion DetachFromRot;
             public Matrix4x4 DetachToGrid;
-            public bool Detaching;
+            public bool Detaching, WasWaiting, Joining;
+            public Vector3 JoinFrom;public float JoinAt;
             public bool HasPose, ReachedDepartureRise, ReachedDepartureSide;
         }
 
@@ -176,7 +177,7 @@ namespace BeeHarvest
                     a=pool.Count>0?pool.Pop():Create(color);active.Add(f.Id,a);
                     a.Root.name="BlenderBeeCarrier_"+f.Id;a.Root.SetActive(true);
                     a.Root.transform.localScale=Vector3.one;a.Body.localPosition=Vector3.zero;
-                    a.Stage=-1;a.Phase=-1;a.HasPose=false;a.ReachedDepartureRise=false;a.ReachedDepartureSide=false;a.DepartureProgress=0;a.Clock=f.Age;a.Detaching=false;
+                    a.Stage=-1;a.Phase=-1;a.HasPose=false;a.ReachedDepartureRise=false;a.ReachedDepartureSide=false;a.DepartureProgress=0;a.Clock=f.Age;a.Detaching=false;a.WasWaiting=false;a.Joining=false;
                     a.Origin=board.FlightPoint(board.Source(f.Hive));a.Position=a.Origin;
                 }
                 if(model.Paused&&a.HasPose)continue;
@@ -221,8 +222,25 @@ namespace BeeHarvest
                 if(f.Stage==0){
                     float u=approachU;
                     path=Approach(a,emergence,corner,outside,station,u,f.Id);
-                    if(waitingForPickup)path+=levelCamera.transform.right*(Mathf.Sin(f.Age*5+f.Id)*.055f)+levelCamera.transform.up*(Mathf.Sin(f.Age*7+f.Id)*.025f);
-                    look=waitingForPickup?station-path:Approach(a,emergence,corner,outside,station,Mathf.Clamp01(u+.025f),f.Id)-a.Position;
+                    if(model.DispersedCollection){
+                        if(waitingForPickup){
+                            a.WasWaiting=true;a.Joining=false;
+                            path=board.CollectionWaitingPoint(outside,f.Lane,f.Id,f.Age);
+                            look=board.CollectionWaitingPoint(outside,f.Lane,f.Id,f.Age+.1f)-path;
+                        }else{
+                            look=Approach(a,emergence,corner,outside,station,Mathf.Clamp01(u+.025f),f.Id)-a.Position;
+                            if(a.WasWaiting){a.JoinFrom=a.Position;a.JoinAt=f.Age;a.Joining=true;a.WasWaiting=false;}
+                            if(a.Joining){
+                                float join=Mathf.Clamp01((f.Age-a.JoinAt)/.4f);
+                                path=Vector3.Lerp(a.JoinFrom,station,Mathf.SmoothStep(0,1,join));
+                                look=station-a.Position;
+                                if(join>=1)a.Joining=false;
+                            }
+                        }
+                    }else{
+                        if(waitingForPickup)path+=levelCamera.transform.right*(Mathf.Sin(f.Age*5+f.Id)*.055f)+levelCamera.transform.up*(Mathf.Sin(f.Age*7+f.Id)*.025f);
+                        look=waitingForPickup?station-path:Approach(a,emergence,corner,outside,station,Mathf.Clamp01(u+.025f),f.Id)-a.Position;
+                    }
                 }else{
                     if(f.TransportPhase==0)path=Vector3.Lerp(a.Pickup,a.ExtractEnd,lift);
                     else if(f.TransportPhase==1)path=a.ExtractEnd;
@@ -236,12 +254,12 @@ namespace BeeHarvest
                 }
 
                 var goal=look.sqrMagnitude>.00001f?Quaternion.LookRotation(-look.normalized,-levelCamera.transform.forward):a.Aim;
-                if(f.Stage==0){float blend=Mathf.SmoothStep(0,1,Mathf.Clamp01((approachU-.65f)/.35f));goal=Quaternion.Slerp(goal,pickupAim,blend);}
+                if(f.Stage==0&&!(model.DispersedCollection&&waitingForPickup)){float blend=Mathf.SmoothStep(0,1,Mathf.Clamp01((approachU-.65f)/.35f));goal=Quaternion.Slerp(goal,pickupAim,blend);}
                 if(f.Stage==1&&f.TransportPhase<2)goal=a.PickupAim;
                 if(!a.HasPose)a.Aim=goal;else a.Aim=Quaternion.RotateTowards(a.Aim,goal,360*elapsed);
                 float carryWeight=f.Stage==1&&f.TransportPhase>=2?Mathf.Min(1,f.PhaseProgress/.08f):0;
                 float bank=((f.Lane==0?-1:1)*10+Mathf.Sin(f.Age*8+f.Id)*3)*carryWeight;
-                if(waitingForPickup)bank=Mathf.Sin(f.Age*5+f.Id)*9;
+                if(waitingForPickup)bank=Mathf.Sin(f.Age*(model.DispersedCollection?.85f:5)+f.Id)*9;
                 a.Body.localRotation=Quaternion.AngleAxis(bank,levelCamera.transform.forward)*a.Aim*Quaternion.AngleAxis(bank*.4f,Vector3.forward);
                 float scale=f.Stage==0?Mathf.Lerp(DepartureScale,PickupScale,Mathf.SmoothStep(0,1,Mathf.Clamp01(approachU/.8f))):PickupScale;
                 a.Body.localScale=Vector3.one*scale;
@@ -250,7 +268,7 @@ namespace BeeHarvest
                 var desired=f.Stage==1?path-gripOffset:path;
                 if(!collecting&&!(f.Stage==1&&f.TransportPhase==0))desired=KeepInsideView(desired,a.Envelope);
                 if(!a.HasPose&&f.Stage==1)a.Position=desired;
-                else if(a.HasPose)a.Position=Vector3.MoveTowards(a.Position,desired,(f.Stage==0?EmptySpeed:LoadedSpeed)*elapsed);
+                else if(a.HasPose)a.Position=Vector3.MoveTowards(a.Position,desired,(f.Stage==0?(model.DispersedCollection&&waitingForPickup?2.4f:EmptySpeed):LoadedSpeed)*elapsed);
                 a.Root.transform.position=a.Position;a.Root.transform.rotation=Quaternion.identity;a.Root.transform.localScale=Vector3.one;
                 a.Cargo.SetActive(f.Stage==1);
                 if(f.Stage==1){

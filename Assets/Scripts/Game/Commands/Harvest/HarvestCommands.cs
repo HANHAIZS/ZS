@@ -17,7 +17,7 @@ namespace BeeHarvest {
    if(columns<1||columns>5)throw new ArgumentException("Invalid queue column count");
    foreach(var h in Data.hives)if(h.column>=columns)throw new ArgumentException("Hive is outside queue columns");
    var groups=LinkedHiveGroups.Build(Data.hives);
-   var m=this.GetModel<HarvestModel>();m.ColumnCount=columns;m.HasLinkedGroups=false;foreach(var group in groups)m.HasLinkedGroups|=group.Length>1;m.cubes.Clear();m.hives.Clear();m.flights.Clear();
+   var m=this.GetModel<HarvestModel>();m.ColumnCount=columns;m.DispersedCollection=Data.dispersedCollection;m.HasLinkedGroups=false;foreach(var group in groups)m.HasLinkedGroups|=group.Length>1;m.cubes.Clear();m.hives.Clear();m.flights.Clear();
    foreach(var c in Data.cubes)m.cubes.Add(new CubeState{Data=c});for(int i=0;i<Data.hives.Length;i++){var h=Data.hives[i];m.hives.Add(new HiveState{Data=h,Remaining=h.quota,group=groups[i]});}
    m.slots.Clear();for(int i=0;i<5;i++)m.slots.Add(-1);m.SpeedSeconds=0;m.FreeSelection=false;m.EntryClock=0;Array.Clear(m.DeparturePorts,0,m.DeparturePorts.Length);
    foreach(var q in m.waiting)q.Clear();for(int i=0;i<m.hives.Count;i++)m.waiting[m.hives[i].Data.column].Add(i);m.Deposited=0;m.Remaining=Data.cubes.Length;m.InTransit=0;m.Won=false;m.Deadlocked=false;m.Paused=false;m.ViewDirection=UnityEngine.Vector3.back;m.ViewCameraPosition=new UnityEngine.Vector3(0,0,-1000);m.OrthographicView=true;m.ViewRevision++;m.BoardRevision++;m.Revision++;m.Generation++;

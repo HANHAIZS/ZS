@@ -21,6 +21,7 @@ namespace BeeHarvest {
   public IReadOnlyList<FlightState> Flights=>flights;
   public IReadOnlyList<int> Slots=>slots;
   public int ColumnCount {get;internal set;}=5;
+  public bool DispersedCollection {get;internal set;}
   public bool HasLinkedGroups {get;internal set;}
   internal float EntryClock;
   internal readonly float[] DeparturePorts=new float[6];

@@ -49,10 +49,16 @@ namespace BeeHarvest.Tests {
   }
   [UnityTest] public IEnumerator GpuFirstFrameKeepsTheSourceAppearanceInsteadOfOpeningAnEmptyHole(){
    yield return Load(6);var root=GameObject.Find("Chick(Clone)");foreach(var r in root.GetComponentsInChildren<Renderer>())r.gameObject.layer=30;var f=Select();
+   // Isolate this handoff: dispersed targets may let other bees remove unrelated voxels before task zero.
+   // Preserve total color quotas while dispatching a single bee from the selected hive.
+   var data=JsonUtility.FromJson<LevelData>(Resources.Load<TextAsset>("Levels/Level06").text);var selected=data.hives[f.Hive];int remainder=selected.quota-1;selected.quota=1;
+   foreach(var hive in data.hives)hive.connected=new int[0];
+   if(remainder>0)data.hives=data.hives.Concat(new[]{new HiveData{column=selected.column,color=selected.color,quota=remainder}}).ToArray();
+   BeeHarvestApp.Interface.SendCommand(new StartLevelCommand(data));Board.PublishCameraView();f=Select();
    var cameraObject=new GameObject("SourceHandoffGpuCamera");var camera=cameraObject.AddComponent<Camera>();camera.CopyFrom(Camera.main);camera.enabled=false;camera.cullingMask=1<<30;camera.transform.SetPositionAndRotation(Camera.main.transform.position,Camera.main.transform.rotation);
    var target=new RenderTexture(384,684,24);var image=new Texture2D(384,684,TextureFormat.RGB24,false);var prior=RenderTexture.active;camera.targetTexture=target;
    try{
-    camera.Render();RenderTexture.active=target;image.ReadPixels(new Rect(0,0,384,684),0,0);image.Apply();var before=image.GetPixels();BeeSceneSteps.FirstPickup();Cargo(f).gameObject.layer=30;camera.Render();image.ReadPixels(new Rect(0,0,384,684),0,0);image.Apply();var after=image.GetPixels();float difference=0;int changed=0;
+    camera.Render();RenderTexture.active=target;image.ReadPixels(new Rect(0,0,384,684),0,0);image.Apply();var before=image.GetPixels();BeeSceneSteps.FirstPickup();Assert.AreEqual(1,Model.Flights.Count,"Only the compared source changes in this GPU fixture");Cargo(f).gameObject.layer=30;camera.Render();image.ReadPixels(new Rect(0,0,384,684),0,0);image.Apply();var after=image.GetPixels();float difference=0;int changed=0;
     for(int i=0;i<before.Length;i++){float delta=Vector3.Distance(new Vector3(before[i].r,before[i].g,before[i].b),new Vector3(after[i].r,after[i].g,after[i].b));difference+=delta;if(delta>.08f)changed++;}
     TestContext.WriteLine("First-frame GPU mean difference="+(difference/before.Length)+", changed pixels="+changed);Assert.Less(difference/before.Length,.0003f);Assert.Less(changed,12,"Replacing a source block at the same depth must not reveal a blank cavity or change its first-frame shading");
    }finally{RenderTexture.active=prior;camera.targetTexture=null;target.Release();Object.Destroy(target);Object.Destroy(image);Object.Destroy(cameraObject);}
