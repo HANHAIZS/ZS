@@ -34,6 +34,7 @@ try {
  page.ShopButton.interactable=page.HomeButton.interactable=page.GalleryButton.interactable=true;
  HomeArtworkSetup.Build(page,safe,font);
  ShopOffersSetup.Build(page);
+ ShopHeaderSetup.Build(page);
  MainMenuNavigationBarSetup.Build(page);
  page.SettingsPopup.transform.SetAsLastSibling();
  UnityEditor.PrefabUtility.SaveAsPrefabAsset(root,path);
