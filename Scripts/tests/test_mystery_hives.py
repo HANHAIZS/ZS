@@ -7,7 +7,7 @@ from import_cube_land_levels import convert
 class MysteryHiveImportTests(unittest.TestCase):
  def test_exactly_six_levels_hide_three_hives_with_staggered_late_positions_on_six_and_eight(self):
   found=[]
-  for number in range(1,107):
+  for number in range(1,112):
    data=json.loads((ROOT/f'Assets/Resources/Levels/Level{number:02}.json').read_text())
    hidden=[(i,h) for i,h in enumerate(data['hives']) if h.get('isHidden')]
    if not hidden:continue

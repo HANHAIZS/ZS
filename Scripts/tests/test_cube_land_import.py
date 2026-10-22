@@ -7,10 +7,10 @@ ROOT=Path(__file__).resolve().parents[2]
 SOURCE=ROOT/'Assets/LevelSources/CubeLand'
 CONVERTED=ROOT/'Assets/Resources/Levels'
 class ImportTests(unittest.TestCase):
- def test_cli_emits_all_one_hundred_six_explicit_levels(self):
+ def test_cli_emits_all_one_hundred_eleven_explicit_levels(self):
   with tempfile.TemporaryDirectory() as folder:
    subprocess.run([sys.executable,str(ROOT/'Scripts/import_cube_land_levels.py'),'--source',str(SOURCE),'--output',folder],check=True,capture_output=True,text=True)
-   self.assertEqual([f'Level{n:02}.json' for n in range(1,107)],sorted((p.name for p in Path(folder).glob('*.json')),key=lambda name:int(name[5:-5])))
+   self.assertEqual([f'Level{n:02}.json' for n in range(1,112)],sorted((p.name for p in Path(folder).glob('*.json')),key=lambda name:int(name[5:-5])))
  def test_level106_is_an_exact_level_six_variant(self):
   raw=json.loads((SOURCE/'Chick.json').read_text());self.assertEqual(convert(raw,6),convert(raw,106));self.assertEqual((CONVERTED/'Level06.json').read_bytes(),(CONVERTED/'Level106.json').read_bytes())
  def test_banana_uses_its_own_voxel_identity(self):
@@ -20,7 +20,7 @@ class ImportTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):cls.flower=json.loads((SOURCE/'plant_flower.json').read_text())
  def test_production_is_reproducible(self):
-  for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick'],1):
+  for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick','Microphone_2','Lamp_3','Mower_Ride','Car4x4','Alien'],1):
    actual=convert(json.loads((SOURCE/f'{name}.json').read_text()),number)
    expected=json.loads((CONVERTED/f'Level{number:02}.json').read_text());self.assertEqual(expected,actual)
  def test_source_coordinates_color_and_depth_remain_traceable(self):

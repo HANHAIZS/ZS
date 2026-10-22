@@ -13,7 +13,9 @@ namespace BeeHarvest.Editor {
    var previous=EditorSceneManager.GetSceneManagerSetup();
    try{
     CubeLandLevelSetup.ApplyLevel(number);
-    if(!AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath)&&!AssetDatabase.CopyAsset(number==106?"Assets/Scenes/Level06.unity":"Assets/Scenes/Level02.unity",scenePath))throw new InvalidOperationException("Could not create source scene: "+scenePath);
+    bool useSoftDepthTemplate=number>=106&&number<=111;
+    string template=number==106?"Assets/Scenes/Level06.unity":useSoftDepthTemplate?"Assets/Scenes/Level106.unity":"Assets/Scenes/Level02.unity";
+    if(!AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath)&&!AssetDatabase.CopyAsset(template,scenePath))throw new InvalidOperationException("Could not create source scene: "+scenePath);
     var scene=EditorSceneManager.OpenScene(scenePath);var level=UnityEngine.Object.FindObjectOfType<LevelOneController>();level.LevelNumber=number;
     var title=level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>();var font=title.font;string caption="Level "+number;
     if(!font.HasCharacters(caption)){
@@ -22,7 +24,7 @@ namespace BeeHarvest.Editor {
      finally{font.atlasPopulationMode=mode;}
      EditorUtility.SetDirty(font);
     }
-    title.text=caption;if(number!=106)OkaUiRefreshSetup.StyleBoosterBar(level.Hud.Boosters);
+    title.text=caption;if(!useSoftDepthTemplate)OkaUiRefreshSetup.StyleBoosterBar(level.Hud.Boosters);
     ApplyVoxelLighting(number);
     EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
     var entries=EditorBuildSettings.scenes.ToList();var entry=entries.FirstOrDefault(s=>s.path==scenePath);

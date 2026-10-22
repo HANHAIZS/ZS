@@ -4,7 +4,7 @@ import argparse,json,hashlib,collections,copy
 
 
 # Authoring choices are explicit; Cat_Luci uses its complete model at Level35.
-SURFACE_QUEUE_LEVELS = frozenset({25, 28, 31, 34, 35, 40, 41, 42, 43, 44, 46, 47, 50, 51, 52, 53, 54, 55, 56, 57, 59, 60, 62, 63, 64, 65, 66, 69, 71, 72, 74, 75, 76, 77, 78, 79, 80, 81, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105})
+SURFACE_QUEUE_LEVELS = frozenset({25, 28, 31, 34, 35, 40, 41, 42, 43, 44, 46, 47, 50, 51, 52, 53, 54, 55, 56, 57, 59, 60, 62, 63, 64, 65, 66, 69, 71, 72, 74, 75, 76, 77, 78, 79, 80, 81, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 107, 108, 109, 110, 111})
 
 def author_surface_queue(data):
     """Preserve source art while authoring bounded layer/color quotas for a surface-first route.
@@ -94,7 +94,7 @@ def convert(raw,number,*,repack=True):
     if counts!=quotas:raise ValueError('Per-color quota mismatch')
     for h in hives:h['connected'].sort()
     result=dict(sourceName=raw['m_Name'],sourceContentHash=raw['contentHash'],columns=len(raw['serializedPlaceableColumn']),cubes=cubes,hives=hives)
-    if number==35 or 96<=number<=105:result['columns']=3
+    if number==35 or 96<=number<=105 or 107<=number<=111:result['columns']=3
     if number in SURFACE_QUEUE_LEVELS and any(h.get('isHidden') for h in hives):raise ValueError('Hidden source hives cannot be safely reauthored')
     result=author_surface_queue(result) if number in SURFACE_QUEUE_LEVELS else result
     if repack and result['columns']!=3:
@@ -109,5 +109,5 @@ def convert(raw,number,*,repack=True):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--source',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=True)
-    for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick'],1):
+    for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick','Microphone_2','Lamp_3','Mower_Ride','Car4x4','Alien'],1):
         data=convert(json.loads((args.source/f'{name}.json').read_text()),number);target=args.output/f'Level{number:02}.json';target.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'))+'\n');print(target,len(data['cubes']),len(data['hives']),data['columns'],hashlib.sha256(target.read_bytes()).hexdigest())

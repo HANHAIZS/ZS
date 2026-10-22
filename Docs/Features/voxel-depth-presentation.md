@@ -95,3 +95,6 @@ updated: 2026-10-21
 - 原生API最终读回Level106：ambient=(0.48,0.52,0.63)，KeyLight=Soft，shaderSupported=true，shaderMessages=[]，scene dirty=false；C#控制台0 errors。未截图录屏，编辑器停在第106关。
 - 独立只读代码复核未发现Critical/Important问题；源码/Shader/文档/场景/管线的git diff --cached --check及Foundation验证通过（Unity自动生成的.mat与.meta空字段保留原生尾随空格）。曾出现Unity自动序列化导致的无关HivePalette11旧_Color尾数变化，已用SerializedObject原生API恢复，不纳入改动。
 - 所有修改保存在本地Git，未推送GitHub。未进行iPhone真机GPU性能或打包测试。
+
+## 后续扩展 — 2026-10-22
+用户要求新增107–111关完整沿用106效果，包括4%整体放大、7%间隙、浅黑边与柔和/局部阴影。原1–106关资产保持，范围扩展以[levels-one-hundred-seven-eleven.md](levels-one-hundred-seven-eleven.md)为准。
