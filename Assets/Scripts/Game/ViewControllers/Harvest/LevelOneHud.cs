@@ -35,6 +35,7 @@ namespace BeeHarvest {
    for(int i=0;i<SlotLabels.Length;i++)slotOutlines[i]=SlotLabels[i].GetComponent<Outline>();
    for(int i=0;i<5;i++){queueOutlines[i]=QueueLabels[i].GetComponent<Outline>();nextOutlines[i]=NextLabels[i].GetComponent<Outline>();}
    Boosters.Initialize(model,rules,this,level);Sync();
+   ButtonPressMotion.Install(GetComponentInParent<Canvas>().gameObject);
   }
   public bool CanPlayWaitingFeedback(int column,int row)=>hiveInputEnabled&&!model.Paused&&!model.Won&&!model.Deadlocked&&DisplayedHive(column,row)>=0;
   public int DisplayedHive(int column,bool rear)=>DisplayedHive(column,rear?1:0);

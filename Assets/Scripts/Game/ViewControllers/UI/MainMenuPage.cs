@@ -17,6 +17,7 @@ namespace BeeHarvest {
   public string ScreenId=>"MainMenu";
   public bool IsVisible=>gameObject.activeSelf;
   public void Bind(Action action){
+   ButtonPressMotion.Install(gameObject);
    StartGameButton.onClick.RemoveListener(StartGame);start=action;
    StartGameButton.onClick.AddListener(StartGame);
    Tabs.Bind(this);
