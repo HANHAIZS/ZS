@@ -8,7 +8,8 @@ namespace BeeHarvest
     public sealed class BeeFlightView : BeeHarvestController
     {
         const float ReachDepth=.07f, PickupScale=.12f, DepartureScale=.18f;
-        const float EmptySpeed=13f, LoadedSpeed=24f;
+        const float EmptySpeed=13f, LoadedSpeed=24f, DetachSeconds=.09f;
+        static readonly int CavityStrength=Shader.PropertyToID("_CavityStrength"), CavityWorldToGrid=Shader.PropertyToID("_CavityWorldToGrid");
 
         sealed class Actor
         {
@@ -23,7 +24,11 @@ namespace BeeHarvest
             public Bounds Envelope=new Bounds(Vector3.zero,Vector3.one*1.1f);
             public Vector3 Origin, Position, Pickup, ExtractEnd, Exit, EntryStart, SourceScale;
             public int Stage=-1, Phase=-1;
-            public float Clock, DepartureProgress;
+            public float Clock, DepartureProgress, DetachAt, DetachStrength;
+            public Vector3 DetachFrom;
+            public Quaternion DetachFromRot;
+            public Matrix4x4 DetachToGrid;
+            public bool Detaching;
             public bool HasPose, ReachedDepartureRise, ReachedDepartureSide;
         }
 
@@ -34,12 +39,12 @@ namespace BeeHarvest
         LevelOneAssets assets;
         Camera levelCamera;
         int generation=-1;
-        bool hasProjection;
+        bool hasProjection, sourceHandoff;
         Matrix4x4 lastProjection;
 
-        public void Initialize(HarvestModel state,HarvestBoardView view,LevelOneAssets repo)
+        public void Initialize(HarvestModel state,HarvestBoardView view,LevelOneAssets repo,bool sourceHandoff=false)
         {
-            model=state;board=view;assets=repo;levelCamera=Camera.main;
+            model=state;board=view;assets=repo;levelCamera=Camera.main;this.sourceHandoff=sourceHandoff;
             this.SendCommand(new AttachBeeFlightPresentationCommand(GetInstanceID()));
         }
 
@@ -171,7 +176,7 @@ namespace BeeHarvest
                     a=pool.Count>0?pool.Pop():Create(color);active.Add(f.Id,a);
                     a.Root.name="BlenderBeeCarrier_"+f.Id;a.Root.SetActive(true);
                     a.Root.transform.localScale=Vector3.one;a.Body.localPosition=Vector3.zero;
-                    a.Stage=-1;a.Phase=-1;a.HasPose=false;a.ReachedDepartureRise=false;a.ReachedDepartureSide=false;a.DepartureProgress=0;a.Clock=f.Age;
+                    a.Stage=-1;a.Phase=-1;a.HasPose=false;a.ReachedDepartureRise=false;a.ReachedDepartureSide=false;a.DepartureProgress=0;a.Clock=f.Age;a.Detaching=false;
                     a.Origin=board.FlightPoint(board.Source(f.Hive));a.Position=a.Origin;
                 }
                 if(model.Paused&&a.HasPose)continue;
@@ -197,6 +202,15 @@ namespace BeeHarvest
                     a.SourceScale=board.PickupScale(f.Cube);a.PickupAim=pickupAim;
                     a.CargoRotation=Quaternion.Inverse(pickupAim)*source.rotation;
                     board.CopyPickupVisual(f.Cube,a.CargoFilter,a.CargoRenderer,a.CargoBlock);
+                    // Late/rebuilt carriers must not replay a completed pickup from the old cavity.
+                    a.Detaching=sourceHandoff&&f.TransportPhase==0&&(a.Stage==0||f.PhaseProgress<.0001f);
+                    if(a.Detaching){
+                        var original=board.SourcePose(f.Cube);
+                        a.DetachFrom=original.position;a.DetachFromRot=original.rotation;a.DetachAt=f.Age;
+                        a.DetachToGrid=board.PickupToGrid(f.Cube);
+                        a.CargoRenderer.sharedMaterial=board.PickupDisplayMaterial(f.Cube);
+                        a.DetachStrength=a.CargoRenderer.sharedMaterial.HasProperty(CavityStrength)?a.CargoRenderer.sharedMaterial.GetFloat(CavityStrength):0;
+                    }
                 }
                 a.Exit=board.CarryLanePoint(a.ExtractEnd,f.Lane,f.Id);
                 bool waitingForPickup=f.Stage==0&&f.ClearedApproach&&!f.CollectionGranted;
@@ -243,8 +257,30 @@ namespace BeeHarvest
                     a.Cargo.transform.position=a.Grip.position;a.Cargo.transform.rotation=a.Body.rotation*a.CargoRotation;
                     var parent=a.Cargo.transform.parent.lossyScale;
                     a.Cargo.transform.localScale=new Vector3(a.SourceScale.x/parent.x,a.SourceScale.y/parent.y,a.SourceScale.z/parent.z);
+                    if(a.Detaching){
+                        float t=f.TransportPhase==0?Mathf.Clamp01((f.Age-a.DetachAt)/DetachSeconds):1;
+                        float e=Mathf.SmoothStep(0,1,t);
+                        a.Cargo.transform.position=Vector3.Lerp(a.DetachFrom,a.Grip.position,e);
+                        a.Cargo.transform.rotation=Quaternion.Slerp(a.DetachFromRot,a.Body.rotation*a.CargoRotation,e);
+                        if(t>=1){
+                            a.Detaching=false;a.CargoBlock.Clear();
+                            board.CopyPickupVisual(f.Cube,a.CargoFilter,a.CargoRenderer,a.CargoBlock);
+                            if(a.CargoBlock.isEmpty)a.CargoRenderer.SetPropertyBlock(null);
+                        }
+                        else if(a.DetachStrength>0){
+                            // Keep the original face samples attached to this block while easing out their shade.
+                            a.CargoBlock.SetFloat(CavityStrength,a.DetachStrength*(1-e));
+                            a.CargoBlock.SetMatrix(CavityWorldToGrid,a.DetachToGrid*a.Cargo.transform.worldToLocalMatrix);
+                            a.CargoRenderer.SetPropertyBlock(a.CargoBlock);
+                        }
+                    }
                 }
-                var gripPose=f.Stage==0?source:new Pose(a.Grip.position,a.Body.rotation*a.CargoRotation);
+                var gripPose=f.Stage==0?source:new Pose(a.Cargo.transform.position,a.Cargo.transform.rotation);
+                if(a.Detaching){
+                    // Match the block on screen without stretching the fixed-length legs across model depth.
+                    var forward=levelCamera.transform.forward;
+                    gripPose.position+=forward*Vector3.Dot(a.Grip.position-gripPose.position,forward);
+                }
                 var half=Vector3.Scale(a.CargoFilter.sharedMesh.bounds.extents,f.Stage==0?board.PickupScale(f.Cube):a.SourceScale);
                 a.Grasp.Grasp(gripPose,half,f.Stage==0?reach:1);a.Grasp.Wings(f.Age,f.Id);
                 bool arrived=f.Stage==0?f.CollectionGranted&&Vector3.Distance(a.Position,station)<.012f&&Quaternion.Angle(a.Body.localRotation,pickupAim)<2.5f:

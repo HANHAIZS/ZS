@@ -20,6 +20,10 @@ namespace BeeHarvest {
   public Vector3 CargoScale=>cubes[0].lossyScale;
   /// <summary>Preserves the source block's on-screen pose while extracting it onto the safe flight plane.</summary>
   public Pose PickupPose(int id){return new Pose(FlightPoint(cubes[id].position),cubes[id].rotation);}
+  /// <summary>Read-only true source pose and display frame for the level-six depth handoff.</summary>
+  public Pose SourcePose(int id){return new Pose(cubes[id].position,cubes[id].rotation);}
+  public Material PickupDisplayMaterial(int id){return cubeRenderers[id].sharedMaterial;}
+  public Matrix4x4 PickupToGrid(int id){return (flower.localToWorldMatrix*gridLocal).inverse*cubes[id].localToWorldMatrix;}
   public Vector3 PickupOutward(FlightState task){var normal=task.PickupNormal;return normal.sqrMagnitude>.1f?(flower.localToWorldMatrix*gridLocal).MultiplyVector(normal).normalized:-flightCamera.transform.forward;}
   public Vector3 PickupScale(int id){return cubes[id].lossyScale;}
   /// <summary>Copies the exact source visual once at pickup, with no new material instance.</summary>
