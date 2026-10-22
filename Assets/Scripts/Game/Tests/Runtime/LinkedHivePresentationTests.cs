@@ -9,7 +9,7 @@ namespace BeeHarvest.Tests {
  public sealed class LinkedHivePresentationTests : EconomyTestFixture {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
   static IEnumerator LoadPair(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;
    // Preserve the real source geometry; move the existing second hive to column one for an immediate front pair.
    var data=JsonUtility.FromJson<LevelData>(JsonUtility.ToJson(BeeHarvestApp.Interface.GetUtility<LevelOneAssets>().Level(1)));
@@ -41,7 +41,7 @@ namespace BeeHarvest.Tests {
    }
   }
   [UnityTest] public IEnumerator SourceThreeColumnsAlignAtEntryWithoutAnInitialClick(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();var hud=level.Hud;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();var hud=level.Hud;
    Assert.AreEqual(3,Model.ColumnCount);
    for(int c=0;c<3;c++){
     var control=(RectTransform)hud.QueueButtons[c].transform;var root=GameObject.Find("SmallHive_"+hud.DisplayedHive(c,0));

@@ -15,7 +15,7 @@ namespace BeeHarvest.Tests {
   static Transform Cargo=>Actor.Find("CarriedVoxel");
   static void Draw(){Object.FindObjectOfType<HiveModelView>().Sync();Board.Sync();Bees.RenderFlights();}
   static void Tick(float dt){Board.PublishCameraView();BeeSceneSteps.Advance(dt);Draw();}
-  static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.ResetRotation();Board.PublishCameraView();BeeHarvestApp.Interface.SendCommand(new ActivateHiveCommand(0));Draw();}
+  static IEnumerator Load(){LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.ResetRotation();Board.PublishCameraView();BeeHarvestApp.Interface.SendCommand(new ActivateHiveCommand(0));Draw();}
   static Vector2 HorizontalBounds(){
    var root=GameObject.Find("Flower(Clone)");var b=root.GetComponentsInChildren<Renderer>()[0].bounds;foreach(var r in root.GetComponentsInChildren<Renderer>())b.Encapsulate(r.bounds);
    float lo=1,hi=0;for(int i=0;i<8;i++){var p=Camera.main.WorldToViewportPoint(b.center+Vector3.Scale(b.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));lo=Mathf.Min(lo,p.x);hi=Mathf.Max(hi,p.x);}return new Vector2(lo,hi);
@@ -58,7 +58,7 @@ namespace BeeHarvest.Tests {
    Assert.Greater(checkedFrames,100,"Exercise many concurrent loaded poses rather than one destination point");
   }
   [UnityTest] public IEnumerator SecondLevelSideLanesKeepTheCompleteCarrierVisibleWhenFiveHivesWorkTogether(){
-   SceneManager.LoadScene("Level02");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;var app=BeeHarvestApp.Interface;Board.ResetRotation();Board.PublishCameraView();
+   LevelSceneTestLoader.Load("Level02");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;var app=BeeHarvestApp.Interface;Board.ResetRotation();Board.PublishCameraView();
    for(int c=0;c<5;c++)app.SendCommand(new ActivateHiveCommand(c));Draw();int checks=0;
    for(int frame=0;frame<600;frame++){
     Tick(.02f);

@@ -1,0 +1,2855 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "number": 1,
+      "modelKey": "Flower",
+      "edges": false,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 2,
+      "modelKey": "Duck",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 3,
+      "modelKey": "Banana",
+      "edges": false,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 4,
+      "modelKey": "BeeModel",
+      "edges": false,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 5,
+      "modelKey": "Watermelon",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 6,
+      "modelKey": "Chick",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 7,
+      "modelKey": "Sheep",
+      "edges": false,
+      "separation": false,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 8,
+      "modelKey": "Shark",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 9,
+      "modelKey": "Broccoli",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 10,
+      "modelKey": "Cactustoy",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 11,
+      "modelKey": "Carrot",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 12,
+      "modelKey": "CatHead",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 13,
+      "modelKey": "Snake",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 14,
+      "modelKey": "Onion",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 15,
+      "modelKey": "DodoBird",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 16,
+      "modelKey": "CupHalf",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 17,
+      "modelKey": "casper",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 18,
+      "modelKey": "Rat",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 19,
+      "modelKey": "Mower",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 20,
+      "modelKey": "Crab",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 21,
+      "modelKey": "Santa",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 22,
+      "modelKey": "Hand_grips",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 23,
+      "modelKey": "Balloon_rotate",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 24,
+      "modelKey": "Gaming_microphone",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 25,
+      "modelKey": "Shuttle",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 26,
+      "modelKey": "Cat_Minti",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 27,
+      "modelKey": "Megaphone",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 28,
+      "modelKey": "World_cup",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 29,
+      "modelKey": "Spitfire",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 30,
+      "modelKey": "Hen_2",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 31,
+      "modelKey": "Oreo",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 32,
+      "modelKey": "Axe",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 33,
+      "modelKey": "Mustard",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 34,
+      "modelKey": "Robot_2",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 35,
+      "modelKey": "Cat_Luci",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 36,
+      "modelKey": "Dice",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 37,
+      "modelKey": "EmpireTower",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 38,
+      "modelKey": "Launcher",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 39,
+      "modelKey": "Gamepad",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 40,
+      "modelKey": "Rattle",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 41,
+      "modelKey": "Popsicle-chocolate",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 42,
+      "modelKey": "ChipGreen",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 43,
+      "modelKey": "Gas_station",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 44,
+      "modelKey": "Bell",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 45,
+      "modelKey": "BoxOpen",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 46,
+      "modelKey": "PizzaSlice",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 47,
+      "modelKey": "Camera",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 48,
+      "modelKey": "Earth",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 49,
+      "modelKey": "PizzaSliced",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 50,
+      "modelKey": "Paper_Towels",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 51,
+      "modelKey": "ChickenLeg",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 52,
+      "modelKey": "Shaker_salt",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 53,
+      "modelKey": "Hair_brush",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 54,
+      "modelKey": "Bowling_pins",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 55,
+      "modelKey": "Radio_4",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 56,
+      "modelKey": "Heart",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 57,
+      "modelKey": "Umbrella",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 58,
+      "modelKey": "Clock",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 59,
+      "modelKey": "Diamond_2",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 60,
+      "modelKey": "Saturn",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 61,
+      "modelKey": "Rolling_pin_2",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 62,
+      "modelKey": "Animal_Penguin",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 63,
+      "modelKey": "Tenis_ball",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 64,
+      "modelKey": "Liquid_soap",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 65,
+      "modelKey": "Bulb",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 66,
+      "modelKey": "Barrel",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 67,
+      "modelKey": "Waffle",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 68,
+      "modelKey": "Star",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 69,
+      "modelKey": "Chessboard",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 70,
+      "modelKey": "Castle",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 71,
+      "modelKey": "Bull",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 72,
+      "modelKey": "Bucket",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 73,
+      "modelKey": "Croissant",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 74,
+      "modelKey": "Lighthouse",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 75,
+      "modelKey": "Chocolate_2",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 76,
+      "modelKey": "Lifebuoy",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 77,
+      "modelKey": "Orange",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 78,
+      "modelKey": "pelican",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 79,
+      "modelKey": "Angel",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 80,
+      "modelKey": "Goomba",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 81,
+      "modelKey": "Cone",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 82,
+      "modelKey": "Avocado",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 83,
+      "modelKey": "Fluffy",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 84,
+      "modelKey": "Spices",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 85,
+      "modelKey": "Koala",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 86,
+      "modelKey": "Mami",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 87,
+      "modelKey": "Tractor_Shovel",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 88,
+      "modelKey": "Bear",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 89,
+      "modelKey": "Remote",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 90,
+      "modelKey": "Tree",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 91,
+      "modelKey": "Teepee",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 92,
+      "modelKey": "Dollars_container",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 93,
+      "modelKey": "Brain",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 94,
+      "modelKey": "Volcano",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 95,
+      "modelKey": "Toaster",
+      "edges": false,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 96,
+      "modelKey": "Pigeon_2",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 97,
+      "modelKey": "Cola",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 98,
+      "modelKey": "iceberg",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 99,
+      "modelKey": "Wheelbarrow",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 100,
+      "modelKey": "Medieval_church",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 101,
+      "modelKey": "Ladybug",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 102,
+      "modelKey": "Maple",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 103,
+      "modelKey": "Willys",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 104,
+      "modelKey": "Scorpion",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 105,
+      "modelKey": "mouse_2",
+      "edges": true,
+      "separation": false,
+      "cavity": false,
+      "overrideEdgeColor": false,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.65,
+        "g": 0.7,
+        "b": 0.85,
+        "a": 1
+      },
+      "softShadows": false,
+      "shadowStrength": 1,
+      "shadowBias": 0.05,
+      "shadowNormalBias": 0.4
+    },
+    {
+      "number": 106,
+      "modelKey": "Chick",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 107,
+      "modelKey": "Microphone_2",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 108,
+      "modelKey": "Lamp_3",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 109,
+      "modelKey": "Mower_Ride",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 110,
+      "modelKey": "Car4x4",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 111,
+      "modelKey": "Alien",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": true,
+      "sourceHandoff": false,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 112,
+      "modelKey": "Rabbit",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 113,
+      "modelKey": "Astronaut",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    },
+    {
+      "number": 114,
+      "modelKey": "Hourglass",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2
+    }
+  ]
+}

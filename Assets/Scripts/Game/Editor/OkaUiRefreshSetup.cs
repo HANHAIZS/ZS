@@ -24,7 +24,7 @@ namespace BeeHarvest.Editor {
    EditPrefab(MainMenuSetup.PrefabPath,root=>StyleHeader(root.GetComponent<MainMenuPage>().Economy));
    EditPrefab(BarPrefab,root=>StyleBoosterBar(root.GetComponent<HarvestBoosterBar>()));
    ApplySlotMaterial(AssetDatabase.LoadAssetAtPath<Material>(SlotMaterialPath));
-   foreach(var path in Enumerable.Range(1,LevelOneAssets.LastLevel).Select(n=>"Assets/Scenes/"+LevelOneAssets.SceneName(n)+".unity")){
+   foreach(var path in new[]{LevelOneAssets.GameScenePath}){
     var scene=EditorSceneManager.OpenScene(path);var level=UnityEngine.Object.FindObjectOfType<LevelOneController>();
     StyleBoosterBar(level.Hud.Boosters);
     var popup=UnityEngine.Object.FindObjectsOfType<SettingsPopupController>(true).Single(p=>p.gameObject.scene==scene);

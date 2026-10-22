@@ -9,29 +9,29 @@ namespace BeeHarvest.Tests {
  public sealed class HomeBeeLevelTests : EconomyTestFixture {
   static TMP_Text Label(MainMenuPage page){return page.StartGameButton.GetComponentInChildren<TMP_Text>(true);}
   [UnityTest] public IEnumerator LaunchButtonKeepsLevelOneAcrossTabsAndStartsItOnce(){
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level 1",Label(page).text);
    page.ShopButton.onClick.Invoke();yield return null;yield return null;Assert.IsFalse(page.StartGameButton.gameObject.activeInHierarchy);
    page.GalleryButton.onClick.Invoke();yield return null;yield return null;Assert.IsFalse(page.StartGameButton.gameObject.activeInHierarchy);
    page.HomeButton.onClick.Invoke();yield return null;yield return null;Assert.AreEqual("Level 1",Label(page).text);Assert.IsTrue(page.StartGameButton.interactable);
    page.StartGameButton.onClick.Invoke();page.StartGameButton.onClick.Invoke();float limit=Time.realtimeSinceStartup+4;
-   while(SceneManager.GetActiveScene().name!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
-   yield return null;yield return null;Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);Assert.AreEqual(1,Object.FindObjectOfType<LevelOneController>().LevelNumber);
+   while(LevelSceneTestLoader.CurrentKey!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
+   yield return null;yield return null;Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(1,Object.FindObjectOfType<LevelOneController>().LevelNumber);
   }
   [UnityTest] public IEnumerator AllLevelsReturnTheirOwnButtonLabelAndStartTheResetGame(){
    var scenes=new[]{"Level01","Level02","Level03","Level04","Level05"};var labels=new[]{"Level 1","Level 2","Level 3","Level 4","Level 5"};
    for(int i=0;i<scenes.Length;i++){
-    SceneManager.LoadScene(scenes[i]);yield return null;yield return null;
+    LevelSceneTestLoader.Load(scenes[i]);yield return null;yield return null;
     var model=BeeHarvestApp.Interface.GetModel<HarvestModel>();if(BeeHarvestApp.Interface.GetModel<EconomyModel>().Stamina<=1)BeeHarvestApp.Interface.SendCommand(new AddStaminaCommand());int generation=model.Generation,remaining=model.Remaining;
     var popup=Object.FindObjectOfType<SettingsPopupController>();popup.OpenButton.onClick.Invoke();popup.HomeButton.onClick.Invoke();popup.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();yield return null;
     var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual(labels[i],Label(page).text);
     Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(remaining,model.Remaining);Assert.IsTrue(model.Paused);
     page.StartGameButton.onClick.Invoke();yield return null;yield return null;
-    Assert.AreEqual(scenes[i],SceneManager.GetActiveScene().name);Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(remaining,model.Remaining);Assert.IsFalse(page.gameObject.activeInHierarchy);
+    Assert.AreEqual(scenes[i],LevelSceneTestLoader.CurrentKey);Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(remaining,model.Remaining);Assert.IsFalse(page.gameObject.activeInHierarchy);
    }
   }
   [UnityTest] public IEnumerator FinalVictoryHomeButtonShowsLevelOneAndLoadsLevelOne(){
-   SceneManager.LoadScene(LevelOneAssets.SceneName(LevelOneAssets.LastLevel));yield return null;yield return null;
+   LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(LevelOneAssets.LastLevel));yield return null;yield return null;
    var app=BeeHarvestApp.Interface;var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;
    BeeHarvestApp.Interface.SendCommand(new DetachBeeFlightPresentationCommand(Object.FindObjectOfType<BeeFlightView>().GetInstanceID()));
             app.SendCommand(new StartLevelCommand(new LevelData{cubes=new[]{new CubeData{id=0,color="red"}},hives=new[]{new HiveData{column=0,color="red",quota=1}}}));
@@ -41,8 +41,8 @@ namespace BeeHarvest.Tests {
    Assert.IsTrue(popup.ContinueButton.interactable);popup.ContinueButton.onClick.Invoke();yield return PopupMotionTestWait.Close();yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level 1",Label(page).text);
    page.StartGameButton.onClick.Invoke();limit=Time.realtimeSinceStartup+4;
-   while(SceneManager.GetActiveScene().name!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
-   yield return null;yield return null;Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);Assert.AreEqual(1,Object.FindObjectOfType<LevelOneController>().LevelNumber);
+   while(LevelSceneTestLoader.CurrentKey!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
+   yield return null;yield return null;Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(1,Object.FindObjectOfType<LevelOneController>().LevelNumber);
   }
  }
 }

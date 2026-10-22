@@ -9,7 +9,7 @@ namespace BeeHarvest.Tests {
  public sealed class VoxelDepthPresentationTests : EconomyTestFixture {
   [UnityTest] public IEnumerator RequestedScenesKeepCentersPaletteAndCargoWithSevenPercentGapsAndSoftLighting(){
    foreach(int n in new[]{1,2,3,4,5,6,106,7,8}){
-    SceneManager.LoadScene(LevelOneAssets.SceneName(n));yield return null;yield return null;
+    LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(n));yield return null;yield return null;
     var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var board=level.GetComponent<HarvestBoardView>();board.AutoRotate=false;board.ResetRotation();
     var root=GameObject.Find(LevelOneAssets.ModelKey(n)+"(Clone)");var rs=root.GetComponentsInChildren<Renderer>();var originals=Resources.Load<GameObject>("Prefabs/Gameplay/"+LevelOneAssets.ModelKey(n)).GetComponentsInChildren<Renderer>().ToDictionary(r=>r.name);
     var model=BeeHarvestApp.Interface.GetModel<HarvestModel>();bool target=n<=6||n==106;Assert.AreEqual(model.Cubes.Count,rs.Length);
@@ -26,7 +26,7 @@ namespace BeeHarvest.Tests {
    }
   }
   [UnityTest] public IEnumerator ActualGpuSoftShadowChangesReceiverGently(){
-   SceneManager.LoadScene("Level06");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;
+   LevelSceneTestLoader.Load("Level06");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;
    var light=GameObject.Find("KeyLight").GetComponent<Light>();var priorShadows=light.shadows;
    var root=new GameObject("SoftShadowFixture");root.transform.position=new Vector3(1000,1000,1000);
    var receiver=GameObject.CreatePrimitive(PrimitiveType.Plane);receiver.transform.SetParent(root.transform,false);receiver.transform.localScale=Vector3.one*.6f;receiver.layer=30;

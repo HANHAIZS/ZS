@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class ThreeColumnQueueLayoutTests:EconomyTestFixture {
-  static IEnumerator Load(int number){SceneManager.LoadScene(LevelOneAssets.SceneName(number));yield return null;yield return null;Canvas.ForceUpdateCanvases();}
+  static IEnumerator Load(int number){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(number));yield return null;yield return null;Canvas.ForceUpdateCanvases();}
   static void CheckLayout(LevelOneHud hud){
    var app=BeeHarvestApp.Interface;Assert.AreEqual(3,app.GetModel<HarvestModel>().ColumnCount);Assert.AreEqual(5,app.GetModel<HarvestModel>().Slots.Count);Assert.AreEqual(3,hud.VisibleRows);
    var edges=new Vector3[4];((RectTransform)hud.transform).GetWorldCorners(edges);float width=edges[3].x-edges[0].x;float[] centers={.20f,.50f,.80f};

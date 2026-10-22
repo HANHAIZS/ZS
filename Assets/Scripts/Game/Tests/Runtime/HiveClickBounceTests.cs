@@ -17,7 +17,7 @@ namespace BeeHarvest.Tests
         static Vector3 Position => Camera.main.WorldToScreenPoint(Hive.transform.position);
         static IEnumerator Load()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             Object.FindObjectOfType<LevelOneController>().enabled = false;

@@ -13,7 +13,7 @@ namespace BeeHarvest.Editor {
   public const string PrefabPath="Assets/Resources/Prefabs/UI/MainMenuPage.prefab";
   public const string SettingsPrefabPath="Assets/Sprites/Prefabs/UI/MainMenuSettingsPopup.prefab";
   public const string ArtRoot="Assets/Sprites/UI/MainMenu/";
-  const string LevelPath="Assets/Scenes/Level01.unity",MenuPath="Assets/Scenes/MainMenu.unity";
+  const string LevelPath=LevelOneAssets.GameScenePath,MenuPath="Assets/Scenes/MainMenu.unity";
   static Color cream=new Color(1,.965f,.898f),gold=new Color(1,.71f,.10f);
   public static void Apply(){
    if(Application.isPlaying)throw new InvalidOperationException("Stop Play Mode before menu setup.");

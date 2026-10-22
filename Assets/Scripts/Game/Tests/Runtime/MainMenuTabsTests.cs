@@ -21,7 +21,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator TabsChangePresentationAndHomeResumesTheLiveLevel(){
-   SceneManager.LoadScene("Level01"); yield return null; yield return null;
+   LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
    var app=BeeHarvestApp.Interface; var harvest=app.GetModel<HarvestModel>();
    app.SendCommand(new ReturnHomeCommand(false)); yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>(); var homeSprite=Background(page).sprite;
@@ -41,7 +41,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator SettingsHasNoPagingAndSwipesDoNotChangePreferences(){
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();page.GalleryButton.onClick.Invoke();yield return null;yield return null;
    Assert.AreEqual(0,page.GetComponentsInChildren<Button>(true).Count(b=>b.name.StartsWith("GalleryPrevious")||b.name.StartsWith("GalleryNext")));
    int revision=BeeHarvestApp.Interface.GetModel<SettingsModel>().Revision;
@@ -51,7 +51,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator SettingsBackgroundAndOldPointersBlockTabInput(){
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();Assert.IsTrue(page.ShopButton.interactable);
    var events=EventSystem.current;var module=events.GetComponent<StandaloneInputModule>();
    var input=module.gameObject.AddComponent<SettingsTouchInput>();module.enabled=false;events.enabled=false;module.inputOverride=input;
@@ -72,7 +72,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator ReturningHomeWaitsForTheOtherHeldFinger(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var navigation=Object.FindObjectOfType<MainMenuNavigationController>();var page=navigation.Page;
    var popup=Object.FindObjectOfType<SettingsPopupController>();
    var events=EventSystem.current;var module=events.GetComponent<StandaloneInputModule>();
@@ -90,7 +90,7 @@ namespace BeeHarvest.Tests {
 
   [UnityTest] public IEnumerator SceneReloadKeepsOneSettingsPageAndPopupStillOpens(){
    for(int reload=0;reload<2;reload++){
-    SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+    LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
     var page=Object.FindObjectOfType<MainMenuPage>();Assert.IsTrue(page.GalleryButton.interactable);
     page.GalleryButton.onClick.Invoke();yield return null;yield return null;
     Assert.AreEqual(1,page.GetComponentsInChildren<SettingsPageView>(true).Length);

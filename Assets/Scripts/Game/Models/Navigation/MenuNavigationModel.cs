@@ -2,6 +2,7 @@ using QFramework;
 namespace BeeHarvest {
  public enum MainMenuTab { Home, Shop, Gallery }
  public sealed class MenuNavigationModel : AbstractModel {
+  public bool Initialized {get;internal set;}
   public int CurrentLevel {get;internal set;}=1;
   public bool IsHome {get;internal set;}
   public bool ResumePaused {get;internal set;}

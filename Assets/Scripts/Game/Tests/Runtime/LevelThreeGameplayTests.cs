@@ -10,7 +10,7 @@ using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class LevelThreeGameplayTests : EconomyTestFixture {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
-  static IEnumerator Load(){Assert.IsTrue(Application.CanStreamedLevelBeLoaded("Level03"),"Banana must be included in the playable scene list");SceneManager.LoadScene("Level03");yield return null;yield return null;}
+  static IEnumerator Load(){Assert.IsTrue(LevelSceneTestLoader.CanLoad("Level03"),"Banana must be included in the playable scene list");LevelSceneTestLoader.Load("Level03");yield return null;yield return null;}
   static void AssertBananaCurveVisible(){
    var parts=GameObject.Find("Banana(Clone)").GetComponentsInChildren<Renderer>();var bounds=parts[0].bounds;foreach(var r in parts)bounds.Encapsulate(r.bounds);
    float left=float.PositiveInfinity,right=float.NegativeInfinity,bottom=float.PositiveInfinity,top=float.NegativeInfinity;
@@ -36,17 +36,17 @@ namespace BeeHarvest.Tests {
    Assert.IsTrue(level.TryRetryLevel());yield return null;yield return null;Assert.AreEqual(812,Model.Remaining);Assert.AreEqual(count,Model.BoosterCount(1));Assert.IsFalse(Model.SpeedBoost);
    yield return HiveInputFixture.Click(level.Hud,0);var settings=Object.FindObjectOfType<SettingsPopupController>();settings.OpenButton.onClick.Invoke();settings.HomeButton.onClick.Invoke();settings.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();yield return null;
    int generation=Model.Generation,remaining=Model.Remaining;var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level 3",page.StartGameButton.GetComponentInChildren<TMP_Text>().text);
-   page.StartGameButton.onClick.Invoke();yield return null;yield return null;Assert.AreEqual("Level03",SceneManager.GetActiveScene().name);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual(remaining,Model.Remaining);Assert.AreEqual(count,Model.BoosterCount(1));
+   page.StartGameButton.onClick.Invoke();yield return null;yield return null;Assert.AreEqual("Level03",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual(remaining,Model.Remaining);Assert.AreEqual(count,Model.BoosterCount(1));
   }
   [UnityTest] public IEnumerator SecondLevelVictoryActuallyLoadsBananaAndConsumesContinueOnce(){
-   SceneManager.LoadScene("Level02");yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var app=BeeHarvestApp.Interface;
+   LevelSceneTestLoader.Load("Level02");yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var app=BeeHarvestApp.Interface;
    app.SendCommand(new DetachBeeFlightPresentationCommand(Object.FindObjectOfType<BeeFlightView>().GetInstanceID()));
    app.SendCommand(new StartLevelCommand(new LevelData{cubes=new[]{new CubeData{id=0,color="red"}},hives=new[]{new HiveData{column=0,color="red",quota=1}}}));
    app.SendCommand(new ActivateHiveCommand(0));app.SendCommand(new AdvanceHarvestCommand(10));Assert.IsTrue(Model.Won);yield return null;
    var popup=Object.FindObjectOfType<VictoryPopupController>();float deadline=Time.realtimeSinceStartup+3;while(!popup.ContinueButton.interactable&&Time.realtimeSinceStartup<deadline)yield return null;
    Assert.IsTrue(popup.ContinueButton.interactable,HiveInputFixture.ObservedInputState());popup.ContinueButton.onClick.Invoke();popup.ContinueButton.onClick.Invoke();deadline=Time.realtimeSinceStartup+5;
-   while(SceneManager.GetActiveScene().name!="Level03"&&Time.realtimeSinceStartup<deadline)yield return null;yield return null;yield return null;
-   Assert.AreEqual("Level03",SceneManager.GetActiveScene().name);Assert.AreEqual(3,Object.FindObjectOfType<LevelOneController>().LevelNumber);Assert.AreEqual(812,Model.Remaining);Assert.IsFalse(Model.Won);
+   while(LevelSceneTestLoader.CurrentKey!="Level03"&&Time.realtimeSinceStartup<deadline)yield return null;yield return null;yield return null;
+   Assert.AreEqual("Level03",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(3,Object.FindObjectOfType<LevelOneController>().LevelNumber);Assert.AreEqual(812,Model.Remaining);Assert.IsFalse(Model.Won);
   }
  }
 }

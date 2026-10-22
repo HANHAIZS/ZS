@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests {
   SettingsPreferences previousPreferences;SettingsModel previousSettings;string prefix;
   [SetUp] public void IsolateSettings(){var app=BeeHarvestApp.Interface;previousPreferences=app.GetUtility<SettingsPreferences>();previousSettings=app.GetModel<SettingsModel>();prefix="BeeHarvest.tests.victory."+Guid.NewGuid().ToString("N");app.RegisterUtility(new SettingsPreferences(prefix));app.RegisterModel(new SettingsModel());}
   [TearDown] public void RestoreSettings(){var app=BeeHarvestApp.Interface;app.RegisterUtility(previousPreferences);app.RegisterModel(previousSettings);foreach(var name in new[]{"Music","Sound","Haptic"})PlayerPrefs.DeleteKey(prefix+"."+name);}
-  static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;}
+  static IEnumerator Load(){LevelSceneTestLoader.Load("Level01");yield return null;yield return null;}
   static void StartTiny(){var app=BeeHarvestApp.Interface;Object.FindObjectOfType<LevelOneController>().enabled=false;app.SendCommand(new DetachBeeFlightPresentationCommand(Object.FindObjectOfType<BeeFlightView>().GetInstanceID()));app.SendCommand(new StartLevelCommand(new LevelData{cubes=new[]{new CubeData{id=0,color="red"}},hives=new[]{new HiveData{column=0,color="red",quota=1}}}));app.SendCommand(new ActivateHiveCommand(0));}
   static void Win(){BeeHarvestApp.Interface.SendCommand(new AdvanceHarvestCommand(10));}
   static MonoBehaviour Celebration(){var type=typeof(LevelOneController).Assembly.GetType("BeeHarvest.VictoryCelebrationView");Assert.IsNotNull(type,"Victory needs the imported native particle celebration");return (MonoBehaviour)Object.FindObjectOfType(type,true);}

@@ -15,7 +15,7 @@ namespace BeeHarvest.Tests {
   Component Host(){Assert.IsNotNull(audioType,"The supplied music and sound clips need their scene-owned audio presentation");var hosts=Object.FindObjectsOfType(audioType);Assert.AreEqual(1,hosts.Length);return (Component)hosts[0];}
   AudioSource Music()=>Host().GetComponents<AudioSource>().Single(s=>s.loop);
   AudioSource[] Effects()=>Host().GetComponents<AudioSource>().Where(s=>!s.loop).ToArray();
-  static IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;}
+  static IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;}
   static IEnumerator Playing(AudioSource source){float deadline=Time.realtimeSinceStartup+3;while(!source.isPlaying&&Time.realtimeSinceStartup<deadline)yield return null;Assert.IsTrue(source.isPlaying,"The selected background track must actually play");}
   [UnityTest] public IEnumerator HomeMusicLoopsAcrossTabsAndSwitchesToLevelMusic(){
    yield return Load("MainMenu");var music=Music();yield return Playing(music);Assert.AreEqual(Resources.Load<AudioClip>("Audio/Music/HomeMusic"),music.clip);Assert.That(music.clip.length,Is.InRange(21f,23f));Assert.AreEqual(0,music.spatialBlend);

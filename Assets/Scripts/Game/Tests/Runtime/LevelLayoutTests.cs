@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class LevelLayoutTests : EconomyTestFixture {
-  static IEnumerator Load(int level){SceneManager.LoadScene("Level0"+level);yield return null;yield return null;Canvas.ForceUpdateCanvases();}
+  static IEnumerator Load(int level){LevelSceneTestLoader.Load("Level0"+level);yield return null;yield return null;Canvas.ForceUpdateCanvases();}
   static Bounds Geometry(Renderer[] renderers){var bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);return bounds;}
   static Vector2 Extent(Bounds bounds){float lo=float.MaxValue,hi=float.MinValue;for(int i=0;i<8;i++){var p=Camera.main.WorldToScreenPoint(bounds.center+Vector3.Scale(bounds.extents,new Vector3((i&1)==0?-1:1,(i&2)==0?-1:1,(i&4)==0?-1:1)));lo=Mathf.Min(lo,p.y);hi=Mathf.Max(hi,p.y);}return new Vector2(lo,hi);}
   static Vector2 Extent(RectTransform rect){var corners=new Vector3[4];rect.GetWorldCorners(corners);return new Vector2(corners[0].y,corners[1].y);}

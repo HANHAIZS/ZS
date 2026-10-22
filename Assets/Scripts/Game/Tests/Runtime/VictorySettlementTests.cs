@@ -24,9 +24,9 @@ namespace BeeHarvest.Tests
         static IEnumerator WaitForSecondLevel()
         {
             float limit=Time.realtimeSinceStartup+5;
-            while(SceneManager.GetActiveScene().name!="Level02"&&Time.realtimeSinceStartup<limit)yield return null;
+            while(LevelSceneTestLoader.CurrentKey!="Level02"&&Time.realtimeSinceStartup<limit)yield return null;
             yield return null;yield return null;
-            Assert.AreEqual("Level02",SceneManager.GetActiveScene().name);
+            Assert.AreEqual("Level02",LevelSceneTestLoader.CurrentKey);
         }
 
         // Actual Commands drive the model; no direct Won assignment or fake popup.
@@ -65,7 +65,7 @@ namespace BeeHarvest.Tests
         public IEnumerator EntryAndBackgroundTouchesMustEndBeforeContinueAcceptsAFreshPress()
         {
             foreach (bool background in new[] { false, true }) {
-                SceneManager.LoadScene("Level01"); yield return null; yield return null;
+                LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
                 var level = Object.FindObjectOfType<LevelOneController>();
                 StartOneCube(level); DeliverLastCube(); yield return null; yield return null;
                 Assert.IsNotNull(Artwork(), "Winning supplies a real Continue button");
@@ -107,7 +107,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator VictoryReplacesSettingsOpenedInTheFinalDeliveryFrame()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level); DeliverLastCube();
             var settings = Object.FindObjectOfType<SettingsPopupController>();
@@ -127,7 +127,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator SettlementWaitsForFinalDeliveryThenAnimatesAndBlocksLevel()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level); yield return null;
             Assert.IsTrue(Artwork() == null || !Artwork().gameObject.activeInHierarchy, "No victory while the final bee is still carrying");
@@ -160,7 +160,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ContinueEntersSecondLevelOncePreservesInventoryAndCanShowTheNextWin()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level);
             BeeHarvestApp.Interface.SendCommand(new RefillHarvestBoosterCommand(1));
@@ -173,9 +173,9 @@ namespace BeeHarvest.Tests
             var button = ContinueButton();
             button.onClick.Invoke(); button.onClick.Invoke();
             float limit = Time.realtimeSinceStartup + 4;
-            while (SceneManager.GetActiveScene().name != "Level02" && Time.realtimeSinceStartup < limit) yield return null;
+            while (LevelSceneTestLoader.CurrentKey != "Level02" && Time.realtimeSinceStartup < limit) yield return null;
             yield return null; yield return null;
-            Assert.AreEqual("Level02", SceneManager.GetActiveScene().name);
+            Assert.AreEqual("Level02", LevelSceneTestLoader.CurrentKey);
             level = Object.FindObjectOfType<LevelOneController>();
             Assert.AreEqual(generation + 1, Model.Generation, "Double taps cannot advance twice");
             Assert.AreEqual(2190, Model.Remaining); Assert.AreEqual(0, Model.Deposited);
@@ -191,7 +191,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ContinueKeepsOldSettlementClosedDuringAsyncLoad()
         {
-            SceneManager.LoadScene("Level01");yield return null;yield return null;
+            LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
             var level=Object.FindObjectOfType<LevelOneController>();StartOneCube(level);DeliverLastCube();yield return null;
             var popup=Object.FindObjectOfType<VictoryPopupController>();float limit=Time.realtimeSinceStartup+3;
             while(!popup.ContinueButton.interactable&&Time.realtimeSinceStartup<limit)yield return null;
@@ -207,7 +207,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator BackgroundPausesEntryAndRefusesContinue()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level); DeliverLastCube(); yield return null;
             Assert.IsNotNull(Artwork(), "Winning creates the animated modal");
@@ -225,14 +225,14 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator RetryAndSceneReloadRemoveOldSettlement()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level); DeliverLastCube(); yield return null;
             Assert.IsNotNull(Artwork(), "Winning creates the modal");
             level.RestartLevel(); yield return null;
             Assert.IsFalse(Artwork().gameObject.activeInHierarchy);
             StartOneCube(level); DeliverLastCube(); yield return null;
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             Assert.IsFalse(Artwork().gameObject.activeInHierarchy);
             Assert.AreEqual(1, Object.FindObjectOfType<VictoryPopupController>(true).GetComponentsInChildren<Button>(true).Count(b => b.name == "ContinueButton"));
             Assert.IsTrue(Object.FindObjectOfType<LevelOneController>().Hud.QueueButtons[0].interactable);
@@ -241,12 +241,12 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator HeldTouchAfterContinueCannotActivateAHive()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
             var level=Object.FindObjectOfType<LevelOneController>();
             StartOneCube(level);DeliverLastCube();yield return null;yield return new WaitForSecondsRealtime(.65f);
             SettingsTouchInput input=null;StandaloneInputModule module=null;
             UnityEngine.Events.UnityAction<Scene,LoadSceneMode> inject=(scene,mode)=>{
-                if(scene.name!="Level02")return;
+                if(scene.name!=LevelOneAssets.GameSceneName)return;
                 module=Object.FindObjectOfType<StandaloneInputModule>();
                 input=module.gameObject.AddComponent<SettingsTouchInput>();input.Count=1;
                 input.Value=new Touch{fingerId=51,phase=TouchPhase.Stationary,position=new Vector2(10,10)};
@@ -267,17 +267,17 @@ namespace BeeHarvest.Tests
         }
         [UnityTest] public IEnumerator PendingContinueIsCancelledByDisableBackgroundAndNewGeneration()
         {
-            SceneManager.LoadScene("Level01");yield return null;yield return null;
+            LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
             var level=Object.FindObjectOfType<LevelOneController>();StartOneCube(level);DeliverLastCube();yield return null;
             var popup=Object.FindObjectOfType<VictoryPopupController>();yield return PopupMotionTestWait.Open(PopupMotionTestWait.Motion(popup));yield return null;
             int generation=Model.Generation;popup.ContinueButton.onClick.Invoke();Assert.IsTrue(PopupMotionTestWait.Motion(popup).IsClosing);popup.enabled=false;
-            yield return new WaitForSecondsRealtime(.2f);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);
+            yield return new WaitForSecondsRealtime(.2f);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);
             popup.enabled=true;yield return null;yield return PopupMotionTestWait.Open(PopupMotionTestWait.Motion(popup));yield return null;
             popup.ContinueButton.onClick.Invoke();level.SendMessage("OnApplicationPause",true);popup.SendMessage("OnApplicationPause",true);
             yield return new WaitForSecondsRealtime(.2f);Assert.AreEqual(generation,Model.Generation);Assert.IsTrue(popup.IsOpen);
             level.SendMessage("OnApplicationPause",false);popup.SendMessage("OnApplicationPause",false);yield return PopupMotionTestWait.Open(PopupMotionTestWait.Motion(popup));yield return null;
             Assert.IsTrue(popup.ContinueButton.interactable);popup.ContinueButton.onClick.Invoke();level.RestartLevel();yield return new WaitForSecondsRealtime(.2f);
-            Assert.AreEqual(generation+1,Model.Generation);Assert.IsFalse(popup.IsOpen);Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);
+            Assert.AreEqual(generation+1,Model.Generation);Assert.IsFalse(popup.IsOpen);Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);
         }
     }
 }

@@ -14,14 +14,14 @@ namespace BeeHarvest.Tests
         static LevelOneController Level => Object.FindObjectOfType<LevelOneController>();
         static IEnumerator Load()
         {
-            SceneManager.LoadScene("Level01"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level01"); yield return null; yield return null;
         }
         // Detect a disabled default or missing shared update in any authored production scene.
         [UnityTest]
         public IEnumerator AllFifteenModelsRotateByDefaultWithoutAnOptIn()
         {
             for(int number=1;number<=15;number++){
-                SceneManager.LoadScene("Level"+number.ToString("00"));yield return null;yield return null;
+                LevelSceneTestLoader.Load("Level"+number.ToString("00"));yield return null;yield return null;
                 var shape=GameObject.Find(LevelOneAssets.ModelKey(number)+"(Clone)").transform;
                 float before=shape.eulerAngles.y;
                 yield return new WaitForSeconds(.2f);

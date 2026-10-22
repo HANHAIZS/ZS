@@ -12,7 +12,7 @@ namespace BeeHarvest.Tests {
   static Transform Actor(int id)=>GameObject.Find("BlenderBeeCarrier_"+id)?.transform;
   static Transform Body(Transform actor)=>actor.Cast<Transform>().First(t=>t.name!="CarriedVoxel");
   static void Draw(){Object.FindObjectOfType<HiveModelView>().Sync();Board.Sync();Object.FindObjectOfType<BeeFlightView>().RenderFlights();}
-  static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
+  static IEnumerator Load(){LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
   [UnityTest] public IEnumerator ModelIsSmallerAndEmptyDepartureBeeIsLargerThanPickupBee(){
    yield return Load();Assert.AreEqual(.86f*1.04f,GameObject.Find("Flower(Clone)").transform.localScale.x,.001f,"Keep the requested modest model enlargement");
    BeeHarvestApp.Interface.SendCommand(new ActivateHiveCommand(0));Draw();float near=Body(Actor(0)).lossyScale.x;

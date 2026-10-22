@@ -13,7 +13,7 @@ namespace BeeHarvest.Tests {
   static HiveModelView View=>Level.GetComponent<HiveModelView>();
   static HiveHopController Hop=>Level.GetComponent<HiveHopController>();
   static Text Marker(int id)=>GameObject.Find("MysteryHive_"+id).GetComponent<Text>();
-  static IEnumerator Load(int n){SceneManager.LoadScene(LevelOneAssets.SceneName(n));yield return null;yield return null;Level.enabled=false;}
+  static IEnumerator Load(int n){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(n));yield return null;yield return null;Level.enabled=false;}
   static void Sync(){Level.Hud.Sync();View.Sync();}
   static void Centered(int id){var root=GameObject.Find("SmallHive_"+id);var renderers=root.GetComponentsInChildren<Renderer>();var bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);Assert.Less(Vector2.Distance(Camera.main.WorldToScreenPoint(bounds.center),Marker(id).rectTransform.position),1,"Question must remain at the visual center");}
   [TearDown] public void Cancel(){if(Level!=null)Hop.Cancel();}

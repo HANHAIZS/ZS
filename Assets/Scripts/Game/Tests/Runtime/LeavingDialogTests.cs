@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 using UnityEngine.UI;
 namespace BeeHarvest.Tests {
  public sealed class LeavingDialogTests : EconomyTestFixture {
-  static IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;}
+  static IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;}
   static T Field<T>(SettingsPopupController popup,string name) where T:class {var f=typeof(SettingsPopupController).GetField(name);Assert.IsNotNull(f,"Leaving view binding: "+name);var value=f.GetValue(popup) as T;Assert.IsNotNull(value);return value;}
   static bool Leaving(SettingsPopupController popup){var p=typeof(SettingsPopupController).GetProperty("IsLeaving");Assert.IsNotNull(p);return (bool)p.GetValue(popup);}
   [UnityTest] public IEnumerator QuitShowsConfirmationAndCancelPreservesProgressAndPauseOwnership(){
@@ -31,7 +31,7 @@ namespace BeeHarvest.Tests {
     yield return HiveInputFixture.Click(popup.Level.Hud,0);int generation=model.Generation,stamina=economy.Stamina;
     popup.OpenButton.onClick.Invoke();popup.HomeButton.onClick.Invoke();var leave=Field<Button>(popup,"LeaveButton");leave.onClick.Invoke();leave.onClick.Invoke();yield return PopupMotionTestWait.Close();
     Assert.IsFalse(popup.IsOpen);Assert.IsFalse(Leaving(popup));Assert.IsFalse(Field<GameObject>(popup,"LeavingContent").activeSelf);Assert.IsNull(app.GetUtility<UiPopupRouter>().ActiveView);Assert.IsTrue(app.GetModel<MenuNavigationModel>().IsHome);Assert.AreEqual(stamina-1,economy.Stamina);Assert.AreEqual(number,app.GetModel<MenuNavigationModel>().CurrentLevel);Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(totals[number-1],model.Remaining);Assert.AreEqual(0,model.Deposited);Assert.AreEqual(0,model.Flights.Count);Assert.IsTrue(model.Hives.All(h=>!h.Started));Assert.IsTrue(model.Slots.All(s=>s<0));
-    var page=Object.FindObjectOfType<MainMenuPage>();page.StartGameButton.onClick.Invoke();yield return null;yield return null;Assert.IsFalse(model.Paused);Assert.IsFalse(app.GetModel<MenuNavigationModel>().IsHome);Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(totals[number-1],model.Remaining);Assert.AreEqual("Level"+number.ToString("00"),SceneManager.GetActiveScene().name);yield return HiveInputFixture.Click(popup.Level.Hud,0);Assert.IsTrue(model.Hives[0].Started,"Fresh level must accept new input");
+    var page=Object.FindObjectOfType<MainMenuPage>();page.StartGameButton.onClick.Invoke();yield return null;yield return null;Assert.IsFalse(model.Paused);Assert.IsFalse(app.GetModel<MenuNavigationModel>().IsHome);Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(totals[number-1],model.Remaining);Assert.AreEqual("Level"+number.ToString("00"),LevelSceneTestLoader.CurrentKey);yield return HiveInputFixture.Click(popup.Level.Hud,0);Assert.IsTrue(model.Hives[0].Started,"Fresh level must accept new input");
    }
   }
   [UnityTest] public IEnumerator RealTouchesCancelAndConfirmWhileOldBackgroundTouchCannotSpend(){

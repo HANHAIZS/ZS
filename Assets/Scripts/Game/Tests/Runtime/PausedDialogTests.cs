@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class PausedDialogTests : EconomyTestFixture {
-  static IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;}
+  static IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;}
   [UnityTest] public IEnumerator RestartResetsTheCurrentLevelAndChargesOnlyOnce(){
    foreach(var scene in new[]{"Level01","Level02","Level03","Level04","Level05"}) {
     yield return Load(scene);var app=BeeHarvestApp.Interface;var model=app.GetModel<HarvestModel>();var level=Object.FindObjectOfType<LevelOneController>();var popup=Object.FindObjectOfType<SettingsPopupController>();
@@ -19,7 +19,7 @@ namespace BeeHarvest.Tests {
     popup.OpenButton.onClick.Invoke();yield return null;Assert.IsTrue(model.Paused);
     popup.RetryButton.onClick.Invoke();popup.RetryButton.onClick.Invoke();yield return PopupMotionTestWait.Close();
     Assert.AreEqual(generation+1,model.Generation);Assert.AreEqual(new[]{1784,2190,812,1105,2840}[level.LevelNumber-1],model.Remaining);Assert.IsTrue(model.Slots.All(s=>s<0));Assert.AreEqual(0,model.Flights.Count);
-    Assert.AreEqual(energy-1,app.GetModel<EconomyModel>().Stamina);Assert.IsFalse(popup.IsOpen);Assert.IsFalse(model.Paused);Assert.AreEqual(scene,SceneManager.GetActiveScene().name);
+    Assert.AreEqual(energy-1,app.GetModel<EconomyModel>().Stamina);Assert.IsFalse(popup.IsOpen);Assert.IsFalse(model.Paused);Assert.AreEqual(scene,LevelSceneTestLoader.CurrentKey);
     Assert.AreEqual(popup,Object.FindObjectOfType<VictoryPopupController>().SettingsPopup);
    }
   }

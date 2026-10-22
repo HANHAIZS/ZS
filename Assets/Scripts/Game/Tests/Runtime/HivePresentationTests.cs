@@ -15,7 +15,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ImmediateSlotReuseKeepsBothExitOrigins()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var app = BeeHarvestApp.Interface;
@@ -58,7 +58,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator BlenderHiveClickDepartureAndRestart()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var controller = Object.FindObjectOfType<LevelOneController>();

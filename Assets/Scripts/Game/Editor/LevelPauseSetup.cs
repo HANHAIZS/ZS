@@ -21,7 +21,7 @@ namespace BeeHarvest.Editor {
    finally{PrefabUtility.UnloadPrefabContents(root);}
    var original=EditorSceneManager.GetSceneManagerSetup();
    try {
-    foreach(string path in Enumerable.Range(1,LevelOneAssets.LastLevel).Select(n=>"Assets/Scenes/"+LevelOneAssets.SceneName(n)+".unity")) {
+    foreach(string path in new[]{LevelOneAssets.GameScenePath}) {
      var scene=EditorSceneManager.OpenScene(path,OpenSceneMode.Single);
      var level=UnityEngine.Object.FindObjectOfType<LevelOneController>();
      var popup=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<SettingsPopupController>(true)).Single(p=>p.Level==level);

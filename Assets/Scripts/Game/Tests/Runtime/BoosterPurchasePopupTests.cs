@@ -17,7 +17,7 @@ namespace BeeHarvest.Tests {
   static int[] Stock=>(int[])typeof(HarvestModel).GetField("boosterCounts",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(Model);
   [SetUp] public void SaveInventory(){previousStock=(int[])Stock.Clone();}
   [TearDown] public void RestoreInventory(){previousStock.CopyTo(Stock,0);}
-  static IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;System.Array.Clear(Stock,0,4);Bar.SetInputEnabled(true);yield return null;}
+  static IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;System.Array.Clear(Stock,0,4);Bar.SetInputEnabled(true);yield return null;}
   static void Coins(int value){typeof(EconomyModel).GetProperty("Coins").SetValue(BeeHarvestApp.Interface.GetModel<EconomyModel>(),value);}
   [UnityTest] public IEnumerator PlusOpensThePurchaseDialogWithoutGrantingStockOrSpending(){
    yield return Load("Level01");var app=BeeHarvestApp.Interface;var popup=Bar.PurchasePopup;int generation=Model.Generation;

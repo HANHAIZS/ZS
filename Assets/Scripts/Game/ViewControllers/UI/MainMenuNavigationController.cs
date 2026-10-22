@@ -22,7 +22,8 @@ namespace BeeHarvest {
    if(LevelCamera!=null)levelMask=LevelCamera.cullingMask;
    inputModule=EventSystem.current.GetComponent<BaseInputModule>();
    subscription=this.RegisterEvent<MenuNavigationChangedEvent>(e=>Render());ready=true;
-   this.SendCommand(new InitializeMenuNavigationCommand(Level==null,Level!=null?Level.LevelNumber:1));
+   if(!navigation.Initialized)this.SendCommand(new InitializeMenuNavigationCommand(Level==null,Level!=null?Level.LevelNumber:1));
+   else Render();
    var audio=GetComponent<GameAudioController>();if(audio==null)audio=gameObject.AddComponent<GameAudioController>();audio.Initialize(Level);
   }
   public void ReturnHome(bool resumePaused){
@@ -51,7 +52,7 @@ namespace BeeHarvest {
   IEnumerator LoadLevel(int number){
    // Defers load beyond the Command/Event callback, preventing scene teardown during dispatch.
    yield return null;
-   var operation=SceneManager.LoadSceneAsync(LevelOneAssets.SceneName(number));
+   var operation=SceneManager.LoadSceneAsync(LevelOneAssets.GameSceneName);
    if(operation!=null)yield return operation;
   }
   void OnApplicationPause(bool value){applicationPaused=value;}

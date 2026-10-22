@@ -24,7 +24,7 @@ namespace BeeHarvest.Editor {
    if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop Play Mode before rebuilding a source level");
    LevelOneAssets.ModelKey(number);Folder(Art);
    var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(Art+"/Voxel.asset");if(!mesh)throw new InvalidOperationException("Shared voxel mesh is missing");
-   var text=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Levels/"+LevelOneAssets.SceneName(number)+".json");if(!text)throw new InvalidOperationException("Source level data is missing");
+   var text=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Levels/"+LevelOneAssets.LevelKey(number)+".json");if(!text)throw new InvalidOperationException("Source level data is missing");
    var data=JsonUtility.FromJson<LevelData>(text.text);var original=AssetDatabase.LoadAssetAtPath<GameObject>(Prefabs+"Flower.prefab");var prototype=original.GetComponentInChildren<MeshRenderer>().sharedMaterial;
    foreach(int id in data.cubes.Select(c=>c.sourceColor).Distinct()){
     string key="Palette"+id.ToString("00");var color=CubeLandPalette.ColorOf(id);

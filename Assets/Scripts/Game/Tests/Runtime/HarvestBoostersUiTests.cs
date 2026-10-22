@@ -13,7 +13,7 @@ namespace BeeHarvest.Tests {
   static void Restock(){var m=BeeHarvestApp.Interface.GetModel<HarvestModel>();var stock=(int[])typeof(HarvestModel).GetField("boosterCounts",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(m);for(int i=0;i<4;i++)stock[i]=1;Object.FindObjectOfType<HarvestBoosterBar>().SetInputEnabled(true);}
   static Button Button(string name){var go=GameObject.Find(name);Assert.IsNotNull(go,"Missing booster UI: "+name);return go.GetComponent<Button>();}
   [UnityTest] public IEnumerator ToolbarAllowsRearHopAndSixthSlotAboveFirst(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;Restock();
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Restock();
    var app=BeeHarvestApp.Interface;var m=app.GetModel<HarvestModel>();var hud=Object.FindObjectOfType<LevelOneHud>();
    Button("Booster_FreeSelect").onClick.Invoke();yield return null;
    var rear=hud.NextLabels[1].GetComponent<Button>();Assert.IsNotNull(rear);Assert.IsTrue(rear.interactable);
@@ -29,7 +29,7 @@ namespace BeeHarvest.Tests {
    int rev=m.Revision;Button("Booster_Shuffle").onClick.Invoke();Assert.AreEqual(rev,m.Revision);
   }
   [UnityTest] public IEnumerator SettingsBlocksHelpersLeaveAndRetryResetTheirEffects(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;Restock();
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Restock();
    var app=BeeHarvestApp.Interface;var m=app.GetModel<HarvestModel>();
    Button("Booster_AddSlot").onClick.Invoke();Button("Booster_Speed").onClick.Invoke();Button("Booster_FreeSelect").onClick.Invoke();
    var settings=Object.FindObjectOfType<SettingsPopupController>();settings.OpenButton.onClick.Invoke();yield return null;
@@ -45,7 +45,7 @@ namespace BeeHarvest.Tests {
    Assert.IsFalse(GameObject.Find("LevelOne").transform.Find("HiveSlotTile_5").gameObject.activeSelf);
   }
   [UnityTest] public IEnumerator AnySelectionCanPageToAFourthWaitingHive(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;Restock();
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Restock();
    var app=BeeHarvestApp.Interface;var data=app.GetUtility<LevelOneAssets>().Level();
    var hives=data.hives.Select(h=>new HiveData{column=h.column,color=h.color,quota=h.quota}).ToList();
    int quota=hives[0].quota;hives[0].quota=20;hives.Add(new HiveData{column=0,color=hives[0].color,quota=quota-20});int appendedHive=hives.Count-1;
@@ -68,7 +68,7 @@ namespace BeeHarvest.Tests {
   }
   [UnityTest] public IEnumerator PressesDuringHopCannotFireAfterLanding(){
    foreach(string name in new[]{"Booster_Speed","Next_0","WaitingNextPage"}){
-    SceneManager.LoadScene("Level01");yield return null;yield return null;Restock();
+    LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Restock();
     var app=BeeHarvestApp.Interface;var original=app.GetUtility<LevelOneAssets>().Level();
     var data=original.hives.Select(h=>new HiveData{column=h.column,color=h.color,quota=h.quota}).ToList();
     int quota=data[0].quota;data[0].quota=20;data.Add(new HiveData{column=0,color=data[0].color,quota=quota-20});
@@ -97,7 +97,7 @@ namespace BeeHarvest.Tests {
   }
   static Bounds Geometry(Transform root){var rs=root.GetComponentsInChildren<Renderer>().Where(r=>r.enabled).ToArray();var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);return b;}
   [UnityTest] public IEnumerator SixAcceleratedHivesKeepContinuousCargoAndCollisionClearance(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;Restock();
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Restock();
    var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;HiveInputFixture.UseFiveColumnGeometryFixture();
    var app=BeeHarvestApp.Interface;var m=app.GetModel<HarvestModel>();
    Button("Booster_AddSlot").onClick.Invoke();Button("Booster_Speed").onClick.Invoke();

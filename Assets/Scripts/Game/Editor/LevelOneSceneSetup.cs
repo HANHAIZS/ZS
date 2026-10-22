@@ -13,6 +13,7 @@ namespace BeeHarvest.Editor {
   static readonly Dictionary<string,Material> materials=new Dictionary<string,Material>();
   /// <summary>Builds only level-one production assets with Unity Editor APIs.</summary>
   public static void Build(){
+   if(AssetDatabase.LoadAssetAtPath<SceneAsset>(LevelOneAssets.GameScenePath))throw new InvalidOperationException("Game already exists; use source-model or shared-scene preview tools instead of rebuilding the original scaffold");
    Ensure("Assets/Resources/Prefabs/Gameplay");Ensure("Assets/Sprites/Gameplay/Materials");Ensure("Assets/Scenes");
    foreach(var name in new[]{"Flower","Bee","HivePink","HiveYellow","HiveGreen","Collector"}){
     var path="Assets/Sprites/Gameplay/"+name+".fbx";var importer=(ModelImporter)AssetImporter.GetAtPath(path);importer.isReadable=false;importer.importAnimation=false;importer.globalScale=1;importer.SaveAndReimport();
@@ -49,7 +50,7 @@ namespace BeeHarvest.Editor {
    LevelOneSmallHiveSetup.Apply();
    if(System.IO.File.Exists(LevelOneHiveClickSetup.TexturePath))LevelOneHiveClickSetup.Apply();
    if(System.IO.File.Exists(LevelOneSettingsSetup.ArtRoot+"SettingsGear.png"))LevelOneSettingsSetup.Apply();
-   EditorSceneManager.SaveScene(scene,"Assets/Scenes/Level01.unity");EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene("Assets/Scenes/Level01.unity",true)};AssetDatabase.SaveAssets();Debug.Log("LEVEL_ONE_SCENE_READY");
+   EditorSceneManager.SaveScene(scene,LevelOneAssets.GameScenePath);EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(LevelOneAssets.GameScenePath,true)};AssetDatabase.SaveAssets();Debug.Log("LEVEL_ONE_SCENE_READY");
   }
   /// <summary>Creates required production folders without touching legacy paths.</summary>
   static void Ensure(string path){if(AssetDatabase.IsValidFolder(path))return;int slash=path.LastIndexOf('/');Ensure(path.Substring(0,slash));AssetDatabase.CreateFolder(path.Substring(0,slash),path.Substring(slash+1));}

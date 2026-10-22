@@ -24,7 +24,7 @@ namespace BeeHarvest.Tests {
   public static IEnumerator Open(PopupMotion motion){float deadline=Time.realtimeSinceStartup+2;while(motion.IsOpening&&Time.realtimeSinceStartup<deadline)yield return null;Assert.IsFalse(motion.IsOpening);}
  }
  public sealed class PopupMotionUiTests : EconomyTestFixture {
-  static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;}
+  static IEnumerator Load(){LevelSceneTestLoader.Load("Level01");yield return null;yield return null;}
   [UnityTest] public IEnumerator PausedPopupAnimatesOnUnscaledTimeAndOwnsInputUntilClosed(){
    yield return Load();var popup=Object.FindObjectOfType<SettingsPopupController>();var model=BeeHarvestApp.Interface.GetModel<HarvestModel>();int generation=model.Generation;float oldScale=Time.timeScale;
    try {

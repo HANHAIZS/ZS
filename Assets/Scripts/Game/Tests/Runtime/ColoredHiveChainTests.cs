@@ -18,7 +18,7 @@ namespace BeeHarvest.Tests
 
         static IEnumerator LoadPair()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var level = Object.FindObjectOfType<LevelOneController>();
@@ -138,7 +138,7 @@ namespace BeeHarvest.Tests
             GameObject.Find("SmallHive_2").SetActive(false);
             Object.FindObjectOfType<HiveModelView>().ShowHop(0);
             Assert.IsFalse(rod.gameObject.activeSelf, "A hidden endpoint must not leave a dangling link");
-            SceneManager.LoadScene("MainMenu");
+            LevelSceneTestLoader.Load("MainMenu");
             yield return null;
             yield return null;
             Assert.IsTrue(mesh == null, "Scene-local dynamic geometry must be disposed");

@@ -59,7 +59,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator OpensPausesBlocksTheLevelAndClosesWithoutLosingProgress()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var app = BeeHarvestApp.Interface;
@@ -101,7 +101,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator SwitchesPersistAndRepeatedOpenDoesNotDoubleToggle()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             for (int cycle = 0; cycle < 3; cycle++)
@@ -127,7 +127,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ClosePreservesTheLevelAndOldPauseIsPreservedOnClose()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var app = BeeHarvestApp.Interface;
@@ -156,7 +156,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator HeldTouchCannotRepressQueueAfterThePointerCacheIsCleared()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var level = UnityEngine.Object.FindObjectOfType<LevelOneController>();
@@ -204,7 +204,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator PreModalPressCannotDispatchAfterCloseOrRestart()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var level = UnityEngine.Object.FindObjectOfType<LevelOneController>();
@@ -248,7 +248,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator DisabledModalCannotOpenAndReenableRestoresRegistration()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var popup = UnityEngine.Object.FindObjectOfType<SettingsPopupController>();
@@ -273,7 +273,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator BackgroundAndSettingsReleaseTheirOwnPauses()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var level = UnityEngine.Object.FindObjectOfType<LevelOneController>();
@@ -304,12 +304,12 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator SceneReloadUnregistersTheOldPopupAndKeepsASingleButton()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             Gear().onClick.Invoke();
             yield return null;
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             Assert.IsNull(BeeHarvestApp.Interface.GetUtility<UiPopupRouter>().ActiveView);

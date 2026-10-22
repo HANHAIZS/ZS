@@ -12,7 +12,7 @@ namespace BeeHarvest.Tests {
  public sealed class EconomyUiTests : EconomyTestFixture {
   Component Header(){var t=typeof(HarvestModel).Assembly.GetType("BeeHarvest.EconomyHeaderView");Assert.IsNotNull(t,"Economy header is required");var view=UnityEngine.Object.FindObjectOfType(t) as Component;Assert.IsNotNull(view);return view;}
   T Ref<T>(string name) where T:class{return Header().GetType().GetField(name).GetValue(Header()) as T;}
-  IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;yield return null;}
+  IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;yield return null;}
   void SetEnergy(int value){var m=BeeHarvestApp.Interface.GetModel<EconomyModel>();typeof(EconomyModel).GetProperty("Stamina").SetValue(m,value);typeof(EconomyModel).GetProperty("NextRecoveryAt").SetValue(m,0L);}
   [UnityTest] public IEnumerator HeaderLabelsAndPlusButtonsRenderSavedState(){
    yield return Load("MainMenu");Assert.AreEqual("1600",Ref<TMP_Text>("CoinsLabel").text);Assert.AreEqual("5",Ref<TMP_Text>("StaminaLabel").text);Assert.AreEqual("full",Ref<TMP_Text>("RecoveryLabel").text);

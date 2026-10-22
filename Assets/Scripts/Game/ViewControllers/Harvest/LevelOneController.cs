@@ -15,7 +15,10 @@ namespace BeeHarvest
         HiveHopController hop;
         BeeFlightView bees;
         public LevelOneHud Hud;
-        [Range(1, LevelOneAssets.LastLevel)] public int LevelNumber = 1;
+        [UnityEngine.Serialization.FormerlySerializedAs("LevelNumber")]
+        [Range(1, LevelOneAssets.LastLevel)] public int PreviewLevel = 1;
+        public int LevelNumber { get; private set; }
+        public LevelPresentationView Presentation;
         bool backgroundPause, initialized, applicationPaused;
         bool uiInputReleasePending, settingsInputBlocked;
         BaseInputModule inputModule;
@@ -28,13 +31,18 @@ namespace BeeHarvest
             navigation = this.GetModel<MenuNavigationModel>();
             rules = this.GetSystem<HarvestSystem>();
             assets = this.GetUtility<LevelOneAssets>();
+            LevelNumber = navigation.Initialized ? navigation.CurrentLevel : PreviewLevel;
+            var presentation = LevelOneAssets.Presentation(LevelNumber);
+            if (!navigation.Initialized) this.SendCommand(new InitializeMenuNavigationCommand(false, LevelNumber));
+            if (Presentation == null) throw new System.InvalidOperationException("Shared Game requires its presentation view");
+            Presentation.Apply(presentation, LevelNumber);
             this.SendCommand(new StartLevelCommand(assets.Level(LevelNumber)));
             hives = GetComponent<HiveModelView>();
             hives.Initialize(model, rules, assets, Hud);
             board = GetComponent<HarvestBoardView>();
-            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), LevelOneAssets.HasVoxelEdges(LevelNumber), LevelOneAssets.VoxelEdgeColor(LevelNumber),LevelOneAssets.HasVoxelCavity(LevelNumber),LevelOneAssets.HasVoxelSeparation(LevelNumber));
+            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), presentation.edges, presentation.overrideEdgeColor ? (Color?)presentation.edgeColor : null,presentation.cavity,presentation.separation);
             bees = GetComponent<BeeFlightView>();
-            bees.Initialize(model, board, assets, LevelNumber == 6 || (LevelNumber >= 112 && LevelNumber <= 114));
+            bees.Initialize(model, board, assets, presentation.sourceHandoff);
             hop = GetComponent<HiveHopController>();
             hop.Initialize(model, rules, hives, Hud);
             Hud.Initialize(model, rules, hop.ClickWaiting, RetryFromHud, this);

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 namespace BeeHarvest.Tests {
  public sealed class MainMenuFlowTests : EconomyTestFixture {
   [UnityTest] public IEnumerator ConfirmedLeaveResetsAndStartUsesTheSameLevelScene(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var app=BeeHarvestApp.Interface;var m=app.GetModel<HarvestModel>();
    var level=Object.FindObjectOfType<LevelOneController>();var hud=level.Hud;
    yield return HiveInputFixture.Click(hud,0);yield return new WaitForSeconds(.5f);
@@ -42,7 +42,7 @@ namespace BeeHarvest.Tests {
    Assert.AreEqual(1784,m.Remaining);Assert.IsTrue(hud.gameObject.activeSelf);Assert.IsFalse(m.Paused);
   }
   [UnityTest] public IEnumerator ConfirmedLeaveClearsManualPauseAndStartHonorsBackgroundPause(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var app=BeeHarvestApp.Interface;var m=app.GetModel<HarvestModel>();
    var level=Object.FindObjectOfType<LevelOneController>();var settings=Object.FindObjectOfType<SettingsPopupController>();
    app.SendCommand(new PauseHarvestCommand(true));settings.OpenButton.onClick.Invoke();
@@ -57,22 +57,22 @@ namespace BeeHarvest.Tests {
    Assert.IsFalse(m.Paused);Assert.IsTrue(level.Hud.gameObject.activeSelf);
   }
   [UnityTest] public IEnumerator NewLaunchShowsHomeAndStartLoadsFirstLevelOnce(){
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=GameObject.Find("MainMenuPage");Assert.IsNotNull(page);
    var start=page.GetComponentsInChildren<Button>().Single(b=>b.name=="StartGameButton");
    Assert.IsTrue(page.GetComponentsInChildren<TMP_Text>().All(t=>t.font.name=="FredokaBoldSDF"));
    start.onClick.Invoke();start.onClick.Invoke();Assert.IsFalse(start.interactable);
    float limit=Time.realtimeSinceStartup+4;
-   while(SceneManager.GetActiveScene().name!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
+   while(LevelSceneTestLoader.CurrentKey!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
    yield return null;yield return null;
-   Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);
+   Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);
    Assert.AreEqual(1,Object.FindObjectsOfType<LevelOneController>().Length);
    Assert.AreEqual(1784,BeeHarvestApp.Interface.GetModel<HarvestModel>().Remaining);
    Assert.IsNull(GameObject.Find("MainMenuPage"),"Page is cached but hidden in a new level");
   }
 
   [UnityTest] public IEnumerator HeldTouchAcrossStartCannotActivateWaitingHive(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var level=Object.FindObjectOfType<LevelOneController>();var model=BeeHarvestApp.Interface.GetModel<HarvestModel>();
    var popup=Object.FindObjectOfType<SettingsPopupController>();popup.OpenButton.onClick.Invoke();popup.HomeButton.onClick.Invoke();popup.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();
    var eventSystem=EventSystem.current;var module=(StandaloneInputModule)eventSystem.currentInputModule;module.enabled=false;eventSystem.enabled=false;
@@ -91,10 +91,10 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator FirstLaunchHeldTouchCannotActivateNewLevelHive(){
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    SettingsTouchInput fake=null;StandaloneInputModule module=null;
    UnityEngine.Events.UnityAction<Scene,LoadSceneMode> inject=(scene,mode)=>{
-    if(scene.name!="Level01")return;
+    if(scene.name!=LevelOneAssets.GameSceneName)return;
     module=Object.FindObjectOfType<StandaloneInputModule>();
     fake=module.gameObject.AddComponent<SettingsTouchInput>();fake.Count=1;
     Canvas.ForceUpdateCanvases();var level=Object.FindObjectOfType<LevelOneController>();
@@ -105,7 +105,7 @@ namespace BeeHarvest.Tests {
    try{
     GameObject.Find("StartGameButton").GetComponent<Button>().onClick.Invoke();
     float limit=Time.realtimeSinceStartup+4;
-    while(SceneManager.GetActiveScene().name!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
+    while(LevelSceneTestLoader.CurrentKey!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
     yield return null;yield return null;
     Assert.IsNotNull(fake,"Inject held finger before the new level starts");
     var level=Object.FindObjectOfType<LevelOneController>();var model=BeeHarvestApp.Interface.GetModel<HarvestModel>();

@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class BeeGraspAnimationTests : EconomyTestFixture {
   [UnityTest] public IEnumerator BellyGripFacesVoxelAndFourFeetReachBeforeExtraction(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    Object.FindObjectOfType<LevelOneController>().enabled=false;
    var app=BeeHarvestApp.Interface;app.SendCommand(new ActivateHiveCommand(0));
    var hive=Object.FindObjectOfType<HiveModelView>();var board=Object.FindObjectOfType<HarvestBoardView>();var bees=Object.FindObjectOfType<BeeFlightView>();
@@ -35,7 +35,7 @@ namespace BeeHarvest.Tests {
    var b=cargo.bounds;b.Expand(.055f);foreach(var tip in tips)Assert.IsTrue(b.Contains(tip.position),"Four feet stay attached while carrying");
   }
   [UnityTest] public IEnumerator ApproachTurnsSmoothlyBeforeLock(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    Object.FindObjectOfType<LevelOneController>().enabled=false;var app=BeeHarvestApp.Interface;
    app.SendCommand(new ActivateHiveCommand(0));var hive=Object.FindObjectOfType<HiveModelView>();var board=Object.FindObjectOfType<HarvestBoardView>();var bees=Object.FindObjectOfType<BeeFlightView>();
    hive.Sync();board.Sync();bees.RenderFlights();var actor=GameObject.Find("BlenderBeeCarrier_0").transform;var body=actor.Cast<Transform>().First(t=>t.name!="CarriedVoxel");var previous=body.rotation;

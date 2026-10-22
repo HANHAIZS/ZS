@@ -17,7 +17,7 @@ namespace BeeHarvest.Tests {
   static float Seconds(){var p=typeof(HarvestModel).GetProperty("SpeedSeconds");Assert.IsNotNull(p);return (float)p.GetValue(Model);}
   static Transform Badge(int i,string name){var t=Bar.Buttons[i].transform.Find(name);Assert.IsNotNull(t,"Missing corner badge: "+name);return t;}
   static void Restock(){var stock=(int[])typeof(HarvestModel).GetField("boosterCounts",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(Model);for(int i=0;i<4;i++)stock[i]=1;Bar.SetInputEnabled(true);}
-  static IEnumerator Load(){SceneManager.LoadScene("Level01");yield return null;yield return null;Badge(0,"QuantityBadge");Restock();}
+  static IEnumerator Load(){LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Badge(0,"QuantityBadge");Restock();}
   static IEnumerator Tap(Transform target){
    yield return null;Canvas.ForceUpdateCanvases();
    var e=EventSystem.current;var module=(StandaloneInputModule)e.currentInputModule;module.enabled=false;e.enabled=false;

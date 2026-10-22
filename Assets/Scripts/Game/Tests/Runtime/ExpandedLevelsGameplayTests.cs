@@ -11,7 +11,7 @@ namespace BeeHarvest.Tests {
   static readonly string[] Names={"CupHalf","casper","Rat","Mower","Crab","Santa","Hand_grips","Balloon_rotate","Gaming_microphone","Shuttle","Cat_Minti","Megaphone","World_cup","Spitfire","Hen_2","Oreo","Axe","Mustard","Robot_2","Cat_Luci","Dice","EmpireTower","Launcher","Gamepad","Rattle","Popsicle-chocolate","ChipGreen","Gas_station","Bell","BoxOpen","PizzaSlice","Camera","Earth","PizzaSliced","Paper_Towels","ChickenLeg","Shaker_salt","Hair_brush","Bowling_pins","Radio_4","Heart","Umbrella","Clock","Diamond_2","Saturn","Rolling_pin_2","Animal_Penguin","Tenis_ball","Liquid_soap","Bulb","Barrel","Waffle","Star","Chessboard","Castle","Bull","Bucket","Croissant","Lighthouse","Chocolate_2","Lifebuoy","Orange","pelican","Angel","Goomba","Cone","Avocado","Fluffy","Spices","Koala","Mami","Tractor_Shovel","Bear","Remote","Tree","Teepee","Dollars_container","Brain","Volcano","Toaster"};
   static readonly int[] Counts={996,1339,1416,1471,1585,1695,1821,1876,1909,1920,1923,1949,1964,1968,2017,2068,2096,2144,2155,2471,2197,2300,2304,2307,2308,2320,2324,2339,2356,2381,2395,2398,2400,2400,2492,2504,2512,2533,2560,2567,2570,2576,2604,2625,2652,2660,2690,2717,2764,2765,2772,2801,2806,2864,2880,2891,2902,2944,2984,3001,3032,3067,3098,3102,3159,3170,3198,3199,3209,3215,3270,3295,3300,3448,3485,3490,3516,3561,3618,3627};
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
-  static IEnumerator Load(int n){string name="Level"+n.ToString("00");Assert.IsTrue(Application.CanStreamedLevelBeLoaded(name),name);SceneManager.LoadScene(name);yield return null;yield return null;}
+  static IEnumerator Load(int n){string name="Level"+n.ToString("00");Assert.IsTrue(LevelSceneTestLoader.CanLoad(name),name);LevelSceneTestLoader.Load(name);yield return null;yield return null;}
   [UnityTest] public IEnumerator AllEightyScenesHaveTheirOwnModelWithCurrentUiAudioAndVictoryBindings(){
    for(int i=0;i<80;i++){
     yield return Load(i+16);var level=Object.FindObjectOfType<LevelOneController>();var label=level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>();
@@ -31,8 +31,8 @@ namespace BeeHarvest.Tests {
    var popup=Object.FindObjectOfType<VictoryPopupController>();float deadline=Time.realtimeSinceStartup+3;
    while(!popup.ContinueButton.interactable&&Time.realtimeSinceStartup<deadline)yield return null;
    Assert.IsTrue(popup.ContinueButton.interactable);popup.ContinueButton.onClick.Invoke();popup.ContinueButton.onClick.Invoke();deadline=Time.realtimeSinceStartup+5;
-   while(SceneManager.GetActiveScene().name!="Level16"&&Time.realtimeSinceStartup<deadline)yield return null;
-   yield return null;yield return null;Assert.AreEqual("Level16",SceneManager.GetActiveScene().name);Assert.AreEqual(996,Model.Remaining);Assert.IsFalse(Model.Won);
+   while(LevelSceneTestLoader.CurrentKey!="Level16"&&Time.realtimeSinceStartup<deadline)yield return null;
+   yield return null;yield return null;Assert.AreEqual("Level16",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(996,Model.Remaining);Assert.IsFalse(Model.Won);
   }
   [UnityTest] public IEnumerator FirstAndLastNewScenesTransportRealCargoAndRetryTheirOwnSource(){
    foreach(int number in new[]{16,20,35,42,62,95}){

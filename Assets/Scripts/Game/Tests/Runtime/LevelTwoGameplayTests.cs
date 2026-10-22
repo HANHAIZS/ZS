@@ -13,7 +13,7 @@ namespace BeeHarvest.Tests
  public sealed class LevelTwoGameplayTests : EconomyTestFixture
  {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
-  static IEnumerator LoadDuck(){SceneManager.LoadScene("Level02");yield return null;yield return null;}
+  static IEnumerator LoadDuck(){LevelSceneTestLoader.Load("Level02");yield return null;yield return null;}
   [UnityTest] public IEnumerator DuckSceneMatchesVoxelsQuotasAndShowsThreePlanningRows(){
    yield return LoadDuck();var level=Object.FindObjectOfType<LevelOneController>();var hud=level.Hud;
    Assert.AreEqual(2,level.LevelNumber);Assert.AreEqual("Level 2",hud.transform.Find("LevelLabel").GetComponent<TMP_Text>().text);
@@ -67,7 +67,7 @@ namespace BeeHarvest.Tests
    var settings=Object.FindObjectOfType<SettingsPopupController>();settings.OpenButton.onClick.Invoke();settings.HomeButton.onClick.Invoke();settings.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();
    int generation=Model.Generation,remaining=Model.Remaining;yield return new WaitForSeconds(.2f);
    GameObject.Find("StartGameButton").GetComponent<UnityEngine.UI.Button>().onClick.Invoke();yield return null;
-   Assert.AreEqual("Level02",SceneManager.GetActiveScene().name);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual(2190,Model.Remaining);Assert.IsFalse(Model.Hives[0].Started);
+   Assert.AreEqual("Level02",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(generation,Model.Generation);Assert.AreEqual(2190,Model.Remaining);Assert.IsFalse(Model.Hives[0].Started);
   }
   [UnityTest] public IEnumerator DuckReallyDeliversVisibleCargoAndRetryRestoresItsCompleteModel(){
    yield return LoadDuck();var level=Object.FindObjectOfType<LevelOneController>();var board=level.GetComponent<HarvestBoardView>();board.AutoRotate=false;board.PublishCameraView();var rules=BeeHarvestApp.Interface.GetSystem<HarvestSystem>();int column=-1;
@@ -76,7 +76,7 @@ namespace BeeHarvest.Tests
    HiveInputFixture.RetryLevelForTest();yield return null;Assert.AreEqual(2190,Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.IsNotNull(GameObject.Find("Duck(Clone)"));Assert.IsNull(GameObject.Find("Apple(Clone)"));
   }
   [UnityTest] public IEnumerator FinalLevelContinueReturnsHomeAndStartBeginsFirstLevel(){
-   SceneManager.LoadScene(LevelOneAssets.SceneName(LevelOneAssets.LastLevel));yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var app=BeeHarvestApp.Interface;
+   LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(LevelOneAssets.LastLevel));yield return null;yield return null;var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var app=BeeHarvestApp.Interface;
    BeeHarvestApp.Interface.SendCommand(new DetachBeeFlightPresentationCommand(Object.FindObjectOfType<BeeFlightView>().GetInstanceID()));
             app.SendCommand(new StartLevelCommand(new LevelData{cubes=new[]{new CubeData{id=0,color="red"}},hives=new[]{new HiveData{column=0,color="red",quota=1}}}));
    app.SendCommand(new ActivateHiveCommand(0));app.SendCommand(new AdvanceHarvestCommand(AdvanceHarvestCommand.OutboundSeconds+AdvanceHarvestCommand.LoadedSeconds+.01f));Assert.IsTrue(Model.Won);
@@ -88,8 +88,8 @@ namespace BeeHarvest.Tests
    var nav=app.GetModel<MenuNavigationModel>();Assert.IsTrue(nav.IsHome);Assert.AreEqual(1,nav.CurrentLevel);Assert.IsFalse(popup.IsOpen);
    GameObject.Find("StartGameButton").GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
    popup.SendMessage("Update");Assert.IsFalse(popup.IsOpen,"Final settlement remains consumed while loading a new cycle");
-   float limit=Time.realtimeSinceStartup+5;while(SceneManager.GetActiveScene().name!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
-   yield return null;yield return null;Assert.AreEqual("Level01",SceneManager.GetActiveScene().name);Assert.AreEqual(1784,Model.Remaining);Assert.IsFalse(Model.Won);
+   float limit=Time.realtimeSinceStartup+5;while(LevelSceneTestLoader.CurrentKey!="Level01"&&Time.realtimeSinceStartup<limit)yield return null;
+   yield return null;yield return null;Assert.AreEqual("Level01",LevelSceneTestLoader.CurrentKey);Assert.AreEqual(1784,Model.Remaining);Assert.IsFalse(Model.Won);
   }
  }
 }

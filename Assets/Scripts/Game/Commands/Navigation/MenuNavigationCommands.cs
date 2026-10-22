@@ -4,8 +4,8 @@ namespace BeeHarvest {
   readonly bool home;readonly int levelNumber;
   public InitializeMenuNavigationCommand(bool value,int number=1){home=value;levelNumber=number;}
   protected override void OnExecute(){
-   LevelOneAssets.SceneName(levelNumber);
-   var nav=this.GetModel<MenuNavigationModel>();nav.CurrentLevel=levelNumber;nav.IsHome=home;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
+   LevelOneAssets.LevelKey(levelNumber);
+   var nav=this.GetModel<MenuNavigationModel>();nav.Initialized=true;nav.CurrentLevel=levelNumber;nav.IsHome=home;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
    if(home)this.SendCommand(new PauseHarvestCommand(true));
    this.SendEvent(new MenuNavigationChangedEvent());
   }

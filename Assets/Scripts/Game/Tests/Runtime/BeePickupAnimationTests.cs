@@ -12,7 +12,7 @@ namespace BeeHarvest.Tests
     {
         static IEnumerator Load()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             Object.FindObjectOfType<LevelOneController>().enabled = false;

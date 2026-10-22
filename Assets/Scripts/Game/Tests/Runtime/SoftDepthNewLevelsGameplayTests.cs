@@ -11,7 +11,7 @@ namespace BeeHarvest.Tests {
   [UnityTest] public IEnumerator FiveScenesPreserveArtAndAll106EffectsThenTransportRestartAndRelease(){
    Material[] previous=null;Texture previousCache=null;
    for(int n=107;n<=111;n++){
-    Assert.IsTrue(Application.CanStreamedLevelBeLoaded("Level"+n),"New scene must be in build settings");SceneManager.LoadScene("Level"+n);yield return null;yield return null;
+    Assert.IsTrue(LevelSceneTestLoader.CanLoad("Level"+n),"New scene must be in build settings");LevelSceneTestLoader.Load("Level"+n);yield return null;yield return null;
     if(previous!=null){Assert.IsTrue(previous.All(m=>m==null));Assert.IsTrue(previousCache==null,"Old scene occlusion cache is released");}
     var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var board=level.GetComponent<HarvestBoardView>();board.AutoRotate=false;board.ResetRotation();board.PublishCameraView();var root=GameObject.Find(LevelOneAssets.ModelKey(n)+"(Clone)");var rs=root.GetComponentsInChildren<Renderer>();var source=Resources.Load<GameObject>("Prefabs/Gameplay/"+LevelOneAssets.ModelKey(n));var originals=source.GetComponentsInChildren<Renderer>().ToDictionary(r=>r.name);
     var app=BeeHarvestApp.Interface;var model=app.GetModel<HarvestModel>();Assert.AreEqual(model.Cubes.Count,rs.Length);Assert.AreEqual(3,model.ColumnCount);Assert.AreEqual(5,model.Slots.Count);Assert.AreEqual("Level "+n,level.Hud.transform.Find("LevelLabel").GetComponent<TMP_Text>().text);Assert.Less(Vector3.Distance(Vector3.one*(.86f*1.04f),root.transform.localScale),.00001f);
@@ -24,7 +24,7 @@ namespace BeeHarvest.Tests {
     app.SendCommand(new PauseHarvestCommand(true));var cache=(Texture2D)previousCache;var frozen=cache.GetRawTextureData().ToArray();yield return new WaitForSeconds(.15f);CollectionAssert.AreEqual(frozen,cache.GetRawTextureData().ToArray());app.SendCommand(new PauseHarvestCommand(false));BeeSceneSteps.Until(()=>model.Deposited>0,40);Assert.AreEqual(rs.Length,model.Remaining+model.InTransit+model.Deposited);
     level.RestartLevel();board.Sync();Assert.AreEqual(rs.Length,model.Remaining);Assert.AreEqual(0,model.InTransit);Assert.AreEqual(0,model.Deposited);Assert.IsTrue(rs.All(r=>r.enabled));CollectionAssert.AreEquivalent(previous,rs.Select(r=>r.sharedMaterial).Distinct());Assert.AreSame(previousCache,previous[0].GetTexture("_CavityData"));
    }
-   SceneManager.LoadScene("Level08");yield return null;yield return null;Assert.IsTrue(previous.All(m=>m==null));Assert.IsTrue(previousCache==null);Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
+   LevelSceneTestLoader.Load("Level08");yield return null;yield return null;Assert.IsTrue(previous.All(m=>m==null));Assert.IsTrue(previousCache==null);Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
   }
  }
 }

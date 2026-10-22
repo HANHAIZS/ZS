@@ -16,7 +16,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator ClickAnimatesWithPausedTimeAndKeepsCurrentArtAndHitRegions() {
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();var view=page.Tabs.NavigationBar;
    var buttons=new[]{(RectTransform)page.ShopButton.transform,(RectTransform)page.HomeButton.transform,(RectTransform)page.GalleryButton.transform};
    var anchors=new Vector2[3];var sizes=new Vector2[3];var sprites=new Sprite[3];
@@ -38,7 +38,7 @@ namespace BeeHarvest.Tests {
   }
 
   [UnityTest] public IEnumerator ReopenAndBackgroundSettleToModelAndPreserveInputGates() {
-   SceneManager.LoadScene("MainMenu");yield return null;yield return null;
+   LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;
    var page=Object.FindObjectOfType<MainMenuPage>();var view=page.Tabs.NavigationBar;
    page.ShopButton.onClick.Invoke();Assert.AreEqual(.5f,Center(view),.0001f);
    page.Hide();page.Show(1);

@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests {
   static HarvestBoardView Board=>Level.GetComponent<HarvestBoardView>();
   static BeeFlightView Bees=>Level.GetComponent<BeeFlightView>();
   static HiveModelView Hives=>Level.GetComponent<HiveModelView>();
-  static IEnumerator Load(int n){Assert.IsTrue(Application.CanStreamedLevelBeLoaded("Level"+n));SceneManager.LoadScene("Level"+n);yield return null;yield return null;Level.enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
+  static IEnumerator Load(int n){Assert.IsTrue(LevelSceneTestLoader.CanLoad("Level"+n));LevelSceneTestLoader.Load("Level"+n);yield return null;yield return null;Level.enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
   static FlightState Select(){var app=BeeHarvestApp.Interface;var rules=app.GetSystem<HarvestSystem>();var root=GameObject.Find(LevelOneAssets.ModelKey(Level.LevelNumber)+"(Clone)");for(int turn=0;turn<8;turn++){Board.PublishCameraView();for(int c=0;c<3;c++){int h=rules.Front(c);if(h>=0&&rules.CanSelectHive(h)&&rules.FindTarget(Model.Hives[h].Data.color)>=0){app.SendCommand(new ActivateHiveCommand(c));Hives.Sync();Board.Sync();Bees.RenderFlights();return Model.Flights[0];}}root.transform.Rotate(0,45,0);}Assert.Fail("A legal visible hive is required");return null;}
   static Transform Cargo(FlightState f)=>GameObject.Find("BlenderBeeCarrier_"+f.Id).transform.Find("CarriedVoxel");
   static Transform Grip(Transform cargo)=>cargo.parent.Cast<Transform>().Single(t=>t!=cargo).Find("GripAnchor");
@@ -34,7 +34,7 @@ namespace BeeHarvest.Tests {
     var app=BeeHarvestApp.Interface;app.SendCommand(new PauseHarvestCommand(true));var paused=cargo.position;float age=flight.Age;yield return new WaitForSeconds(.12f);BeeSceneSteps.Advance(1);Assert.AreEqual(age,flight.Age);Assert.AreEqual(paused,cargo.position);app.SendCommand(new PauseHarvestCommand(false));BeeSceneSteps.Advance(.061f);Assert.AreEqual("BeeHarvest/VoxelEdges",renderer.sharedMaterial.shader.name);Assert.AreEqual(outline.GetColor("_EdgeColor"),renderer.sharedMaterial.GetColor("_EdgeColor"));Assert.IsFalse(renderer.HasPropertyBlock());Assert.Less(Vector3.Distance(Grip(cargo).position,cargo.position),.00001f);BeeSceneSteps.Until(()=>Model.Deposited>0,40);
     Level.RestartLevel();Board.Sync();Bees.RenderFlights();Assert.AreEqual(renderers.Length,Model.Remaining);Assert.AreEqual(0,Model.InTransit);Assert.AreEqual(0,Model.Deposited);Assert.IsTrue(renderers.All(r=>r.enabled));Assert.AreSame(cache,previous[0].GetTexture("_CavityData"));
    }
-   SceneManager.LoadScene("Level08");yield return null;yield return null;Assert.IsTrue(previous.All(m=>m==null));Assert.IsTrue(cache==null);
+   LevelSceneTestLoader.Load("Level08");yield return null;yield return null;Assert.IsTrue(previous.All(m=>m==null));Assert.IsTrue(cache==null);
   }
   [UnityTest] public IEnumerator OriginalMysteriesHideQuotasAndRevealAtTheFrontInAllThreeScenes(){
    foreach(int n in new[]{112,113,114}){

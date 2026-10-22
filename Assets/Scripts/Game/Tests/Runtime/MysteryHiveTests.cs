@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests
         static HarvestModel Model => BeeHarvestApp.Interface.GetModel<HarvestModel>();
         static IEnumerator Load(int number = 12)
         {
-            SceneManager.LoadScene(LevelOneAssets.SceneName(number));
+            LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(number));
             yield return null;
             yield return null;
             Object.FindObjectOfType<LevelOneController>().enabled = false;
@@ -137,7 +137,7 @@ namespace BeeHarvest.Tests
             foreach (var r in Object.FindObjectsOfType<Renderer>())
                 foreach (var material in r.sharedMaterials.Where(m => m.name.StartsWith("HivePalette")))
                     Near(LevelOneAssets.ColorOf("Palette" + material.name.Substring("HivePalette".Length)), material.GetColor("_BaseColor"));
-            SceneManager.LoadScene("Level03"); yield return null; yield return null;
+            LevelSceneTestLoader.Load("Level03"); yield return null; yield return null;
             Assert.IsTrue(marker == null);
             Assert.IsFalse(Object.FindObjectsOfType<Text>().Any(t => t.name.StartsWith("MysteryHive_")));
         }

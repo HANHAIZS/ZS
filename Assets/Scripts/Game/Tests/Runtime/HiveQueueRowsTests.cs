@@ -10,7 +10,7 @@ using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class HiveQueueRowsTests : EconomyTestFixture {
   [UnityTest] public IEnumerator ThreeModelRowsPreviewPromoteAndRestoreOnRetry(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;
    var app=BeeHarvestApp.Interface;var model=app.GetModel<HarvestModel>();
    var hud=Object.FindObjectOfType<LevelOneController>().Hud;
    var rear=GameObject.Find("SmallHive_1");

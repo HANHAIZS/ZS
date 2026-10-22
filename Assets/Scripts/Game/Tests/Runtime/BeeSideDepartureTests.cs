@@ -10,7 +10,7 @@ namespace BeeHarvest.Tests {
   static HarvestModel M=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
   static HarvestBoardView Board=>Object.FindObjectOfType<HarvestBoardView>();
   static Transform Shape=>GameObject.Find(LevelOneAssets.ModelKey(Object.FindObjectOfType<LevelOneController>().LevelNumber)+"(Clone)").transform;
-  static IEnumerator Load(string scene){SceneManager.LoadScene(scene);yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
+  static IEnumerator Load(string scene){LevelSceneTestLoader.Load(scene);yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();}
   static Bounds Silhouette(){
    var result=new Bounds();bool first=true;
    foreach(var r in Shape.GetComponentsInChildren<Renderer>())for(int i=0;i<8;i++){

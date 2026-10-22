@@ -11,7 +11,7 @@ using UnityEngine.TestTools;
 using Object=UnityEngine.Object;
 namespace BeeHarvest.Tests {
  public sealed class LevelSevenCavityVisualTests : EconomyTestFixture {
-  static IEnumerator Load(int number){SceneManager.LoadScene(LevelOneAssets.SceneName(number));yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;}
+  static IEnumerator Load(int number){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(number));yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;}
   sealed class Fixture : IDisposable {
    public GameObject Root;public List<CubeState> Cells=new List<CubeState>();public List<Renderer> Renderers=new List<Renderer>();
    public object Visual;public Type Type;public Material Original;

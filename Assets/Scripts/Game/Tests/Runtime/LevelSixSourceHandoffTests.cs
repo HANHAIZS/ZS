@@ -10,7 +10,7 @@ namespace BeeHarvest.Tests {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
   static HarvestBoardView Board=>Object.FindObjectOfType<HarvestBoardView>();
   static LevelOneController Level=>Object.FindObjectOfType<LevelOneController>();
-  static IEnumerator Load(int number){SceneManager.LoadScene(LevelOneAssets.SceneName(number));yield return null;yield return null;Level.enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();yield return null;}
+  static IEnumerator Load(int number){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(number));yield return null;yield return null;Level.enabled=false;Board.AutoRotate=false;Board.ResetRotation();Board.PublishCameraView();yield return null;}
   static FlightState Select(){var app=BeeHarvestApp.Interface;var rules=app.GetSystem<HarvestSystem>();for(int c=0;c<3;c++){int h=rules.Front(c);if(h>=0&&rules.CanSelectHive(h)&&rules.FindTarget(Model.Hives[h].Data.color)>=0){app.SendCommand(new ActivateHiveCommand(c));Object.FindObjectOfType<HiveModelView>().Sync();Board.Sync();Object.FindObjectOfType<BeeFlightView>().RenderFlights();return Model.Flights[0];}}Assert.Fail("A legal visible hive is required");return null;}
   static Transform Cargo(FlightState f){return GameObject.Find("BlenderBeeCarrier_"+f.Id).transform.Find("CarriedVoxel");}
   static Transform Grip(Transform cargo){return cargo.parent.Cast<Transform>().Single(t=>t!=cargo).Find("GripAnchor");}

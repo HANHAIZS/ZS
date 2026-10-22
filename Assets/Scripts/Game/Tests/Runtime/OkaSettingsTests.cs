@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests {
   [SetUp] public void IsolateSettings(){var app=BeeHarvestApp.Interface;previousPrefs=app.GetUtility<SettingsPreferences>();previousModel=app.GetModel<SettingsModel>();prefix="BeeHarvest.tests.oka."+Guid.NewGuid().ToString("N");app.RegisterUtility(new SettingsPreferences(prefix));app.RegisterModel(new SettingsModel());}
   [TearDown] public void RestoreSettings(){var app=BeeHarvestApp.Interface;app.RegisterUtility(previousPrefs);app.RegisterModel(previousModel);foreach(string key in new[]{"Music","Sound","Haptic"})PlayerPrefs.DeleteKey(prefix+"."+key);PlayerPrefs.Save();}
   static Button Control(MainMenuPage page,string name){var node=page.Tabs.GalleryContent.transform.Find("PreferencePanel/Artwork/"+name+"Toggle");Assert.IsNotNull(node,"Settings page requires "+name);return node.GetComponent<Button>();}
-  static IEnumerator Menu(){SceneManager.LoadScene("MainMenu");yield return null;yield return null;}
+  static IEnumerator Menu(){LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;}
   [UnityTest] public IEnumerator SettingsReplacesGalleryWithoutChangingEconomy(){
    yield return Menu();var page=UnityEngine.Object.FindObjectOfType<MainMenuPage>();page.GalleryButton.onClick.Invoke();yield return null;yield return null;
    Assert.AreEqual("Setting",page.GalleryButton.image.sprite.name);Assert.AreEqual(0,page.Tabs.GalleryContent.GetComponentsInChildren<RectTransform>(true).Count(t=>t.name.StartsWith("GalleryCard_")));
@@ -39,7 +39,7 @@ namespace BeeHarvest.Tests {
    }finally{module.inputOverride=null;module.enabled=true;events.enabled=true;UnityEngine.Object.Destroy(fake);}
   }
   [UnityTest] public IEnumerator LevelCloseResumesAndQuitUsesExistingHomeFlow(){
-   foreach(string name in new[]{"Level01","Level02","Level03","Level04","Level05"}){SceneManager.LoadScene(name);yield return null;yield return null;var app=BeeHarvestApp.Interface;var model=app.GetModel<HarvestModel>();var popup=UnityEngine.Object.FindObjectOfType<SettingsPopupController>();int generation=model.Generation;Assert.AreEqual(popup,UnityEngine.Object.FindObjectOfType<VictoryPopupController>().SettingsPopup,"Victory must retain the current Settings modal reference");
+   foreach(string name in new[]{"Level01","Level02","Level03","Level04","Level05"}){LevelSceneTestLoader.Load(name);yield return null;yield return null;var app=BeeHarvestApp.Interface;var model=app.GetModel<HarvestModel>();var popup=UnityEngine.Object.FindObjectOfType<SettingsPopupController>();int generation=model.Generation;Assert.AreEqual(popup,UnityEngine.Object.FindObjectOfType<VictoryPopupController>().SettingsPopup,"Victory must retain the current Settings modal reference");
     popup.OpenButton.onClick.Invoke();yield return null;Assert.IsNotNull(popup.RetryButton);Assert.IsNull(popup.ContinueButton);popup.CloseButton.onClick.Invoke();yield return PopupMotionTestWait.Close();Assert.IsFalse(popup.IsOpen);Assert.IsFalse(model.Paused);Assert.AreEqual(generation,model.Generation);
     popup.OpenButton.onClick.Invoke();yield return null;int stamina=app.GetModel<EconomyModel>().Stamina;popup.HomeButton.onClick.Invoke();popup.LeaveButton.onClick.Invoke();yield return PopupMotionTestWait.Close();Assert.IsTrue(app.GetModel<MenuNavigationModel>().IsHome);Assert.AreEqual(stamina-1,app.GetModel<EconomyModel>().Stamina);
    }

@@ -12,7 +12,7 @@ namespace BeeHarvest.Tests {
   static void Draw(){Object.FindObjectOfType<HiveModelView>().Sync();Board.Sync();Object.FindObjectOfType<BeeFlightView>().RenderFlights();}
   static void Tick(float dt){Board.PublishCameraView();BeeSceneSteps.Advance(dt);Draw();}
   static IEnumerator Load(){
-   SceneManager.LoadScene("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;
+   LevelSceneTestLoader.Load("Level01");yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;
    var data=JsonUtility.FromJson<LevelData>(Resources.Load<TextAsset>("Levels/Level01").text);
    data.hives[12].quota+=data.hives[0].quota-1;data.hives[0].quota=1;
    BeeHarvestApp.Interface.SendCommand(new StartLevelCommand(data));Board.ResetRotation();Board.PublishCameraView();BeeHarvestApp.Interface.SendCommand(new ActivateHiveCommand(0));Draw();

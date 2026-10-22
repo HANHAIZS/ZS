@@ -19,7 +19,7 @@ namespace BeeHarvest.Tests
   static GameObject Root(int id)=>GameObject.Find("SmallHive_"+id);
   static Vector3 Screen(int id)=>Camera.main.WorldToScreenPoint(Root(id).transform.position);
   static float Ratio(int id)=>Root(id).transform.localScale.y/Root(id).transform.localScale.x;
-  static IEnumerator Load(int number=1){SceneManager.LoadScene(LevelOneAssets.SceneName(number));yield return null;yield return null;Level.enabled=false;}
+  static IEnumerator Load(int number=1){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(number));yield return null;yield return null;Level.enabled=false;}
   [TearDown] public void CancelFeedback(){if(Level!=null)Hop.Cancel();}
   static void Sync(){Level.Hud.Sync();View.Sync();}
   static void Tap(int column,int row){
@@ -63,7 +63,7 @@ namespace BeeHarvest.Tests
    Hop.Tick(.23f);Assert.Less(Vector2.Distance(before,Screen(id)),1);Assert.IsTrue(marker.gameObject.activeInHierarchy);
   }
   [UnityTest] public IEnumerator SceneExitDuringWaitingBounceLeavesNoCallbackOrDestroyedHudAccess(){
-   yield return Load();Tap(0,1);Hop.Tick(.1f);SceneManager.LoadScene("MainMenu");yield return null;yield return null;Assert.IsNull(Object.FindObjectOfType<HiveHopController>());
+   yield return Load();Tap(0,1);Hop.Tick(.1f);LevelSceneTestLoader.Load("MainMenu");yield return null;yield return null;Assert.IsNull(Object.FindObjectOfType<HiveHopController>());
   }
  }
 }

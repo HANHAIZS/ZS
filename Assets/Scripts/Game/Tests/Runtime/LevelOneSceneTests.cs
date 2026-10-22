@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ClickingCarriesDeliversAndRestarts()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var controller = Object.FindObjectOfType<LevelOneController>();

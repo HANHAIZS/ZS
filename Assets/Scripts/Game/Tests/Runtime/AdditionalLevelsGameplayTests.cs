@@ -12,8 +12,8 @@ namespace BeeHarvest.Tests {
   static readonly int[] Counts={870,1030,1054,1084,1205,1244,1300,1595,1617,1622};
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
   static IEnumerator Load(int number){
-   string scene="Level"+number.ToString("00");Assert.IsTrue(Application.CanStreamedLevelBeLoaded(scene),scene);
-   SceneManager.LoadScene(scene);yield return null;yield return null;
+   string scene="Level"+number.ToString("00");Assert.IsTrue(LevelSceneTestLoader.CanLoad(scene),scene);
+   LevelSceneTestLoader.Load(scene);yield return null;yield return null;
   }
   [UnityTest] public IEnumerator AllTenScenesLoadTheirOwnModelAndDeliverCargoWithExistingUiAndAudio(){
    for(int i=0;i<10;i++){
@@ -39,7 +39,7 @@ namespace BeeHarvest.Tests {
     var page=Object.FindObjectOfType<MainMenuPage>();Assert.AreEqual("Level "+(i+6),page.StartGameButton.GetComponentInChildren<TMP_Text>(true).text);
     Assert.AreEqual(generation+1,Model.Generation);Assert.AreEqual(Counts[i],Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.IsTrue(Model.Paused);
     page.StartGameButton.onClick.Invoke();yield return null;yield return null;
-    Assert.AreEqual("Level"+(i+6).ToString("00"),SceneManager.GetActiveScene().name);Assert.IsFalse(Model.Paused);
+    Assert.AreEqual("Level"+(i+6).ToString("00"),LevelSceneTestLoader.CurrentKey);Assert.IsFalse(Model.Paused);
     level.SendMessage("OnApplicationPause",true);Assert.IsTrue(level.IsApplicationPaused);
     level.SendMessage("OnApplicationPause",false);yield return null;Assert.IsFalse(level.IsApplicationPaused);
     HiveInputFixture.RetryLevelForTest();yield return null;
@@ -56,9 +56,9 @@ namespace BeeHarvest.Tests {
     while(!popup.ContinueButton.interactable&&Time.realtimeSinceStartup<limit)yield return null;
     Assert.IsTrue(popup.ContinueButton.interactable);popup.ContinueButton.onClick.Invoke();popup.ContinueButton.onClick.Invoke();
     string next="Level"+(from+1).ToString("00");limit=Time.realtimeSinceStartup+5;
-    while(SceneManager.GetActiveScene().name!=next&&Time.realtimeSinceStartup<limit)yield return null;
+    while(LevelSceneTestLoader.CurrentKey!=next&&Time.realtimeSinceStartup<limit)yield return null;
     yield return null;yield return null;
-    Assert.AreEqual(next,SceneManager.GetActiveScene().name);Assert.AreEqual(Counts[from-5],Model.Remaining);Assert.IsFalse(Model.Won);
+    Assert.AreEqual(next,LevelSceneTestLoader.CurrentKey);Assert.AreEqual(Counts[from-5],Model.Remaining);Assert.IsFalse(Model.Won);
    }
   }
  }

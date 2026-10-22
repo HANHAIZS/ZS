@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using QFramework;
 using UnityEngine;
@@ -9,18 +11,45 @@ namespace BeeHarvest {
   public Material LinkMaterial(){if(linkMaterial==null)linkMaterial=Resources.Load<Material>("Materials/HarvestLink");if(linkMaterial==null)throw new InvalidOperationException("Missing connected hive material");return linkMaterial;}
   public Material RoundedChainMaterial(){if(roundedChainMaterial==null)roundedChainMaterial=Resources.Load<Material>("Materials/HarvestRoundedChain");if(roundedChainMaterial==null)throw new InvalidOperationException("Missing rounded hive chain material");return roundedChainMaterial;}
   public const int LastLevel=114;
-  static readonly string[] ModelKeys={"Flower","Duck","Banana","BeeModel","Watermelon","Chick","Sheep","Shark","Broccoli","Cactustoy","Carrot","CatHead","Snake","Onion","DodoBird","CupHalf","casper","Rat","Mower","Crab","Santa","Hand_grips","Balloon_rotate","Gaming_microphone","Shuttle","Cat_Minti","Megaphone","World_cup","Spitfire","Hen_2","Oreo","Axe","Mustard","Robot_2","Cat_Luci","Dice","EmpireTower","Launcher","Gamepad","Rattle","Popsicle-chocolate","ChipGreen","Gas_station","Bell","BoxOpen","PizzaSlice","Camera","Earth","PizzaSliced","Paper_Towels","ChickenLeg","Shaker_salt","Hair_brush","Bowling_pins","Radio_4","Heart","Umbrella","Clock","Diamond_2","Saturn","Rolling_pin_2","Animal_Penguin","Tenis_ball","Liquid_soap","Bulb","Barrel","Waffle","Star","Chessboard","Castle","Bull","Bucket","Croissant","Lighthouse","Chocolate_2","Lifebuoy","Orange","pelican","Angel","Goomba","Cone","Avocado","Fluffy","Spices","Koala","Mami","Tractor_Shovel","Bear","Remote","Tree","Teepee","Dollars_container","Brain","Volcano","Toaster","Pigeon_2","Cola","iceberg","Wheelbarrow","Medieval_church","Ladybug","Maple","Willys","Scorpion","mouse_2","Chick","Microphone_2","Lamp_3","Mower_Ride","Car4x4","Alien","Rabbit","Astronaut","Hourglass"};
-  public static bool HasVoxelSeparation(int number){ValidateLevel(number);return number<=6||(number>=106&&number<=114);}
-  public static bool HasVoxelCavity(int number){ValidateLevel(number);return number==7||HasVoxelSeparation(number);}
-  public static bool HasVoxelEdges(int number){ValidateLevel(number);return number==2||number==5||number==6||(number>=96&&number<=114);}
-  public static Color? VoxelEdgeColor(int number){ValidateLevel(number);return number==2||(number>=106&&number<=111)?(Color?)new Color(.2f,.2f,.2f,1):null;}
-  public static string SceneName(int number){ValidateLevel(number);return "Level"+number.ToString("00");}
-  public static string ModelKey(int number){ValidateLevel(number);return ModelKeys[number-1];}
+  public const string GameSceneName="Game",GameScenePath="Assets/Scenes/Game.unity";
+  [Serializable] sealed class PresentationFile { public int version;public LevelPresentationData[] entries; }
+  static LevelPresentationData[] presentations;
+  public static LevelPresentationData Presentation(int number){ValidateLevel(number);if(presentations==null)ReloadPresentationCatalog();return presentations[number-1];}
+  /// <summary>Editor import/preview can explicitly refresh data; failed validation never publishes a partial catalog.</summary>
+  public static void ReloadPresentationCatalog(){
+   var asset=Resources.Load<TextAsset>("Levels/PresentationCatalog");if(asset==null)throw new InvalidOperationException("Missing level presentation catalog");
+   presentations=ParsePresentationCatalog(asset.text);
+  }
+  /// <summary>Validates schema before Unity maps data, so omitted false/zero-valued fields cannot silently default.</summary>
+  public static LevelPresentationData[] ParsePresentationCatalog(string json){
+   if(string.IsNullOrWhiteSpace(json))throw new InvalidOperationException("Missing level presentation JSON");
+   JObject root;try{root=JObject.Parse(json);}catch(Newtonsoft.Json.JsonException error){throw new InvalidOperationException("Invalid level presentation JSON",error);}
+   if((double)Require(root,"version",JTokenType.Integer)!=1)throw new InvalidOperationException("Unknown level presentation version");
+   var entries=(JArray)Require(root,"entries",JTokenType.Array);if(entries.Count!=LastLevel)throw new InvalidOperationException("Incomplete level presentation catalog");
+   var seen=new System.Collections.Generic.HashSet<int>();
+   foreach(var token in entries){
+    var record=token as JObject;if(record==null)throw new InvalidOperationException("Invalid level presentation record");
+    double value=(double)Require(record,"number",JTokenType.Integer);if(value<1||value>LastLevel||!seen.Add((int)value))throw new InvalidOperationException("Invalid or duplicate level presentation number");
+    string key=(string)Require(record,"modelKey",JTokenType.String);if(string.IsNullOrWhiteSpace(key)||!key.All(c=>char.IsLetterOrDigit(c)||c=='_'||c=='-'))throw new InvalidOperationException("Invalid presentation model key");
+    foreach(string field in new[]{"edges","separation","cavity","overrideEdgeColor","sourceHandoff","softShadows"})Require(record,field,JTokenType.Boolean);
+    foreach(string field in new[]{"edgeColor","ambientLight"}){var color=(JObject)Require(record,field,JTokenType.Object);foreach(string channel in new[]{"r","g","b","a"})RequireUnitNumber(color,channel);}
+    foreach(string field in new[]{"shadowStrength","shadowBias","shadowNormalBias"})RequireUnitNumber(record,field);
+   }
+   var file=JsonUtility.FromJson<PresentationFile>(json);var records=new LevelPresentationData[LastLevel];foreach(var entry in file.entries)records[entry.number-1]=entry;return records;
+  }
+  static JToken Require(JObject source,string name,JTokenType type){var value=source[name];if(value==null||value.Type!=type)throw new InvalidOperationException("Missing or invalid presentation field: "+name);return value;}
+  static void RequireUnitNumber(JObject source,string name){var value=source[name];if(value==null||(value.Type!=JTokenType.Float&&value.Type!=JTokenType.Integer))throw new InvalidOperationException("Missing presentation number: "+name);double number=(double)value;if(double.IsNaN(number)||double.IsInfinity(number)||number<0||number>1)throw new InvalidOperationException("Presentation number outside0–1: "+name);}
+  public static bool HasVoxelSeparation(int number){return Presentation(number).separation;}
+  public static bool HasVoxelCavity(int number){return Presentation(number).cavity;}
+  public static bool HasVoxelEdges(int number){return Presentation(number).edges;}
+  public static Color? VoxelEdgeColor(int number){var data=Presentation(number);return data.overrideEdgeColor?(Color?)data.edgeColor:null;}
+  public static string LevelKey(int number){ValidateLevel(number);return "Level"+number.ToString("00");}
+  public static string ModelKey(int number){ValidateLevel(number);return Presentation(number).modelKey;}
   static void ValidateLevel(int number){if(number<1||number>LastLevel)throw new ArgumentOutOfRangeException("number");}
   public LevelData Level(){return Level(1);}
   public LevelData Level(int number){
    LevelData value;if(levels.TryGetValue(number,out value))return value;
-   var key="Levels/"+SceneName(number);var asset=Resources.Load<TextAsset>(key);
+   var key="Levels/"+LevelKey(number);var asset=Resources.Load<TextAsset>(key);
    if(asset==null)throw new InvalidOperationException("Missing level data "+key);
    value=JsonUtility.FromJson<LevelData>(asset.text);levels.Add(number,value);return value;
   }

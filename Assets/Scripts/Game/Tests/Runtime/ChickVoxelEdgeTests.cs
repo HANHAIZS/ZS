@@ -9,13 +9,13 @@ namespace BeeHarvest.Tests {
  public sealed class ChickVoxelEdgeTests : EconomyTestFixture {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
   static HarvestBoardView Board=>Object.FindObjectOfType<HarvestBoardView>();
-  static IEnumerator Load(int n){SceneManager.LoadScene(LevelOneAssets.SceneName(n));yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();}
+  static IEnumerator Load(int n){LevelSceneTestLoader.Load(LevelOneAssets.LevelKey(n));yield return null;yield return null;Object.FindObjectOfType<LevelOneController>().enabled=false;Board.AutoRotate=false;Board.ResetRotation();}
   [UnityTest] public IEnumerator ChickUsesOneBorderedPalettePerOriginalColorAndKeepsExactMeshes(){
    yield return Load(6);var root=GameObject.Find("Chick(Clone)");var renders=root.GetComponentsInChildren<Renderer>();Assert.AreEqual(870,renders.Length);Assert.AreEqual(4,renders.Select(v=>v.sharedMaterial).Distinct().Count());
    var prefab=Resources.Load<GameObject>("Prefabs/Gameplay/Chick");var originals=prefab.GetComponentsInChildren<MeshFilter>().ToDictionary(f=>f.name);
    foreach(var renderer in renders){Assert.AreEqual("BeeHarvest/VoxelCavity",renderer.sharedMaterial.shader.name);Assert.AreSame(originals[renderer.name].sharedMesh,renderer.GetComponent<MeshFilter>().sharedMesh);var original=originals[renderer.name].GetComponent<Renderer>().sharedMaterial;Assert.Less(Vector4.Distance(original.GetColor("_BaseColor"),renderer.sharedMaterial.GetColor("_BaseColor")),.00001f);Assert.AreEqual("Universal Render Pipeline/Lit",original.shader.name);}
    var materials=renders.Select(v=>v.sharedMaterial).Distinct().ToArray();Object.FindObjectOfType<LevelOneController>().RestartLevel();Board.Sync();Assert.AreEqual(870,root.GetComponentsInChildren<Renderer>().Count(v=>v.enabled));CollectionAssert.AreEquivalent(materials,root.GetComponentsInChildren<Renderer>().Select(v=>v.sharedMaterial).Distinct());
-   SceneManager.LoadScene("Level08");yield return null;yield return null;Assert.IsTrue(materials.All(m=>m==null));Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(v=>v.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
+   LevelSceneTestLoader.Load("Level08");yield return null;yield return null;Assert.IsTrue(materials.All(m=>m==null));Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(v=>v.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
   }
   [UnityTest] public IEnumerator ActualGpuRenderShowsBlackEdgesAndBrightFaceWithoutTriangleDiagonal(){
    yield return Load(6);int id=Enumerable.Range(0,Model.Cubes.Count).First(i=>Model.Cubes[i].Data.color=="Palette13");

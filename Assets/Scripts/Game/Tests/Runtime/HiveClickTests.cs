@@ -46,7 +46,7 @@ namespace BeeHarvest.Tests
             var l=Object.FindObjectOfType<LevelOneController>();var v=Object.FindObjectOfType<VictoryPopupController>(true);var h=l==null?null:l.GetComponent<HiveHopController>();
             var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
             var module=EventSystem.current==null?null:EventSystem.current.GetComponent<StandaloneInputModule>();
-            return "scene="+SceneManager.GetActiveScene().name+" home="+nav.IsHome+" level="+nav.CurrentLevel+" paused="+m.Paused+" won="+m.Won
+            return "scene="+LevelSceneTestLoader.CurrentKey+" home="+nav.IsHome+" level="+nav.CurrentLevel+" paused="+m.Paused+" won="+m.Won
              +" controller="+(l==null?"null":(l.enabled+"/appPause="+l.IsApplicationPaused))
              +" hop="+(h==null?"null":h.GetType().GetField("hive",flags).GetValue(h)+"/modal="+h.GetType().GetField("modalInputBlocked",flags).GetValue(h))
              +" victory="+(v==null?"null":v.IsOpen+"/opening="+(PopupMotionTestWait.Motion(v)?.IsOpening??false)+"/fresh="+v.GetType().GetField("waitingForFreshPointer",flags).GetValue(v))
@@ -73,7 +73,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator DisabledHopRejectsInputAndCanResumeWithANewClick()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var controller = Object.FindObjectOfType<LevelOneController>();
@@ -95,7 +95,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator ClickHopsIntoFirstEmptySlotAndKeepsTheTile()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var hud = Object.FindObjectOfType<LevelOneController>().Hud;
@@ -139,7 +139,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator RepeatedClicksDoNotActivateTheRearHiveOrAnotherColumn()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var hud = Object.FindObjectOfType<LevelOneController>().Hud;
@@ -161,7 +161,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator RestartPauseAndBackgroundCancelAnUnfinishedHop()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var controller = Object.FindObjectOfType<LevelOneController>();
@@ -197,7 +197,7 @@ namespace BeeHarvest.Tests
         [UnityTest]
         public IEnumerator FullSlotsRejectAClickWithoutMovingOrConsumingQuota()
         {
-            SceneManager.LoadScene("Level01");
+            LevelSceneTestLoader.Load("Level01");
             yield return null;
             yield return null;
             var app = BeeHarvestApp.Interface;

@@ -9,7 +9,7 @@ using UnityEngine.TestTools;
 namespace BeeHarvest.Tests {
  public sealed class LevelsFourFiveGameplayTests : EconomyTestFixture {
   static HarvestModel Model=>BeeHarvestApp.Interface.GetModel<HarvestModel>();
-  static IEnumerator Load(int number){string scene="Level"+number.ToString("00");Assert.IsTrue(Application.CanStreamedLevelBeLoaded(scene),"New level scene must be playable");SceneManager.LoadScene(scene);yield return null;yield return null;}
+  static IEnumerator Load(int number){string scene="Level"+number.ToString("00");Assert.IsTrue(LevelSceneTestLoader.CanLoad(scene),"New level scene must be playable");LevelSceneTestLoader.Load(scene);yield return null;yield return null;}
   [UnityTest] public IEnumerator BothNewScenesUseTheirOwnModelAndActuallyDeliver(){
    var names=new[]{"Bee","Watermelon"};var counts=new[]{1105,2840};var hives=new[]{15,51};
    for(int i=0;i<2;i++){
@@ -25,8 +25,8 @@ namespace BeeHarvest.Tests {
     yield return Load(from);var level=Object.FindObjectOfType<LevelOneController>();level.enabled=false;var app=BeeHarvestApp.Interface;app.SendCommand(new DetachBeeFlightPresentationCommand(Object.FindObjectOfType<BeeFlightView>().GetInstanceID()));
     app.SendCommand(new StartLevelCommand(new LevelData{cubes=new[]{new CubeData{id=0,color="red"}},hives=new[]{new HiveData{column=0,color="red",quota=1}}}));app.SendCommand(new ActivateHiveCommand(0));app.SendCommand(new AdvanceHarvestCommand(10));Assert.IsTrue(Model.Won);yield return null;
     var popup=Object.FindObjectOfType<VictoryPopupController>();float deadline=Time.realtimeSinceStartup+3;while(!popup.ContinueButton.interactable&&Time.realtimeSinceStartup<deadline)yield return null;Assert.IsTrue(popup.ContinueButton.interactable);
-    popup.ContinueButton.onClick.Invoke();popup.ContinueButton.onClick.Invoke();string next="Level"+(from+1).ToString("00");deadline=Time.realtimeSinceStartup+5;while(SceneManager.GetActiveScene().name!=next&&Time.realtimeSinceStartup<deadline)yield return null;yield return null;yield return null;
-    Assert.AreEqual(next,SceneManager.GetActiveScene().name);Assert.AreEqual(from+1,Object.FindObjectOfType<LevelOneController>().LevelNumber);Assert.AreEqual(from==3?1105:2840,Model.Remaining);Assert.IsFalse(Model.Won);
+    popup.ContinueButton.onClick.Invoke();popup.ContinueButton.onClick.Invoke();string next="Level"+(from+1).ToString("00");deadline=Time.realtimeSinceStartup+5;while(LevelSceneTestLoader.CurrentKey!=next&&Time.realtimeSinceStartup<deadline)yield return null;yield return null;yield return null;
+    Assert.AreEqual(next,LevelSceneTestLoader.CurrentKey);Assert.AreEqual(from+1,Object.FindObjectOfType<LevelOneController>().LevelNumber);Assert.AreEqual(from==3?1105:2840,Model.Remaining);Assert.IsFalse(Model.Won);
    }
   }
   [UnityTest] public IEnumerator WatermelonLinkedPairWaitsForBothFrontsAndCommitsTogether(){

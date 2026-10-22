@@ -14,7 +14,7 @@ namespace BeeHarvest.Tests {
     Assert.DoesNotThrow(()=>type.GetMethod("Apply",BindingFlags.Static|BindingFlags.Public).Invoke(null,null),"Rebuilding menu must reuse already baked glyphs");
     Assert.AreEqual("Assets/Scenes/MainMenu.unity",EditorBuildSettings.scenes[0].path);
     Assert.AreEqual(1,EditorBuildSettings.scenes.Count(s=>s.path=="Assets/Scenes/MainMenu.unity"));
-    Assert.AreEqual(1,EditorBuildSettings.scenes.Count(s=>s.path=="Assets/Scenes/Level01.unity"));
+    Assert.AreEqual(1,EditorBuildSettings.scenes.Count(s=>s.path==LevelOneAssets.GameScenePath));
     Assert.IsNotNull(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/UI/MainMenuPage.prefab"));
     var page=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/UI/MainMenuPage.prefab").GetComponent<MainMenuPage>();
     Assert.IsNotNull(page.Economy,"Regenerating menu must retain the economy header");
