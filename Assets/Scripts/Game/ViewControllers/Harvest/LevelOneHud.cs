@@ -15,11 +15,19 @@ namespace BeeHarvest {
   public RectTransform[] SlotTargets;
   HarvestModel model;HarvestSystem rules;int revision=-1,generation=-1;
   bool hiveInputEnabled=true;
+  float queueColumnPitch=.30f;
   Outline[] slotOutlines,queueOutlines,nextOutlines;
   public int QueuePage {get;private set;}
   public int LayoutVersion {get;private set;}
   /// <summary>Applies per-level compact layout once, before projected hive placement.</summary>
   public void ApplyPresentation(LevelPresentationData data){
+   queueColumnPitch=data.queueColumnPitch>0?data.queueColumnPitch:.30f;
+   if(data.slotColumnPitch>0)for(int slot=0;slot<SlotLabels.Length;slot++){
+    var r=SlotLabels[slot].rectTransform;float center=.5f+((slot<5?slot:0)-2)*data.slotColumnPitch;
+    float half=(r.anchorMax.x-r.anchorMin.x)*.5f;
+    r.anchorMin=new Vector2(center-half,r.anchorMin.y);r.anchorMax=new Vector2(center+half,r.anchorMax.y);
+    var position=r.anchoredPosition;position.x=0;r.anchoredPosition=position;
+   }
    if(data.slotYOffset!=0)foreach(var label in SlotLabels){var r=label.rectTransform;var delta=Vector2.up*data.slotYOffset;r.anchorMin+=delta;r.anchorMax+=delta;}
    if(data.queueFrontY>0)for(int c=0;c<5;c++)for(int row=0;row<VisibleRows;row++){
     var r=RowControl(c,row);float center=data.queueFrontY-row*data.queueRowPitch;
@@ -90,7 +98,7 @@ namespace BeeHarvest {
    for(int c=0;c<5;c++){
     bool shown=c<model.ColumnCount;QueueButtons[c].gameObject.SetActive(shown);NextLabels[c].gameObject.SetActive(shown);
     if(VisibleRows==3)ThirdLabels[c].gameObject.SetActive(shown);
-    if(!shown)continue;float x=model.ColumnCount==3?.5f+(c-1)*.30f:(c+.5f)/model.ColumnCount;
+    if(!shown)continue;float x=model.ColumnCount==3?.5f+(c-1)*queueColumnPitch:(c+.5f)/model.ColumnCount;
     // Front labels stretch inside their buttons; rear labels are the controls themselves.
     QueueLabels[c].rectTransform.anchorMin=Vector2.zero;QueueLabels[c].rectTransform.anchorMax=Vector2.one;
     MoveColumn((RectTransform)QueueButtons[c].transform,x);

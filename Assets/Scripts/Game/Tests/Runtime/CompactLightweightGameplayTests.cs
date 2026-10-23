@@ -30,7 +30,7 @@ namespace BeeHarvest.Tests {
     BeeSceneSteps.Advance(.06f);Assert.Less(Vector3.Distance(Vector3.Lerp(from,grip.position,.5f),cargo.position),.0003f,"Halfway through the new120ms handoff");var app=BeeHarvestApp.Interface;app.SendCommand(new PauseHarvestCommand(true));var paused=cargo.position;BeeSceneSteps.Advance(1);Assert.AreEqual(paused,cargo.position);app.SendCommand(new PauseHarvestCommand(false));BeeSceneSteps.Advance(.061f);Assert.Less(Vector3.Distance(grip.position,cargo.position),.00001f);Assert.AreEqual(0,f.TransportPhase);Assert.AreEqual("BeeHarvest/VoxelEdges",cargo.GetComponent<Renderer>().sharedMaterial.shader.name);
     Level.RestartLevel();hud.Sync();Hives.Sync();Board.Sync();Bees.RenderFlights();Assert.AreEqual(rs.Length,Model.Remaining);Assert.AreEqual(0,Model.Deposited);Assert.AreEqual(.3495f,Center(hud.SlotLabels[0].rectTransform),.0001f,"Retry must not apply the downward offset a second time");Assert.IsTrue(rs.All(r=>r.enabled));
    }
-   yield return Load(114);Assert.AreEqual(.3975f,Center(Level.Hud.SlotLabels[0].rectTransform),.0001f);Assert.AreEqual(.315f,Center(Level.Hud.RowControl(0,0)),.0001f);Assert.AreEqual(.18f,Model.Timing.DepartureSeconds);Assert.AreEqual(.09f,Model.Timing.HandoffSeconds);
+   yield return Load(7);Assert.AreEqual(.3975f,Center(Level.Hud.SlotLabels[0].rectTransform),.0001f);Assert.AreEqual(.315f,Center(Level.Hud.RowControl(0,0)),.0001f);Assert.AreEqual(.18f,Model.Timing.DepartureSeconds);Assert.AreEqual(.09f,Model.Timing.HandoffSeconds);
   }
  }
 }

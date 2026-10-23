@@ -36,6 +36,9 @@ namespace BeeHarvest {
     foreach(string field in new[]{"shadowStrength","shadowBias","shadowNormalBias"})RequireUnitNumber(record,field);
     OptionalNumber(record,"modelScaleMultiplier",1,.8,1.5);OptionalNumber(record,"modelCenterY",.66,.5,.75);
     OptionalNumber(record,"slotYOffset",0,-.1,0);OptionalNumber(record,"queueFrontY",0,0,.35);OptionalNumber(record,"queueRowPitch",0,0,.1);
+    OptionalNumber(record,"queueColumnPitch",0,0,.30);OptionalNumber(record,"slotColumnPitch",0,0,.195);
+    double queueColumn=(double)record["queueColumnPitch"],slotColumn=(double)record["slotColumnPitch"];
+    if((queueColumn>0&&queueColumn<.20)||(slotColumn>0&&slotColumn<.15))throw new InvalidOperationException("Unsafe horizontal hive spacing");
     double front=(double)record["queueFrontY"],pitch=(double)record["queueRowPitch"];
     if((front==0)!=(pitch==0)||(front>0&&(pitch<.065||front-2*pitch<.125)))throw new InvalidOperationException("Unsafe hive queue spacing");
    }

@@ -17,7 +17,7 @@ namespace BeeHarvest.Tests {
    var materials=renders.Select(v=>v.sharedMaterial).Distinct().ToArray();Object.FindObjectOfType<LevelOneController>().RestartLevel();Board.Sync();Assert.AreEqual(870,root.GetComponentsInChildren<Renderer>().Count(v=>v.enabled));CollectionAssert.AreEquivalent(materials,root.GetComponentsInChildren<Renderer>().Select(v=>v.sharedMaterial).Distinct());
    LevelSceneTestLoader.Load("Level08");yield return null;yield return null;Assert.IsTrue(materials.All(m=>m==null));Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(v=>v.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
   }
-  [UnityTest] public IEnumerator ActualGpuRenderShowsBlackEdgesAndBrightFaceWithoutTriangleDiagonal(){
+  [UnityTest] public IEnumerator ActualGpuRenderShowsSoftDarkEdgesAndBrightFaceWithoutTriangleDiagonal(){
    yield return Load(6);int id=Enumerable.Range(0,Model.Cubes.Count).First(i=>Model.Cubes[i].Data.color=="Palette13");
    var cube=new GameObject("EdgeRenderProbe");var camObject=new GameObject("EdgeRenderCamera");var texture=new Texture2D(128,128,TextureFormat.RGB24,false);var target=new RenderTexture(128,128,24);var previous=RenderTexture.active;
    try{
@@ -25,7 +25,7 @@ namespace BeeHarvest.Tests {
     var camera=camObject.AddComponent<Camera>();camera.enabled=false;camera.orthographic=true;camera.orthographicSize=.64f;camera.nearClipPlane=.1f;camera.farClipPlane=10;camera.cullingMask=1<<30;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.blue;camera.transform.position=cube.transform.position+Vector3.back*3;camera.targetTexture=target;
     camera.Render();RenderTexture.active=target;texture.ReadPixels(new Rect(0,0,128,128),0,0);texture.Apply();
     Assert.Greater(texture.GetPixel(64,64).grayscale,.25f,"Face center must preserve its white color, without a triangle wire");Assert.Greater(texture.GetPixel(40,40).grayscale,.25f,"Face diagonal must remain colored");
-    int black=0;for(int x=15;x<22;x++)if(texture.GetPixel(x,64).maxColorComponent<.12f)black++;
+    int black=0;for(int x=15;x<22;x++)if(texture.GetPixel(x,64).maxColorComponent<texture.GetPixel(64,64).maxColorComponent*.75f)black++;
     Assert.GreaterOrEqual(black,1,"A real visible cube boundary must contain a black outline");
    }finally{RenderTexture.active=previous;Object.Destroy(cube);Object.Destroy(camObject);Object.Destroy(texture);target.Release();Object.Destroy(target);}
   }

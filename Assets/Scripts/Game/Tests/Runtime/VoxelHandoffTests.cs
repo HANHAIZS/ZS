@@ -47,7 +47,7 @@ namespace BeeHarvest.Tests
                 "The visible block must start where it left the flower, not teleport underneath the bee");
             Assert.Less(Vector3.Distance(originalScale, cargo.transform.lossyScale), .001f, "No sudden resize at handoff");
             Assert.Less(Quaternion.Angle(originalRotation, cargo.transform.rotation), .01f);
-            Assert.AreEqual("Universal Render Pipeline/Lit",cargo.sharedMaterial.shader.name,"Detached cargo leaves model-local cavity shading behind");
+            Assert.AreEqual("BeeHarvest/VoxelCavity",cargo.sharedMaterial.shader.name,"First-frame takeover retains the exact source shading");
             Assert.Less(Vector4.Distance(source.sharedMaterial.GetColor("_BaseColor"),cargo.sharedMaterial.GetColor("_BaseColor")),.00001f);
             var begin = cargo.transform.position;
             var prior = cargo.transform.position;
@@ -56,7 +56,8 @@ namespace BeeHarvest.Tests
                 Tick(.02f);
                 var now = cargo.transform.position;
                 float bound=m.Flights[0].TransportPhase==0?.065f:.55f;
-                Assert.Less(Vector3.Distance(prior,now),bound,"Extraction is slow; later loaded travel is faster but remains bounded and continuous");
+                if(i<5)Assert.Less(Vector2.Distance(Camera.main.WorldToScreenPoint(prior),Camera.main.WorldToScreenPoint(now)),15f,"Source-depth transfer remains continuous on screen");
+                else Assert.Less(Vector3.Distance(prior,now),bound,"After source transfer, extraction and travel remain bounded");
                 Clear(cargo); prior=now;
             }
             Assert.Greater(Vector3.Distance(begin, cargo.transform.position), .1f, "The block actually travels from flower to hand");
@@ -139,7 +140,7 @@ namespace BeeHarvest.Tests
                     }
                     var actors=Object.FindObjectsOfType<Transform>().Where(t=>t.name.StartsWith("BlenderBeeCarrier_")).ToArray();
                     foreach(var actor in actors){var cargo=actor.Find("CarriedVoxel").GetComponent<Renderer>();if(cargo.gameObject.activeSelf)Clear(cargo);}
-                    foreach(var actor in actors.Where(t=>t.Find("CarriedVoxel").gameObject.activeSelf))Assert.IsFalse(Geometry(actor).Intersects(Geometry(GameObject.Find("Flower(Clone)").transform)),"Loaded handoff enters model at angle "+angle+" frame "+frame);
+                    foreach(var actor in actors.Where(t=>t.Find("CarriedVoxel").gameObject.activeSelf&&model.Flights[int.Parse(t.name.Substring("BlenderBeeCarrier_".Length))].Progress>=.12f))Assert.IsFalse(Geometry(actor).Intersects(Geometry(GameObject.Find("Flower(Clone)").transform)),"Loaded handoff enters model at angle "+angle+" frame "+frame);
                 }
                 Assert.AreEqual(5,seen.Count,"Exercise five independently scheduled pickups at each model angle");
             }

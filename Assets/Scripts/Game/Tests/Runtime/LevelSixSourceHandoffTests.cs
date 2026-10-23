@@ -44,8 +44,8 @@ namespace BeeHarvest.Tests {
     Assert.Less(gap,.008f,"Fixed-length feet track the visible block surface throughout handoff");if(i<9)BeeSceneSteps.Advance(.01f);
    }
   }
-  [UnityTest] public IEnumerator OtherScenesIncludingTheSharedChick106KeepTheirExistingGripAttachment(){
-   foreach(int n in new[]{1,106,107}){yield return Load(n);var f=Select();var source=GameObject.Find(Model.Cubes[f.Cube].Data.name).transform;BeeSceneSteps.FirstPickup();var cargo=Cargo(f);Assert.Less(Vector3.Distance(cargo.position,Grip(cargo).position),.00001f);Assert.Greater(Vector3.Distance(source.position,cargo.position),.1f,"Only level six uses true source-depth transfer");Assert.AreEqual(n==1?"Universal Render Pipeline/Lit":"BeeHarvest/VoxelEdges",cargo.GetComponent<Renderer>().sharedMaterial.shader.name);}
+  [UnityTest] public IEnumerator UnselectedScenesKeepTheirExistingGripAttachment(){
+   foreach(int n in new[]{7,8}){yield return Load(n);var f=Select();var source=GameObject.Find(Model.Cubes[f.Cube].Data.name).transform;BeeSceneSteps.FirstPickup();var cargo=Cargo(f);Assert.Less(Vector3.Distance(cargo.position,Grip(cargo).position),.00001f);Assert.Greater(Vector3.Distance(source.position,cargo.position),.1f,"Levels outside the requested range retain direct grip attachment");Assert.AreEqual(LevelOneAssets.HasVoxelEdges(n)?"BeeHarvest/VoxelEdges":"Universal Render Pipeline/Lit",cargo.GetComponent<Renderer>().sharedMaterial.shader.name);}
   }
   [UnityTest] public IEnumerator GpuFirstFrameKeepsTheSourceAppearanceInsteadOfOpeningAnEmptyHole(){
    yield return Load(6);var root=GameObject.Find("Chick(Clone)");foreach(var r in root.GetComponentsInChildren<Renderer>())r.gameObject.layer=30;var f=Select();

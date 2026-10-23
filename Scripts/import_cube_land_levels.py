@@ -105,6 +105,8 @@ def convert(raw,number,*,repack=True):
     if authored and not authored.issubset({h['sourceRid'] for h in result['hives']}):raise ValueError('Missing mystery hive identity')
     for hive in result['hives']:
         if hive['sourceRid'] in authored:hive['isHidden']=True
+    if 1<=number<=6 or 96<=number<=114:
+        result['beeTiming']=dict(departureSeconds=.26,settleSeconds=.18,reachSeconds=.16,liftSeconds=.22,handoffSeconds=.09)
     if 115<=number<=119:
         result['dispersedCollection']=True
         result['beeTiming']=dict(departureSeconds=.26,settleSeconds=.18,reachSeconds=.16,liftSeconds=.26,handoffSeconds=.12)
