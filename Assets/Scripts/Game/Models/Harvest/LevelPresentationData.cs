@@ -7,5 +7,6 @@ namespace BeeHarvest {
   public bool edges,separation,cavity,overrideEdgeColor,sourceHandoff,softShadows;
   public Color edgeColor,ambientLight;
   public float shadowStrength,shadowBias,shadowNormalBias;
+  public float modelScaleMultiplier=1,modelCenterY=.66f,slotYOffset,queueFrontY,queueRowPitch;
  }
 }

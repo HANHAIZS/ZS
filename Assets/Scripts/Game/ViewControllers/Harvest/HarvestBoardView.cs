@@ -32,8 +32,8 @@ namespace BeeHarvest {
    destination.sharedMaterial=voxelCavity!=null?voxelCavity.OriginalMaterial(id):source.sharedMaterial;source.GetPropertyBlock(block);destination.SetPropertyBlock(block);
   }
   /// <summary>Instantiates Blender art and resolves stable voxel identities once.</summary>
-  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false,Color? outlineColor=null,bool cavityShading=false,bool separateVoxels=false){
-   model=state;assets=repo;hiveView=sources;flower=repo.Spawn(modelKey,transform).transform;flower.localScale=Vector3.one*(.86f*(separateVoxels?1.04f:1));flower.position=new Vector3(0,7.85f,0);
+  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false,Color? outlineColor=null,bool cavityShading=false,bool separateVoxels=false,float modelScaleMultiplier=1,float modelCenterY=.66f){
+   model=state;assets=repo;hiveView=sources;flower=repo.Spawn(modelKey,transform).transform;flower.localScale=Vector3.one*(.86f*(separateVoxels?1.04f:1)*modelScaleMultiplier);flower.position=new Vector3(0,7.85f,0);
    flightCamera=Camera.main;if(flightCamera==null)throw new System.InvalidOperationException("Level requires a MainCamera");
    cubes=new Transform[model.Cubes.Count];cubeRenderers=new Renderer[cubes.Length];var all=flower.GetComponentsInChildren<Transform>(true);
    var byName=new Dictionary<string,Transform>(all.Length);foreach(var t in all)byName[t.name]=t;
@@ -41,7 +41,7 @@ namespace BeeHarvest {
    if(outlineEdges){voxelEdges=new VoxelEdgeVisuals(cubes[0].GetComponent<MeshFilter>().sharedMesh.bounds,outlineColor);foreach(var renderer in cubeRenderers)voxelEdges.Apply(renderer);}
    Bounds shell=cubeRenderers[0].bounds;foreach(var renderer in cubeRenderers)shell.Encapsulate(renderer.bounds);
    // Center the entire voxel art between the top collector and slot row, including off-center stems/leaves.
-   var center=flightCamera.WorldToViewportPoint(shell.center);center.x=.5f;center.y=.66f+LayoutViewportYOffset;
+   var center=flightCamera.WorldToViewportPoint(shell.center);center.x=.5f;center.y=modelCenterY+LayoutViewportYOffset;
    var shift=flightCamera.ViewportToWorldPoint(center)-shell.center;flower.position+=shift;shell.center+=shift;
    modelLocalBounds=new Bounds(flower.InverseTransformPoint(shell.center),shell.size/flower.lossyScale.x);
    var collector=repo.Spawn("Collector",transform);collectorRoot=collector.transform;collector.transform.localScale=Vector3.one*.62f;collector.transform.position=CollectorPosition();collector.transform.rotation=Quaternion.Euler(0,180,0);

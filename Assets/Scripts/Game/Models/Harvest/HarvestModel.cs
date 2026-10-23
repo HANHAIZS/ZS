@@ -22,6 +22,7 @@ namespace BeeHarvest {
   public IReadOnlyList<int> Slots=>slots;
   public int ColumnCount {get;internal set;}=5;
   public bool DispersedCollection {get;internal set;}
+  public BeeTiming Timing {get;internal set;}=BeeTiming.Default;
   public bool HasLinkedGroups {get;internal set;}
   internal float EntryClock;
   internal readonly float[] DeparturePorts=new float[6];

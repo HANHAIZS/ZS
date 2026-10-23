@@ -38,9 +38,10 @@ namespace BeeHarvest
             Presentation.Apply(presentation, LevelNumber);
             this.SendCommand(new StartLevelCommand(assets.Level(LevelNumber)));
             hives = GetComponent<HiveModelView>();
+            Hud.ApplyPresentation(presentation);
             hives.Initialize(model, rules, assets, Hud);
             board = GetComponent<HarvestBoardView>();
-            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), presentation.edges, presentation.overrideEdgeColor ? (Color?)presentation.edgeColor : null,presentation.cavity,presentation.separation);
+            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), presentation.edges, presentation.overrideEdgeColor ? (Color?)presentation.edgeColor : null,presentation.cavity,presentation.separation,presentation.modelScaleMultiplier,presentation.modelCenterY);
             bees = GetComponent<BeeFlightView>();
             bees.Initialize(model, board, assets, presentation.sourceHandoff);
             hop = GetComponent<HiveHopController>();

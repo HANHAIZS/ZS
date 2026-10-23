@@ -8,7 +8,7 @@ namespace BeeHarvest
     public sealed class BeeFlightView : BeeHarvestController
     {
         const float ReachDepth=.07f, PickupScale=.12f, DepartureScale=.18f;
-        const float EmptySpeed=13f, LoadedSpeed=24f, DetachSeconds=.09f;
+        const float EmptySpeed=13f, LoadedSpeed=24f;
         static readonly int CavityStrength=Shader.PropertyToID("_CavityStrength"), CavityWorldToGrid=Shader.PropertyToID("_CavityWorldToGrid");
 
         sealed class Actor
@@ -216,8 +216,8 @@ namespace BeeHarvest
                 a.Exit=board.CarryLanePoint(a.ExtractEnd,f.Lane,f.Id);
                 bool waitingForPickup=f.Stage==0&&f.ClearedApproach&&!f.CollectionGranted;
                 bool collecting=f.Stage==0&&f.CollectionGranted&&f.Progress>=AdvanceHarvestCommand.ApproachSeconds;
-                float reach=f.Stage==0?Mathf.SmoothStep(0,1,Mathf.Clamp01((f.Progress-AdvanceHarvestCommand.ApproachSeconds-AdvanceHarvestCommand.SettleSeconds)/AdvanceHarvestCommand.ReachSeconds)):0;
-                float lift=f.Stage==1&&f.TransportPhase==0?Mathf.SmoothStep(0,1,Mathf.Clamp01(f.PhaseProgress/AdvanceHarvestCommand.LiftSeconds)):1;
+                float reach=f.Stage==0?Mathf.SmoothStep(0,1,Mathf.Clamp01((f.Progress-AdvanceHarvestCommand.ApproachSeconds-model.Timing.SettleSeconds)/model.Timing.ReachSeconds)):0;
+                float lift=f.Stage==1&&f.TransportPhase==0?Mathf.SmoothStep(0,1,Mathf.Clamp01(f.PhaseProgress/model.Timing.LiftSeconds)):1;
                 Vector3 path,look;
                 if(f.Stage==0){
                     float u=approachU;
@@ -276,7 +276,7 @@ namespace BeeHarvest
                     var parent=a.Cargo.transform.parent.lossyScale;
                     a.Cargo.transform.localScale=new Vector3(a.SourceScale.x/parent.x,a.SourceScale.y/parent.y,a.SourceScale.z/parent.z);
                     if(a.Detaching){
-                        float t=f.TransportPhase==0?Mathf.Clamp01((f.Age-a.DetachAt)/DetachSeconds):1;
+                        float t=f.TransportPhase==0?Mathf.Clamp01((f.Age-a.DetachAt)/model.Timing.HandoffSeconds):1;
                         float e=Mathf.SmoothStep(0,1,t);
                         a.Cargo.transform.position=Vector3.Lerp(a.DetachFrom,a.Grip.position,e);
                         a.Cargo.transform.rotation=Quaternion.Slerp(a.DetachFromRot,a.Body.rotation*a.CargoRotation,e);

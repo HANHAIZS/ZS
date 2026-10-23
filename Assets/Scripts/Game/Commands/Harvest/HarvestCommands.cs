@@ -16,8 +16,9 @@ namespace BeeHarvest {
    int columns=Data.columns==0?5:Data.columns;
    if(columns<1||columns>5)throw new ArgumentException("Invalid queue column count");
    foreach(var h in Data.hives)if(h.column>=columns)throw new ArgumentException("Hive is outside queue columns");
+   var timing=BeeTiming.From(Data.beeTiming);
    var groups=LinkedHiveGroups.Build(Data.hives);
-   var m=this.GetModel<HarvestModel>();m.ColumnCount=columns;m.DispersedCollection=Data.dispersedCollection;m.HasLinkedGroups=false;foreach(var group in groups)m.HasLinkedGroups|=group.Length>1;m.cubes.Clear();m.hives.Clear();m.flights.Clear();
+   var m=this.GetModel<HarvestModel>();m.Timing=timing;m.ColumnCount=columns;m.DispersedCollection=Data.dispersedCollection;m.HasLinkedGroups=false;foreach(var group in groups)m.HasLinkedGroups|=group.Length>1;m.cubes.Clear();m.hives.Clear();m.flights.Clear();
    foreach(var c in Data.cubes)m.cubes.Add(new CubeState{Data=c});for(int i=0;i<Data.hives.Length;i++){var h=Data.hives[i];m.hives.Add(new HiveState{Data=h,Remaining=h.quota,group=groups[i]});}
    m.slots.Clear();for(int i=0;i<5;i++)m.slots.Add(-1);m.SpeedSeconds=0;m.FreeSelection=false;m.EntryClock=0;Array.Clear(m.DeparturePorts,0,m.DeparturePorts.Length);
    foreach(var q in m.waiting)q.Clear();for(int i=0;i<m.hives.Count;i++)m.waiting[m.hives[i].Data.column].Add(i);m.Deposited=0;m.Remaining=Data.cubes.Length;m.InTransit=0;m.Won=false;m.Deadlocked=false;m.Paused=false;m.ViewDirection=UnityEngine.Vector3.back;m.ViewCameraPosition=new UnityEngine.Vector3(0,0,-1000);m.OrthographicView=true;m.ViewRevision++;m.BoardRevision++;m.Revision++;m.Generation++;
@@ -71,8 +72,8 @@ namespace BeeHarvest {
      if(!f.CollectionGranted){if(!rules.CollectionFree(f))continue;f.CollectionGranted=true;}
      Consume(ref f.Progress,ApproachSeconds,ref budget);
      if(f.Progress<ApproachSeconds-.00001f||(m.RequireFlightArrival&&!f.Reached))continue;
-     Consume(ref f.Progress,OutboundSeconds,ref budget);
-     if(f.Progress<OutboundSeconds-.00001f)continue;
+     Consume(ref f.Progress,m.Timing.OutboundSeconds,ref budget);
+     if(f.Progress<m.Timing.OutboundSeconds-.00001f)continue;
      var c=m.cubes[f.Cube];var h=m.hives[f.Hive];
      c.Stage=2;h.Reserved--;m.Remaining--;m.InTransit++;m.BoardRevision++;
      f.Stage=1;f.Progress=0;f.TransportPhase=0;f.PhaseProgress=0;f.Reached=!m.RequireFlightArrival;
@@ -86,7 +87,7 @@ namespace BeeHarvest {
       if(!rules.EntryFree(f))break;
       f.TransportPhase=4;f.PhaseProgress=0;f.Reached=!m.RequireFlightArrival;m.EntryClock=EntryInterval;
      }
-     float duration=f.TransportPhase==0?LiftSeconds:f.TransportPhase==2?ReturnSeconds-EntrySeconds:EntrySeconds;
+     float duration=f.TransportPhase==0?m.Timing.LiftSeconds:f.TransportPhase==2?ReturnSeconds-EntrySeconds:EntrySeconds;
      if(f.TransportPhase==2&&m.RequireFlightArrival&&!f.ClearedSource)duration=EscapeSeconds;
      Consume(ref f.PhaseProgress,duration,ref budget);
      if(!m.RequireFlightArrival&&f.TransportPhase==2&&f.PhaseProgress>=EscapeSeconds)f.ClearedSource=true;
@@ -108,7 +109,7 @@ namespace BeeHarvest {
     int ci=rules.FindDispatchTarget(h.Data.color);if(ci<0)continue;
     var f=new FlightState{Id=m.flights.Count,Cube=ci,Hive=hi,Slot=s,PickupNormal=rules.PickupNormal(ci),Lane=rules.ApproachLane(ci),Reached=!m.RequireFlightArrival};
     m.flights.Add(f);m.cubes[ci].Stage=1;m.cubes[ci].Task=f.Id;
-    h.Remaining--;h.Reserved++;h.Busy++;h.DepartureCooldown=DepartureInterval;m.DeparturePorts[s]=DepartureInterval;
+    h.Remaining--;h.Reserved++;h.Busy++;h.DepartureCooldown=m.Timing.DepartureSeconds;m.DeparturePorts[s]=m.Timing.DepartureSeconds;
     if(h.Remaining==0){m.slots[s]=-1;h.Slot=-1;}m.Revision++;
    }
    if(m.Deposited==m.Cubes.Count){m.Won=true;m.Revision++;return;}

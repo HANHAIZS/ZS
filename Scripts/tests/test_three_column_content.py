@@ -5,7 +5,7 @@ from import_cube_land_levels import convert
 ROOT=Path(__file__).resolve().parents[2]
 class ThreeColumnContentTests(unittest.TestCase):
  def test_every_production_level_exposes_exactly_three_live_queues(self):
-  for n in range(1,115):
+  for n in range(1,120):
    data=json.loads((ROOT/f'Assets/Resources/Levels/Level{n:02}.json').read_text())
    with self.subTest(level=n):
     self.assertEqual(3,data['columns']);self.assertEqual({0,1,2},{h['column'] for h in data['hives']})

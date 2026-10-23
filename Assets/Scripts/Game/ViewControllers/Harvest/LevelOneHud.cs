@@ -18,6 +18,16 @@ namespace BeeHarvest {
   Outline[] slotOutlines,queueOutlines,nextOutlines;
   public int QueuePage {get;private set;}
   public int LayoutVersion {get;private set;}
+  /// <summary>Applies per-level compact layout once, before projected hive placement.</summary>
+  public void ApplyPresentation(LevelPresentationData data){
+   if(data.slotYOffset!=0)foreach(var label in SlotLabels){var r=label.rectTransform;var delta=Vector2.up*data.slotYOffset;r.anchorMin+=delta;r.anchorMax+=delta;}
+   if(data.queueFrontY>0)for(int c=0;c<5;c++)for(int row=0;row<VisibleRows;row++){
+    var r=RowControl(c,row);float center=data.queueFrontY-row*data.queueRowPitch;
+    // Non-overlapping hit regions; hive centers and labels follow these same controls.
+    float half=Mathf.Min((r.anchorMax.y-r.anchorMin.y)*.5f,data.queueRowPitch*.49f);
+    r.anchorMin=new Vector2(r.anchorMin.x,center-half);r.anchorMax=new Vector2(r.anchorMax.x,center+half);
+   }
+  }
   public void Initialize(HarvestModel state,HarvestSystem system,System.Action<int> click,System.Action restart,LevelOneController level){
    model=state;rules=system;
    for(int i=0;i<5;i++){int c=i;QueueButtons[i].onClick.RemoveAllListeners();QueueButtons[i].onClick.AddListener(()=>click(DisplayedHive(c,false)));RearButtons[i].onClick.RemoveAllListeners();RearButtons[i].onClick.AddListener(()=>click(DisplayedHive(c,true)));if(VisibleRows==3){ThirdButtons[i].onClick.RemoveAllListeners();ThirdButtons[i].onClick.AddListener(()=>click(DisplayedHive(c,2)));}}

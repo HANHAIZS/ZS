@@ -2850,6 +2850,156 @@
       "shadowStrength": 0.3,
       "shadowBias": 0.04,
       "shadowNormalBias": 0.2
+    },
+    {
+      "number": 115,
+      "modelKey": "Lute",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2,
+      "modelScaleMultiplier": 1.28,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07
+    },
+    {
+      "number": 116,
+      "modelKey": "BustStatue",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2,
+      "modelScaleMultiplier": 1.28,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07
+    },
+    {
+      "number": 117,
+      "modelKey": "Sundae",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2,
+      "modelScaleMultiplier": 1.28,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07
+    },
+    {
+      "number": 118,
+      "modelKey": "GoldenBox",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2,
+      "modelScaleMultiplier": 1.18,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07
+    },
+    {
+      "number": 119,
+      "modelKey": "HiddenBox",
+      "edges": true,
+      "separation": true,
+      "cavity": true,
+      "overrideEdgeColor": false,
+      "sourceHandoff": true,
+      "edgeColor": {
+        "r": 0.2,
+        "g": 0.2,
+        "b": 0.2,
+        "a": 1
+      },
+      "ambientLight": {
+        "r": 0.48,
+        "g": 0.52,
+        "b": 0.63,
+        "a": 1
+      },
+      "softShadows": true,
+      "shadowStrength": 0.3,
+      "shadowBias": 0.04,
+      "shadowNormalBias": 0.2,
+      "modelScaleMultiplier": 1.18,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07
     }
   ]
 }

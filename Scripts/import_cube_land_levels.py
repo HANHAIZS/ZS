@@ -27,9 +27,9 @@ def author_surface_queue(data):
     return result
 
 
-def repack_three_columns(data,order,cut_links=()):
+def repack_three_columns(data,order,cut_links=(),*,force=False):
     """Repack a proven activation order without changing voxel identity, quotas or links."""
-    if data['columns']==3:return copy.deepcopy(data)
+    if data['columns']==3 and not force:return copy.deepcopy(data)
     data=copy.deepcopy(data)
     by_rid={h['sourceRid']:i for i,h in enumerate(data['hives'])}
     for left,right in cut_links:
@@ -97,17 +97,20 @@ def convert(raw,number,*,repack=True):
     if number==35 or 96<=number<=105 or 107<=number<=111:result['columns']=3
     if number in SURFACE_QUEUE_LEVELS and any(h.get('isHidden') for h in hives):raise ValueError('Hidden source hives cannot be safely reauthored')
     result=author_surface_queue(result) if number in SURFACE_QUEUE_LEVELS else result
-    if repack and result['columns']!=3:
+    if repack and (result['columns']!=3 or number==115):
         orders=json.loads((Path(__file__).with_name('cube_land_three_column_orders.json')).read_text())
         if str(number) not in orders:raise ValueError(f'Missing three-column recipe for Level{number:02}')
-        recipe=orders[str(number)];result=repack_three_columns(result,recipe['order'],recipe.get('cutLinks',()))
+        recipe=orders[str(number)];result=repack_three_columns(result,recipe['order'],recipe.get('cutLinks',()),force=number==115)
     authored=MYSTERY_HIVE_RIDS.get(number,set())
     if authored and not authored.issubset({h['sourceRid'] for h in result['hives']}):raise ValueError('Missing mystery hive identity')
     for hive in result['hives']:
         if hive['sourceRid'] in authored:hive['isHidden']=True
+    if 115<=number<=119:
+        result['dispersedCollection']=True
+        result['beeTiming']=dict(departureSeconds=.26,settleSeconds=.18,reachSeconds=.16,liftSeconds=.26,handoffSeconds=.12)
     return result
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--source',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=True)
-    for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick','Microphone_2','Lamp_3','Mower_Ride','Car4x4','Alien','Rabbit','Astronaut','Hourglass'],1):
+    for number,name in enumerate(['plant_flower','Duck','Banana','Bee','Watermelon','Chick','Sheep','Shark','Broccoli','Cactustoy','Carrot','CatHead','Snake','Onion','DodoBird','CupHalf','casper','Rat','Mower','Crab','Santa','Hand_grips','Balloon_rotate','Gaming_microphone','Shuttle','Cat_Minti','Megaphone','World_cup','Spitfire','Hen_2','Oreo','Axe','Mustard','Robot_2','Cat_Luci','Dice','EmpireTower','Launcher','Gamepad','Rattle','Popsicle-chocolate','ChipGreen','Gas_station','Bell','BoxOpen','PizzaSlice','Camera','Earth','PizzaSliced','Paper_Towels','ChickenLeg','Shaker_salt','Hair_brush','Bowling_pins','Radio_4','Heart','Umbrella','Clock','Diamond_2','Saturn','Rolling_pin_2','Animal_Penguin','Tenis_ball','Liquid_soap','Bulb','Barrel','Waffle','Star','Chessboard','Castle','Bull','Bucket','Croissant','Lighthouse','Chocolate_2','Lifebuoy','Orange','pelican','Angel','Goomba','Cone','Avocado','Fluffy','Spices','Koala','Mami','Tractor_Shovel','Bear','Remote','Tree','Teepee','Dollars_container','Brain','Volcano','Toaster','Pigeon_2','Cola','iceberg','Wheelbarrow','Medieval_church','Ladybug','Maple','Willys','Scorpion','mouse_2','Chick','Microphone_2','Lamp_3','Mower_Ride','Car4x4','Alien','Rabbit','Astronaut','Hourglass','Lute','BustStatue','Sundae','GoldenBox','HiddenBox'],1):
         data=convert(json.loads((args.source/f'{name}.json').read_text()),number);target=args.output/f'Level{number:02}.json';target.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'))+'\n');print(target,len(data['cubes']),len(data['hives']),data['columns'],hashlib.sha256(target.read_bytes()).hexdigest())

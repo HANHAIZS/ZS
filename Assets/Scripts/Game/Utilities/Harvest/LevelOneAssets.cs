@@ -10,7 +10,7 @@ namespace BeeHarvest {
   Material linkMaterial,roundedChainMaterial;
   public Material LinkMaterial(){if(linkMaterial==null)linkMaterial=Resources.Load<Material>("Materials/HarvestLink");if(linkMaterial==null)throw new InvalidOperationException("Missing connected hive material");return linkMaterial;}
   public Material RoundedChainMaterial(){if(roundedChainMaterial==null)roundedChainMaterial=Resources.Load<Material>("Materials/HarvestRoundedChain");if(roundedChainMaterial==null)throw new InvalidOperationException("Missing rounded hive chain material");return roundedChainMaterial;}
-  public const int LastLevel=114;
+  public const int LastLevel=119;
   public const string GameSceneName="Game",GameScenePath="Assets/Scenes/Game.unity";
   [Serializable] sealed class PresentationFile { public int version;public LevelPresentationData[] entries; }
   static LevelPresentationData[] presentations;
@@ -34,8 +34,17 @@ namespace BeeHarvest {
     foreach(string field in new[]{"edges","separation","cavity","overrideEdgeColor","sourceHandoff","softShadows"})Require(record,field,JTokenType.Boolean);
     foreach(string field in new[]{"edgeColor","ambientLight"}){var color=(JObject)Require(record,field,JTokenType.Object);foreach(string channel in new[]{"r","g","b","a"})RequireUnitNumber(color,channel);}
     foreach(string field in new[]{"shadowStrength","shadowBias","shadowNormalBias"})RequireUnitNumber(record,field);
+    OptionalNumber(record,"modelScaleMultiplier",1,.8,1.5);OptionalNumber(record,"modelCenterY",.66,.5,.75);
+    OptionalNumber(record,"slotYOffset",0,-.1,0);OptionalNumber(record,"queueFrontY",0,0,.35);OptionalNumber(record,"queueRowPitch",0,0,.1);
+    double front=(double)record["queueFrontY"],pitch=(double)record["queueRowPitch"];
+    if((front==0)!=(pitch==0)||(front>0&&(pitch<.065||front-2*pitch<.125)))throw new InvalidOperationException("Unsafe hive queue spacing");
    }
-   var file=JsonUtility.FromJson<PresentationFile>(json);var records=new LevelPresentationData[LastLevel];foreach(var entry in file.entries)records[entry.number-1]=entry;return records;
+   var file=JsonUtility.FromJson<PresentationFile>(root.ToString());var records=new LevelPresentationData[LastLevel];foreach(var entry in file.entries)records[entry.number-1]=entry;return records;
+  }
+  static void OptionalNumber(JObject source,string name,double fallback,double min,double max){
+   var token=source[name];if(token==null){source[name]=fallback;return;}
+   if(token.Type!=JTokenType.Float&&token.Type!=JTokenType.Integer)throw new InvalidOperationException("Invalid display number: "+name);
+   double n=(double)token;if(double.IsNaN(n)||double.IsInfinity(n)||n<min||n>max)throw new InvalidOperationException("Display number out of range: "+name);
   }
   static JToken Require(JObject source,string name,JTokenType type){var value=source[name];if(value==null||value.Type!=type)throw new InvalidOperationException("Missing or invalid presentation field: "+name);return value;}
   static void RequireUnitNumber(JObject source,string name){var value=source[name];if(value==null||(value.Type!=JTokenType.Float&&value.Type!=JTokenType.Integer))throw new InvalidOperationException("Missing presentation number: "+name);double number=(double)value;if(double.IsNaN(number)||double.IsInfinity(number)||number<0||number>1)throw new InvalidOperationException("Presentation number outside0–1: "+name);}
