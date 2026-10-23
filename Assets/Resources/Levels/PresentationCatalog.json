@@ -216,7 +216,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.33
     },
     {
       "number": 8,
@@ -241,7 +248,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.33
     },
     {
       "number": 9,
@@ -266,7 +280,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.33
     },
     {
       "number": 10,
@@ -291,7 +312,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.33
     },
     {
       "number": 11,
@@ -316,7 +344,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.33
     },
     {
       "number": 12,
@@ -341,7 +376,14 @@
       "softShadows": false,
       "shadowStrength": 1,
       "shadowBias": 0.05,
-      "shadowNormalBias": 0.4
+      "shadowNormalBias": 0.4,
+      "modelCenterY": 0.64,
+      "slotYOffset": -0.048,
+      "queueFrontY": 0.274,
+      "queueRowPitch": 0.07,
+      "queueColumnPitch": 0.24,
+      "slotColumnPitch": 0.16,
+      "modelScaleMultiplier": 1.3
     },
     {
       "number": 13,
