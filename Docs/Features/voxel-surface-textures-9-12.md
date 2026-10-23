@@ -65,7 +65,7 @@ updated: 2026-10-23
 - 审查发现的Editor缓存跨批次旧配色问题先复现（7553dc311f5b449bb4aafefcd4d41b7c，颜色差.670820415），再修复：三个资源重建入口均先BeginBuild；回归以GUID校验持久资产身份，临时测试材质在finally删除。复审无阻塞项。
 - 范围校验：894个既有关卡/Prefab/美术文件哈希保持；四个目标Prefab只替换材质GUID，反向替换后逐字节等于HEAD。全部119关玩法JSON和PresentationCatalog、原Voxel网格/UV/切线及调色材质不变；App源文件不变。
 - 当前Editor导入为BC7、10级mipmap；Profiler.GetRuntimeMemorySizeLong两图合计1,050,000字节（约1.0MiB），四关共用13个持久材质。无新增运行时组件/逐帧分配；实际真机显存/帧率尚未测量。
-- 规范0警告、git diff --check通过，Unity无新编译/游戏错误；Console仅MCP WebSocket未初始化的工具连接提示。无需Inspector绑定，保留用户Game场景及5个材质未提交改动。
+- 规范0警告，C#/文档差异空白检查通过；Unity原生.mat/.meta保留序列化器生成的空字段尾空格。Unity无新编译/游戏错误；Console仅MCP WebSocket未初始化的工具连接提示。无需Inspector绑定，保留用户Game场景及5个材质未提交改动。
 
 ### Source checksums
 
