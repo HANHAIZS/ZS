@@ -8,6 +8,7 @@ namespace BeeHarvest.Editor {
   static void Folder(string p){if(AssetDatabase.IsValidFolder(p))return;int n=p.LastIndexOf('/');Folder(p.Substring(0,n));AssetDatabase.CreateFolder(p.Substring(0,n),p.Substring(n+1));}
   public static string Apply(){
    if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop Play Mode before rebuilding source levels");
+   CubeLandVoxelTextureSetup.BeginBuild();
    Folder(Art);Folder("Assets/Resources/Materials");
    var original=AssetDatabase.LoadAssetAtPath<GameObject>(Prefabs+"Flower.prefab");
    string meshPath=Art+"/Voxel.asset";var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(meshPath);
@@ -22,7 +23,7 @@ namespace BeeHarvest.Editor {
   /// <summary>Builds one selected source level without rewriting the other production models.</summary>
   public static void ApplyLevel(int number){
    if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop Play Mode before rebuilding a source level");
-   LevelOneAssets.ModelKey(number);Folder(Art);
+   LevelOneAssets.ModelKey(number);CubeLandVoxelTextureSetup.BeginBuild();Folder(Art);
    var mesh=AssetDatabase.LoadAssetAtPath<Mesh>(Art+"/Voxel.asset");if(!mesh)throw new InvalidOperationException("Shared voxel mesh is missing");
    var text=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Levels/"+LevelOneAssets.LevelKey(number)+".json");if(!text)throw new InvalidOperationException("Source level data is missing");
    var data=JsonUtility.FromJson<LevelData>(text.text);var original=AssetDatabase.LoadAssetAtPath<GameObject>(Prefabs+"Flower.prefab");var prototype=original.GetComponentInChildren<MeshRenderer>().sharedMaterial;
@@ -41,7 +42,7 @@ namespace BeeHarvest.Editor {
     string name=LevelOneAssets.ModelKey(number);var root=new GameObject(name);Transform parent=root.transform;
     // Authored orientation shows the silhouette/face at the unchanged runtime zero yaw.
     if(number==2||number==3||number==6||number==7||number==10||number==12||number==15||new[]{17,18,19,21,24,26,30,35,55,58,62,64,71,78,79,80,82,84,85,86,87,88,89,95,99,101,103,104,105}.Contains(number)){var orientation=new GameObject(LevelOneAssets.ModelKey(number)+"Orientation");orientation.transform.SetParent(root.transform,false);orientation.transform.localRotation=Quaternion.Euler(0,number==3||number==10?90:180,0);parent=orientation.transform;}
-    try{foreach(var cube in data.cubes){var child=new GameObject(cube.name);child.transform.SetParent(parent,false);child.transform.localPosition=(new Vector3(cube.x,cube.y,cube.z)-center)*cell;child.transform.localScale=Vector3.one*cell;child.AddComponent<MeshFilter>().sharedMesh=mesh;child.AddComponent<MeshRenderer>().sharedMaterial=AssetDatabase.LoadAssetAtPath<Material>(Art+"/Voxel"+cube.color+".mat");}PrefabUtility.SaveAsPrefabAsset(root,Prefabs+name+".prefab");}finally{UnityEngine.Object.DestroyImmediate(root);}
+    try{foreach(var cube in data.cubes){var child=new GameObject(cube.name);child.transform.SetParent(parent,false);child.transform.localPosition=(new Vector3(cube.x,cube.y,cube.z)-center)*cell;child.transform.localScale=Vector3.one*cell;child.AddComponent<MeshFilter>().sharedMesh=mesh;child.AddComponent<MeshRenderer>().sharedMaterial=CubeLandVoxelTextureSetup.ForLevel(number,AssetDatabase.LoadAssetAtPath<Material>(Art+"/Voxel"+cube.color+".mat"));}PrefabUtility.SaveAsPrefabAsset(root,Prefabs+name+".prefab");}finally{UnityEngine.Object.DestroyImmediate(root);}
   }
   static Material MakeMaterial(string path,Material source,Color color){var material=AssetDatabase.LoadAssetAtPath<Material>(path);if(!material){material=new Material(source);AssetDatabase.CreateAsset(material,path);}if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",color);if(material.HasProperty("_Color"))material.SetColor("_Color",color);EditorUtility.SetDirty(material);return material;}
   static void TintPrefab(string kind,string key,int id){
