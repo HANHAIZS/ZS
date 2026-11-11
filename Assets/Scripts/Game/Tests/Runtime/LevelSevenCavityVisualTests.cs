@@ -34,13 +34,13 @@ namespace BeeHarvest.Tests {
    public void Dispose(){if(Visual!=null)((IDisposable)Visual).Dispose();Object.Destroy(Root);Object.Destroy(Original);}
   }
   static byte[] Pixels(Texture2D t){return t.GetRawTextureData().ToArray();}
-  [UnityTest] public IEnumerator SeventhLevelPreservesGeometryAndPaletteAndOtherLevelsKeepTheirShaders(){
+  [UnityTest] public IEnumerator SeventhLevelPreservesGeometryAndPaletteAndReleasesCachesOnSceneChange(){
    yield return Load(7);var root=GameObject.Find("Sheep(Clone)");var rs=root.GetComponentsInChildren<Renderer>();Assert.AreEqual(1030,rs.Length);
    var original=Resources.Load<GameObject>("Prefabs/Gameplay/Sheep").GetComponentsInChildren<Renderer>().ToDictionary(r=>r.name);
    foreach(var r in rs){Assert.AreEqual("BeeHarvest/VoxelCavity",r.sharedMaterial.shader.name);Assert.IsFalse(r.HasPropertyBlock());Assert.AreSame(original[r.name].GetComponent<MeshFilter>().sharedMesh,r.GetComponent<MeshFilter>().sharedMesh);Assert.Less(Vector4.Distance(original[r.name].sharedMaterial.GetColor("_BaseColor"),r.sharedMaterial.GetColor("_BaseColor")),.00001f);}
    var palettes=rs.Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.AreEqual(4,palettes.Length);
    var cache=palettes[0].GetTexture("_CavityData");Assert.IsNotNull(cache);Assert.IsTrue(palettes.All(p=>p.GetTexture("_CavityData")==cache));
-   yield return Load(8);Assert.IsTrue(palettes.All(p=>p==null));Assert.IsTrue(cache==null);Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.shader.name=="Universal Render Pipeline/Lit"));
+   yield return Load(8);Assert.IsTrue(palettes.All(p=>p==null));Assert.IsTrue(cache==null);Assert.IsTrue(GameObject.Find("Shark(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.shader.name=="BeeHarvest/VoxelCavity"));
    yield return Load(6);Assert.IsTrue(GameObject.Find("Chick(Clone)").GetComponentsInChildren<Renderer>().All(r=>r.sharedMaterial.shader.name=="BeeHarvest/VoxelCavity"));
   }
   [UnityTest] public IEnumerator GpuShowsRecessedCenterAndSoftContactEdgesWithoutDarkeningOuterFaces(){

@@ -28,7 +28,7 @@ namespace BeeHarvest {
    }catch(Exception e){UnityEngine.Debug.LogWarning("Economy save read failed: "+e.Message);return new EconomySaveData();}
   }
   public void Save(EconomyModel model){
-   if(!canWrite)return;
+   if(!canWrite||model.IsPlaytest)return;
    try{saves.Save(new EconomySaveData{coins=model.Coins,stamina=model.Stamina,nextRecoveryAt=model.NextRecoveryAt});}
    catch(Exception e){UnityEngine.Debug.LogWarning("Economy save write failed: "+e.Message);}
   }

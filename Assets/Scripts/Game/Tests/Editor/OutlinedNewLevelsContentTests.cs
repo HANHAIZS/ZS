@@ -16,7 +16,7 @@ namespace BeeHarvest.Tests {
   }
   [Test] public void Level106ReusesSixModelGeometryAndUsesSofterEdges(){
    var original=Resources.Load<TextAsset>("Levels/Level06");var replica=Resources.Load<TextAsset>("Levels/Level106");Assert.IsNotNull(replica);var a=JsonUtility.FromJson<LevelData>(original.text);var b=JsonUtility.FromJson<LevelData>(replica.text);CollectionAssert.AreEqual(a.cubes.Select(c=>JsonUtility.ToJson(c)),b.cubes.Select(c=>JsonUtility.ToJson(c)));CollectionAssert.AreEquivalent(a.hives.Select(h=>h.color+":"+h.quota),b.hives.Select(h=>h.color+":"+h.quota));
-   Assert.AreEqual("Chick",LevelOneAssets.ModelKey(106));Assert.IsTrue(LevelOneAssets.HasVoxelEdges(106));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(2),LevelOneAssets.VoxelEdgeColor(106));Assert.AreEqual(new Color(.2f,.2f,.2f,1),LevelOneAssets.VoxelEdgeColor(6).Value);
+   Assert.AreEqual("Chick",LevelOneAssets.ModelKey(106));Assert.IsFalse(LevelOneAssets.HasVoxelEdges(106));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(2),LevelOneAssets.VoxelEdgeColor(106));Assert.AreEqual(new Color(.2f,.2f,.2f,1),LevelOneAssets.VoxelEdgeColor(6).Value);
   }
   [Test] public void AfterCatalogIsRejected(){Assert.Throws<ArgumentOutOfRangeException>(()=>new LevelOneAssets().Level(LevelOneAssets.LastLevel+1));}
  }

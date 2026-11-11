@@ -24,6 +24,7 @@ namespace BeeHarvest
         float nextEconomyRefresh;
         HiveHopController hop;
         MainMenuNavigationController navigation;
+        MenuNavigationModel navigationState;
         UiPopupRouter router;
         BaseInputModule inputModule;
         bool initialized, wasPaused, applicationPaused, modalPointerReleasePending;
@@ -52,6 +53,7 @@ namespace BeeHarvest
             {
                 hop = Level.GetComponent<HiveHopController>();
                 navigation = Level.GetComponent<MainMenuNavigationController>();
+                navigationState = this.GetModel<MenuNavigationModel>();
             }
             // EventSystem activates its module in Update, after this component's Start.
             inputModule = EventSystem.current.GetComponent<BaseInputModule>();
@@ -63,6 +65,7 @@ namespace BeeHarvest
             {
                 HomeButton.interactable = navigation != null;
                 HomeButton.onClick.AddListener(Home);
+                if(navigationState!=null&&navigationState.IsPlaytest)PlaytestUi.Decorate(HomeButton,"Level Select",TMPro.TMP_Settings.defaultFontAsset,50);
             }
             if (LeaveButton != null) LeaveButton.onClick.AddListener(ConfirmLeave);
             if (CancelLeaveButton != null) CancelLeaveButton.onClick.AddListener(CancelLeave);
@@ -158,8 +161,9 @@ namespace BeeHarvest
 
         void Home()
         {
-            if (!CanInteract || IsLeaving || navigation == null || LeavingContent == null) return;
-            SwitchLeaving(true);
+            if (!CanInteract || IsLeaving || navigation == null) return;
+            if(navigationState.IsPlaytest){BeginClose(CloseAction.Leave);return;}
+            if(LeavingContent!=null)SwitchLeaving(true);
         }
 
         void SwitchLeaving(bool value)

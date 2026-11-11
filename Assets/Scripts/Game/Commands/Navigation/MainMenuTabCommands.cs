@@ -5,7 +5,7 @@ namespace BeeHarvest {
   public SelectMainMenuTabCommand(MainMenuTab value){tab=value;}
   protected override void OnExecute(){
    var navigation=this.GetModel<MenuNavigationModel>();
-   if(!navigation.IsHome||tab<MainMenuTab.Home||tab>MainMenuTab.Gallery||navigation.SelectedTab==tab)return;
+   if(!navigation.IsHome||navigation.LevelSelectOpen||tab<MainMenuTab.Home||tab>MainMenuTab.Gallery||navigation.SelectedTab==tab)return;
    navigation.SelectedTab=tab;navigation.GalleryPage=0;
    this.SendEvent(new MainMenuTabChangedEvent());
   }

@@ -46,6 +46,17 @@ namespace BeeHarvest {
     if(!materials.TryGetValue(original,out material)){
      material=new Material(template){name=original.name+" (voxel cavity)",enableInstancing=true};
      material.SetColor("_BaseColor",original.GetColor("_BaseColor"));
+     if(original.HasProperty("_BaseMap")&&original.GetTexture("_BaseMap")!=null){
+      material.SetTexture("_BaseMap",original.GetTexture("_BaseMap"));
+      material.SetTextureScale("_BaseMap",original.GetTextureScale("_BaseMap"));
+      material.SetTextureOffset("_BaseMap",original.GetTextureOffset("_BaseMap"));
+      material.EnableKeyword("_VOXEL_SURFACE");
+      if(original.HasProperty("_BumpMap")&&original.GetTexture("_BumpMap")!=null){
+       material.SetTexture("_BumpMap",original.GetTexture("_BumpMap"));
+       material.SetFloat("_BumpScale",original.GetFloat("_BumpScale"));
+       if(original.IsKeywordEnabled("_NORMALMAP"))material.EnableKeyword("_NORMALMAP");
+      }
+     }
      material.SetFloat("_Metallic",original.GetFloat("_Metallic"));material.SetFloat("_Smoothness",original.GetFloat("_Smoothness"));
      // Preserve existing box-edge style while adding local occlusion; unoutlined palettes keep width zero.
      if(original.HasProperty("_EdgeWidth")){

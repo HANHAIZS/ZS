@@ -8,6 +8,7 @@ namespace BeeHarvest {
   HiveModelView hiveView;
   VoxelEdgeVisuals voxelEdges;
   VoxelCavityVisuals voxelCavity;
+  RotatingModelViewportFit viewportFit;
   public bool AutoRotate {get;set;}=true;
   Transform collectorRoot;Vector3 collectorRest;float deliveryPulse;IUnRegister deliverySubscription;
   Camera flightCamera;float flightPlaneZ;Matrix4x4 gridLocal;Bounds modelLocalBounds;
@@ -32,7 +33,7 @@ namespace BeeHarvest {
    destination.sharedMaterial=voxelCavity!=null?voxelCavity.OriginalMaterial(id):source.sharedMaterial;source.GetPropertyBlock(block);destination.SetPropertyBlock(block);
   }
   /// <summary>Instantiates Blender art and resolves stable voxel identities once.</summary>
-  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false,Color? outlineColor=null,bool cavityShading=false,bool separateVoxels=false,float modelScaleMultiplier=1,float modelCenterY=.66f){
+  public void Initialize(HarvestModel state,LevelOneAssets repo,HiveModelView sources,string modelKey="Flower",bool outlineEdges=false,Color? outlineColor=null,bool cavityShading=false,bool separateVoxels=false,float modelScaleMultiplier=1,float modelCenterY=.66f,LevelOneHud fitHud=null){
    model=state;assets=repo;hiveView=sources;flower=repo.Spawn(modelKey,transform).transform;flower.localScale=Vector3.one*(.86f*(separateVoxels?1.04f:1)*modelScaleMultiplier);flower.position=new Vector3(0,7.85f,0);
    flightCamera=Camera.main;if(flightCamera==null)throw new System.InvalidOperationException("Level requires a MainCamera");
    cubes=new Transform[model.Cubes.Count];cubeRenderers=new Renderer[cubes.Length];var all=flower.GetComponentsInChildren<Transform>(true);
@@ -55,6 +56,7 @@ namespace BeeHarvest {
    // Imported meshes fill 97.5% of a grid cell. Keep centers and routing fixed, reduce fill to 93%.
    if(separateVoxels)foreach(var cube in cubes)cube.localScale*=.93f/.975f;
    if(cavityShading)voxelCavity=new VoxelCavityVisuals(model.Cubes,cubeRenderers);
+   if(fitHud!=null){viewportFit=new RotatingModelViewportFit(flower,flightCamera,fitHud,shell);viewportFit.Refresh(model.Slots.Count);}
    PublishCameraView();Sync();
   }
   void OnHarvestChanged(HarvestChangedEvent e){if(e.Picked||collectorRoot==null)return;deliveryPulse=.20f;collectorRoot.localScale=collectorRest*1.06f;}
@@ -149,6 +151,7 @@ namespace BeeHarvest {
   }
   /// <summary>Applies model visibility and slot ownership without changing gameplay state.</summary>
   public void Sync(){
+   viewportFit?.Refresh(model.Slots.Count);
    if(model==null||revision==model.Revision)return;revision=model.Revision;
    if(visualGeneration!=model.Generation){visualGeneration=model.Generation;voxelCavity?.Reset();deliveryPulse=0;if(collectorRoot!=null)collectorRoot.localScale=collectorRest;}
    for(int i=0;i<cubes.Length;i++){bool visible=model.Cubes[i].Stage<2;if(!visible&&cubeRenderers[i].enabled)voxelCavity?.Remove(i);cubeRenderers[i].enabled=visible;}

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 namespace BeeHarvest {
  public sealed class MainMenuPage : BeeHarvestController, IUiScreenView {
   public Button StartGameButton,ShopButton,HomeButton,GalleryButton,SettingsButton;
+  public Button PlaytestEntry {get;internal set;}
+  bool levelSelectOpen;
   public SettingsPopupController SettingsPopup;
   public MainMenuTabsController Tabs;
   public EconomyHeaderView Economy;
@@ -26,13 +28,14 @@ namespace BeeHarvest {
    Economy.Bind(this);
   }
   void StartGame(){if(isActiveAndEnabled&&StartGameButton.isActiveAndEnabled&&StartGameButton.interactable&&Tabs.IsHomeTab&&!Tabs.IsApplicationPaused&&!SettingsPopup.IsOpen)start?.Invoke();}
-  public void BlockSettingsInput(){IsInputReady=false;Economy?.SetInputEnabled(false);uiInputReleasePending=false;StartGameButton.interactable=false;SettingsButton.interactable=false;Tabs.SetInputEnabled(false);}
+  internal void SetLevelSelectOpen(bool open){levelSelectOpen=open;if(open)BlockSettingsInput();}
+  public void BlockSettingsInput(){IsInputReady=false;Economy?.SetInputEnabled(false);uiInputReleasePending=false;StartGameButton.interactable=false;SettingsButton.interactable=false;if(PlaytestEntry!=null)PlaytestEntry.interactable=false;Tabs.SetInputEnabled(false);}
   public void ReleaseSettingsInputAfterPointers(){uiInputReleasePending=true;}
   void LateUpdate(){
-   if(!uiInputReleasePending||SettingsPopup.IsOpen||Tabs.IsApplicationPaused)return;
+   if(!uiInputReleasePending||levelSelectOpen||SettingsPopup.IsOpen||Tabs.IsApplicationPaused)return;
    var input=inputModule.input;
    if(input.touchCount>0||input.GetMouseButton(0))return;
-   uiInputReleasePending=false;IsInputReady=true;StartGameButton.interactable=Economy.HasStamina;Economy.SetInputEnabled(true);SettingsButton.interactable=true;Tabs.SetInputEnabled(true);
+   uiInputReleasePending=false;IsInputReady=true;StartGameButton.interactable=Economy.HasStamina;Economy.SetInputEnabled(true);SettingsButton.interactable=true;if(PlaytestEntry!=null)PlaytestEntry.interactable=true;Tabs.SetInputEnabled(true);
   }
   public void Show(object arguments){if(arguments is int)DisplayedLevel=(int)arguments;gameObject.SetActive(true);Tabs.RenderTabs(true);BlockSettingsInput();ReleaseSettingsInputAfterPointers();}
   public void Hide(){gameObject.SetActive(false);IsInputReady=false;uiInputReleasePending=false;}

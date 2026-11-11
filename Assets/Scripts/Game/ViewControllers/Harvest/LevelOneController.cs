@@ -18,11 +18,14 @@ namespace BeeHarvest
         [UnityEngine.Serialization.FormerlySerializedAs("LevelNumber")]
         [Range(1, LevelOneAssets.LastLevel)] public int PreviewLevel = 1;
         public int LevelNumber { get; private set; }
+        public int NavigationLoadVersion { get; private set; }
         public LevelPresentationView Presentation;
         bool backgroundPause, initialized, applicationPaused;
         bool uiInputReleasePending, settingsInputBlocked;
         BaseInputModule inputModule;
         public bool IsApplicationPaused => applicationPaused;
+        public bool MatchesNavigation => initialized && LevelNumber == navigation.CurrentLevel &&
+            NavigationLoadVersion == navigation.LevelLoadVersion;
 
         /// <summary>Starts directly in the first level with the single project architecture.</summary>
         void Start()
@@ -32,6 +35,7 @@ namespace BeeHarvest
             rules = this.GetSystem<HarvestSystem>();
             assets = this.GetUtility<LevelOneAssets>();
             LevelNumber = navigation.Initialized ? navigation.CurrentLevel : PreviewLevel;
+            NavigationLoadVersion = navigation.LevelLoadVersion;
             var presentation = LevelOneAssets.Presentation(LevelNumber);
             if (!navigation.Initialized) this.SendCommand(new InitializeMenuNavigationCommand(false, LevelNumber));
             if (Presentation == null) throw new System.InvalidOperationException("Shared Game requires its presentation view");
@@ -41,7 +45,7 @@ namespace BeeHarvest
             Hud.ApplyPresentation(presentation);
             hives.Initialize(model, rules, assets, Hud);
             board = GetComponent<HarvestBoardView>();
-            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), presentation.edges, presentation.overrideEdgeColor ? (Color?)presentation.edgeColor : null,presentation.cavity,presentation.separation,presentation.modelScaleMultiplier,presentation.modelCenterY);
+            board.Initialize(model, assets, hives, LevelOneAssets.ModelKey(LevelNumber), presentation.edges, presentation.overrideEdgeColor ? (Color?)presentation.edgeColor : null,presentation.cavity,presentation.separation,presentation.modelScaleMultiplier,presentation.modelCenterY,LevelNumber>=13&&LevelNumber<=95?Hud:null);
             bees = GetComponent<BeeFlightView>();
             bees.Initialize(model, board, assets, presentation.sourceHandoff);
             hop = GetComponent<HiveHopController>();
@@ -54,7 +58,7 @@ namespace BeeHarvest
 
         void Update()
         {
-            if (!initialized || navigation.IsHome) return;
+            if (!MatchesNavigation || navigation.IsHome) return;
             float delta = Mathf.Min(Time.deltaTime, .1f);
             board.ObserveInput();
             board.TickAutoRotation(delta);
@@ -80,7 +84,7 @@ namespace BeeHarvest
 
         public bool TryRetryLevel()
         {
-            if (!initialized || applicationPaused || navigation.IsHome) return false;
+            if (!MatchesNavigation || applicationPaused || navigation.IsHome) return false;
             var command = new RetryLevelCommand(assets.Level(LevelNumber));
             this.SendCommand(command);
             if (!command.Accepted) return false;
@@ -92,7 +96,7 @@ namespace BeeHarvest
 
         public bool TryLeaveLevel(int expectedGeneration)
         {
-            if (!initialized || applicationPaused || navigation.IsHome) return false;
+            if (!MatchesNavigation || applicationPaused || navigation.IsHome) return false;
             var command = new LeaveLevelCommand(assets.Level(LevelNumber), LevelNumber, expectedGeneration);
             this.SendCommand(command);
             if (!command.Accepted) return false;

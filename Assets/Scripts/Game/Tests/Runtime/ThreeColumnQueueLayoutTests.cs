@@ -13,7 +13,12 @@ namespace BeeHarvest.Tests {
    var app=BeeHarvestApp.Interface;Assert.AreEqual(3,app.GetModel<HarvestModel>().ColumnCount);Assert.AreEqual(5,app.GetModel<HarvestModel>().Slots.Count);Assert.AreEqual(3,hud.VisibleRows);
    var edges=new Vector3[4];((RectTransform)hud.transform).GetWorldCorners(edges);float width=edges[3].x-edges[0].x;float pitch=LevelOneAssets.Presentation(Object.FindObjectOfType<LevelOneController>().LevelNumber).queueColumnPitch;pitch=pitch>0?pitch:.30f;float[] centers={.5f-pitch,.50f,.5f+pitch};
    for(int c=0;c<3;c++)for(int row=0;row<3;row++){
-    var control=hud.RowControl(c,row);control.GetWorldCorners(edges);var safe=new Vector3[4];((RectTransform)hud.transform).GetWorldCorners(safe);Assert.AreEqual(centers[c],(control.anchorMin.x+control.anchorMax.x)*.5f,.002f,"All row anchors follow the column layout");int id=hud.DisplayedHive(c,row);if(id>=0){float x=Camera.main.WorldToScreenPoint(GameObject.Find("SmallHive_"+id).transform.position).x;Assert.AreEqual(centers[c],(x-safe[0].x)/width,.002f,"The hive itself is centered; its quota label follows the original plaque offset");}Assert.AreEqual(.17f,(edges[3].x-edges[0].x)/width,.002f,"Closing the gaps must preserve hive size");
+    var control=hud.RowControl(c,row);
+    var presentation=LevelOneAssets.Presentation(Object.FindObjectOfType<LevelOneController>().LevelNumber);
+    Assert.AreEqual(.24f,pitch,.0001f,"Every level uses compact column spacing");
+    Assert.AreEqual(presentation.queueFrontY-row*.07f,(control.anchorMin.y+control.anchorMax.y)*.5f,.0001f,"Every row uses compact vertical spacing");
+    if(row<2)Assert.GreaterOrEqual(control.anchorMin.y,hud.RowControl(c,row+1).anchorMax.y,"Neighboring rows retain separate pointer targets");
+    control.GetWorldCorners(edges);var safe=new Vector3[4];((RectTransform)hud.transform).GetWorldCorners(safe);Assert.AreEqual(centers[c],(control.anchorMin.x+control.anchorMax.x)*.5f,.002f,"All row anchors follow the column layout");int id=hud.DisplayedHive(c,row);if(id>=0){float x=Camera.main.WorldToScreenPoint(GameObject.Find("SmallHive_"+id).transform.position).x;Assert.AreEqual(centers[c],(x-safe[0].x)/width,.002f,"The hive itself is centered; its quota label follows the original plaque offset");}Assert.AreEqual(.17f,(edges[3].x-edges[0].x)/width,.002f,"Closing the gaps must preserve hive size");
    }
    foreach(int c in new[]{3,4}){Assert.IsFalse(hud.QueueButtons[c].gameObject.activeSelf);Assert.IsFalse(hud.NextLabels[c].gameObject.activeSelf);Assert.IsFalse(hud.ThirdLabels[c].gameObject.activeSelf);}
   }
@@ -26,6 +31,6 @@ namespace BeeHarvest.Tests {
    }
    level.RestartLevel();yield return null;CheckLayout(hud);
   }
-  [UnityTest] public IEnumerator AllNinetyFiveScenesLoadThreePlanningColumnsAfterEachGeneration(){for(int n=1;n<=95;n++){yield return Load(n);CheckLayout(Object.FindObjectOfType<LevelOneController>().Hud);}}
+  [UnityTest] public IEnumerator AllAuthoredLevelsLoadCompactThreeColumnQueuesAfterEachGeneration(){for(int n=1;n<=LevelOneAssets.LastLevel;n++){yield return Load(n);CheckLayout(Object.FindObjectOfType<LevelOneController>().Hud);}}
  }
 }

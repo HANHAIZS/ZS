@@ -5,6 +5,9 @@ Shader "BeeHarvest/VoxelCavity"
   _CavityStrength ("Local cavity strength", Range(0,1)) = 1
   [HideInInspector] _CavityData ("Face corner occlusion cache", 2D) = "black" {}
   _BaseColor ("Original palette", Color) = (1,1,1,1)
+  _BaseMap ("Original surface", 2D) = "white" {}
+  [Normal] _BumpMap ("Original normal", 2D) = "bump" {}
+  _BumpScale ("Normal strength", Float) = 1
   _Metallic ("Metallic", Range(0,1)) = 0
   _Smoothness ("Smoothness", Range(0,1)) = .4
   _EdgeWidth ("Black edge / half block", Range(0,.15)) = 0
@@ -20,14 +23,23 @@ Shader "BeeHarvest/VoxelCavity"
   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
   CBUFFER_START(UnityPerMaterial)
    half4 _BaseColor, _EdgeColor;
-   half _Metallic, _Smoothness;
+   half _Metallic, _Smoothness, _BumpScale;
+   float4 _BaseMap_ST;
    float _EdgeWidth, _CavityStrength;
    float4 _CavityGridMin, _CavityGridSize, _CavityTextureSize;
    float4x4 _CavityWorldToGrid;
    float4 _VoxelCenter, _VoxelExtents;
   CBUFFER_END
   TEXTURE2D(_CavityData);SAMPLER(sampler_CavityData);
-  struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
+  TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);
+  TEXTURE2D(_BumpMap);SAMPLER(sampler_BumpMap);
+  struct Attributes {
+   float4 positionOS:POSITION;
+   float3 normalOS:NORMAL;
+   float4 tangentOS:TANGENT;
+   float2 uv:TEXCOORD0;
+   UNITY_VERTEX_INPUT_INSTANCE_ID
+  };
   ENDHLSL
   Pass
   {
@@ -39,6 +51,8 @@ Shader "BeeHarvest/VoxelCavity"
    #pragma target 3.0
    #pragma vertex Vert
    #pragma fragment Frag
+   #pragma multi_compile_local _ _VOXEL_SURFACE
+   #pragma multi_compile_local _ _NORMALMAP
    #pragma multi_compile_instancing
    #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
    #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
@@ -53,6 +67,12 @@ Shader "BeeHarvest/VoxelCavity"
     half fog:TEXCOORD3;
     half3 vertexLight:TEXCOORD4;
     float3 gridOrigin:TEXCOORD5;
+    #if defined(_VOXEL_SURFACE)
+     float2 uv:TEXCOORD6;
+    #endif
+    #if defined(_NORMALMAP)
+     half4 tangentWS:TEXCOORD7;
+    #endif
     UNITY_VERTEX_INPUT_INSTANCE_ID
     UNITY_VERTEX_OUTPUT_STEREO
    };
@@ -63,6 +83,13 @@ Shader "BeeHarvest/VoxelCavity"
     VertexPositionInputs position=GetVertexPositionInputs(input.positionOS.xyz);
     output.positionCS=position.positionCS;output.positionWS=position.positionWS;
     output.normalWS=TransformObjectToWorldNormal(input.normalOS);
+    #if defined(_VOXEL_SURFACE)
+     output.uv=TRANSFORM_TEX(input.uv,_BaseMap);
+    #endif
+    #if defined(_NORMALMAP)
+     output.tangentWS=half4(TransformObjectToWorldDir(input.tangentOS.xyz),
+      input.tangentOS.w*GetOddNegativeScale());
+    #endif
     output.boxPosition=(input.positionOS.xyz-_VoxelCenter.xyz)/max(_VoxelExtents.xyz,.0001);
     output.gridOrigin=mul(_CavityWorldToGrid,float4(TransformObjectToWorld(float3(0,0,0)),1)).xyz;
     output.fog=ComputeFogFactor(position.positionCS.z);
@@ -98,6 +125,12 @@ Shader "BeeHarvest/VoxelCavity"
     InputData lighting=(InputData)0;
     lighting.positionWS=input.positionWS;
     lighting.normalWS=NormalizeNormalPerPixel(input.normalWS);
+    #if defined(_NORMALMAP) && defined(_VOXEL_SURFACE)
+     half3 normalTS=UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,input.uv),_BumpScale);
+     half3 bitangentWS=input.tangentWS.w*cross(input.normalWS,input.tangentWS.xyz);
+     lighting.normalWS=NormalizeNormalPerPixel(TransformTangentToWorld(normalTS,
+      half3x3(input.tangentWS.xyz,bitangentWS,input.normalWS)));
+    #endif
     lighting.viewDirectionWS=GetWorldSpaceNormalizeViewDir(input.positionWS);
     #if defined(_MAIN_LIGHT_SHADOWS_SCREEN)
      lighting.shadowCoord=ComputeScreenPos(TransformWorldToHClip(input.positionWS));
@@ -110,6 +143,9 @@ Shader "BeeHarvest/VoxelCavity"
     lighting.shadowMask=half4(1,1,1,1);
     SurfaceData surface=(SurfaceData)0;
     surface.albedo=_BaseColor.rgb;surface.metallic=_Metallic;surface.smoothness=_Smoothness;
+    #if defined(_VOXEL_SURFACE)
+     surface.albedo*=SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,input.uv).rgb;
+    #endif
     surface.normalTS=half3(0,0,1);surface.occlusion=1;surface.alpha=1;
     half4 color=UniversalFragmentPBR(lighting,surface);
     // The second-nearest box boundary identifies the twelve true edges, never mesh diagonals.

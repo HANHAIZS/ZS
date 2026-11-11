@@ -22,7 +22,10 @@ namespace BeeHarvest
         HiveHopController hop;
         BaseInputModule inputModule;
         PopupMotion motion;
-        bool continuePending;
+        enum Action { None, Next, Retry, Select }
+        Action pendingAction;
+        GameObject trialActions;
+        Button trialRetry,trialSelect,trialNext;
         bool initialized, applicationPaused, settingsWasInteractable, waitingForFreshPointer;
         int generation, continuedGeneration = -1;
         
@@ -45,23 +48,44 @@ namespace BeeHarvest
             motion = new PopupMotion(DimBackground.gameObject, PopupContent.gameObject, Presentation);
             DimBackground.color = new Color(0, 0, 0, .65f);
             ContinueButton.onClick.AddListener(Continue);
+            if(PlaytestBuild.Available&&navigation.IsPlaytest)BuildTrialActions();
             ContinueButton.interactable = false;
             initialized = true;
+        }
+
+        void BuildTrialActions()
+        {
+            var original=(RectTransform)ContinueButton.transform;
+            var row=PlaytestUi.Rect("PlaytestVictoryActions",original.parent,0,0,1,1);
+            row.anchorMin=original.anchorMin;row.anchorMax=original.anchorMax;row.pivot=original.pivot;
+            row.sizeDelta=original.sizeDelta;row.anchoredPosition=original.anchoredPosition;
+            trialActions=row.gameObject;trialActions.SetActive(false);
+            var label=ContinueButton.GetComponentInChildren<TMPro.TMP_Text>();
+            var font=label==null?TMPro.TMP_Settings.defaultFontAsset:label.font;
+            trialRetry=PlaytestUi.Button("PlaytestReplay",row,"Replay",font,32,0,0,.31f,1);
+            trialSelect=PlaytestUi.Button("PlaytestSelectLevel",row,"Level Select",font,32,.345f,0,.655f,1);
+            trialNext=PlaytestUi.Button("PlaytestNextLevel",row,"Next",font,32,.69f,0,1,1);
+            trialRetry.onClick.AddListener(()=>Begin(Action.Retry,trialRetry));
+            trialSelect.onClick.AddListener(()=>Begin(Action.Select,trialSelect));
+            trialNext.onClick.AddListener(()=>Begin(Action.Next,trialNext));
+            ButtonPressMotion.Install(trialActions);
         }
 
         void Update()
         {
             if (!initialized) return;
-            if (IsOpen && (!model.Won || model.Generation != generation || navigation.IsHome)) Hide();
-            if (applicationPaused || Level.IsApplicationPaused || navigation.IsHome) return;
+            if (IsOpen && (!model.Won || model.Generation != generation || navigation.IsHome || !Level.MatchesNavigation)) Hide();
+            if (applicationPaused || Level.IsApplicationPaused || navigation.IsHome || !Level.MatchesNavigation) return;
             if (model.Won && !IsOpen && model.Generation != continuedGeneration) Show();
             if (!IsOpen) return;
             if (motion.Tick(Time.unscaledDeltaTime))
             {
-                bool advance = continuePending && model.Won && model.Generation == generation;
-                if (advance) continuedGeneration = generation;
+                var action=model.Won&&model.Generation==generation?pendingAction:Action.None;
+                if(action==Action.Next||action==Action.Select)continuedGeneration=generation;
                 Hide();
-                if (advance) this.SendCommand(new ContinueLevelCommand(Level.LevelNumber, generation));
+                if(action==Action.Next)this.SendCommand(new ContinueLevelCommand(Level.LevelNumber,generation));
+                else if(action==Action.Select)this.SendCommand(new OpenPlaytestSelectorCommand());
+                else if(action==Action.Retry)Level.TryRetryLevel();
                 return;
             }
             RefreshInput();
@@ -78,7 +102,18 @@ namespace BeeHarvest
             settingsWasInteractable = SettingsButton.interactable;
             SettingsButton.interactable = false;
             generation = model.Generation;
-            continuePending = false;
+            pendingAction=Action.None;
+            bool trial=trialActions!=null&&navigation.IsPlaytest;
+            ContinueButton.gameObject.SetActive(!trial);
+            if(trial)
+            {
+                bool next=Level.LevelNumber<LevelOneAssets.LastLevel;
+                trialActions.SetActive(true);trialNext.gameObject.SetActive(next);
+                var retry=(RectTransform)trialRetry.transform;var select=(RectTransform)trialSelect.transform;
+                retry.anchorMax=new Vector2(next?.31f:.48f,1);
+                select.anchorMin=new Vector2(next?.345f:.52f,0);
+                select.anchorMax=new Vector2(next?.655f:1,1);
+            }
             waitingForFreshPointer = true;
             IsOpen = true;
             transform.SetAsLastSibling();
@@ -100,22 +135,33 @@ namespace BeeHarvest
                     waitingForFreshPointer = false;
                 }
             }
-            ContinueButton.interactable = !motion.IsOpening && !motion.IsClosing && !waitingForFreshPointer;
+            bool ready=!motion.IsOpening&&!motion.IsClosing&&!waitingForFreshPointer;
+            ContinueButton.interactable=ready&&ContinueButton.gameObject.activeSelf;
+            if(trialActions!=null)
+            {
+                trialRetry.interactable=ready&&trialActions.activeSelf;
+                trialSelect.interactable=ready&&trialActions.activeSelf;
+                trialNext.interactable=ready&&trialActions.activeSelf&&trialNext.gameObject.activeSelf;
+            }
         }
 
-        void Continue()
+        void Continue(){Begin(Action.Next,ContinueButton);}
+        void Begin(Action action,Button button)
         {
-            if (!initialized || !isActiveAndEnabled || !IsOpen || !ContinueButton.interactable || applicationPaused || Level.IsApplicationPaused || !model.Won || model.Generation != generation) return;
-            continuePending = true;
+            if(!initialized||!isActiveAndEnabled||!IsOpen||pendingAction!=Action.None||!button.isActiveAndEnabled||
+               !button.interactable||applicationPaused||Level.IsApplicationPaused||!model.Won||model.Generation!=generation)return;
+            pendingAction=action;
             motion.Close();
-            ContinueButton.interactable = false;
+            RefreshInput();
         }
 
         void Hide()
         {
             if (!IsOpen) return;
             IsOpen = false;
-            continuePending = false;
+            pendingAction=Action.None;
+            if(trialActions!=null)trialActions.SetActive(false);
+            ContinueButton.gameObject.SetActive(true);
             motion.HideImmediately();
             if (Celebration != null) Celebration.Stop();
             this.SendEvent(new VictoryPresentationEvent { Generation = generation, Visible = false });
@@ -137,9 +183,10 @@ namespace BeeHarvest
             if (Celebration != null) Celebration.SetPaused(value);
             if (value)
             {
-                if (continuePending) { continuePending = false; motion.Show(); }
+                if(pendingAction!=Action.None){pendingAction=Action.None;motion.Show();}
                 waitingForFreshPointer = true;
-                if (ContinueButton != null) ContinueButton.interactable = false;
+                if(ContinueButton!=null)ContinueButton.interactable=false;
+                if(trialActions!=null){trialRetry.interactable=false;trialSelect.interactable=false;trialNext.interactable=false;}
             }
         }
 

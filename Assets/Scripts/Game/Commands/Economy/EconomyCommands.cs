@@ -6,6 +6,7 @@ namespace BeeHarvest {
  public sealed class RefreshEconomyCommand : AbstractCommand {
   protected override void OnExecute(){
    var m=this.GetModel<EconomyModel>();var rules=this.GetSystem<EconomySystem>();var repository=this.GetUtility<EconomyRepository>();
+   if(m.IsPlaytest)return;
    int old=m.Stamina;long deadline=m.NextRecoveryAt,now=rules.Now;
    if(m.Stamina>=EconomySystem.MaximumStamina)m.NextRecoveryAt=0;
    else if(m.NextRecoveryAt<=0||m.NextRecoveryAt>now+EconomySystem.RecoverySeconds)m.NextRecoveryAt=now+EconomySystem.RecoverySeconds;
@@ -24,7 +25,7 @@ namespace BeeHarvest {
   protected override void OnExecute(){this.SendCommand(new RefreshEconomyCommand());var m=this.GetModel<EconomyModel>();var repository=this.GetUtility<EconomyRepository>();if(m.Stamina>=EconomySystem.MaximumStamina)return;m.Stamina++;if(m.Stamina==EconomySystem.MaximumStamina)m.NextRecoveryAt=0;EconomyMutation.Save(m,repository);}
  }
  public sealed class SpendStaminaCommand : AbstractCommand {
-  protected override void OnExecute(){this.SendCommand(new RefreshEconomyCommand());var m=this.GetModel<EconomyModel>();var rules=this.GetSystem<EconomySystem>();var repository=this.GetUtility<EconomyRepository>();if(m.Stamina<=0)return;m.Stamina--;if(m.NextRecoveryAt<=0)m.NextRecoveryAt=rules.Now+EconomySystem.RecoverySeconds;EconomyMutation.Save(m,repository);}
+  protected override void OnExecute(){var m=this.GetModel<EconomyModel>();if(m.IsPlaytest)return;this.SendCommand(new RefreshEconomyCommand());var rules=this.GetSystem<EconomySystem>();var repository=this.GetUtility<EconomyRepository>();if(m.Stamina<=0)return;m.Stamina--;if(m.NextRecoveryAt<=0)m.NextRecoveryAt=rules.Now+EconomySystem.RecoverySeconds;EconomyMutation.Save(m,repository);}
  }
  public sealed class RetryLevelCommand : AbstractCommand {
   readonly LevelData data;

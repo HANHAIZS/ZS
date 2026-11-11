@@ -9,6 +9,7 @@ namespace BeeHarvest {
   protected override void OnExecute(){
    var nav=this.GetModel<MenuNavigationModel>();var harvest=this.GetModel<HarvestModel>();
    if(nav.IsHome||nav.CurrentLevel!=levelNumber||harvest.Generation!=generation||harvest.Cubes.Count==0)return;
+   if(nav.IsPlaytest){this.SendCommand(new OpenPlaytestSelectorCommand());Accepted=nav.LevelSelectOpen;return;}
    // StartLevel validates all input before mutation, so malformed data cannot charge or navigate.
    this.SendCommand(new StartLevelCommand(data));
    this.SendCommand(new SpendStaminaCommand());

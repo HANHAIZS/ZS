@@ -11,7 +11,7 @@ namespace BeeHarvest.Tests {
    Assert.GreaterOrEqual(LevelOneAssets.LastLevel,111);var assets=new LevelOneAssets();
    for(int i=0;i<5;i++){int n=107+i;Assert.AreEqual(Names[i],LevelOneAssets.ModelKey(n));var data=assets.Level(n);Assert.AreEqual(Names[i],data.sourceName);Assert.AreEqual(Counts[i],data.cubes.Length);Assert.AreEqual(3,data.columns);Assert.AreEqual(Counts[i],data.cubes.Select(c=>c.name).Distinct().Count());
     foreach(var color in data.cubes.GroupBy(c=>c.color))Assert.AreEqual(color.Count(),data.hives.Where(h=>h.color==color.Key).Sum(h=>h.quota));
-    Assert.IsTrue(LevelOneAssets.HasVoxelEdges(n));Assert.IsTrue(LevelOneAssets.HasVoxelSeparation(n));Assert.IsTrue(LevelOneAssets.HasVoxelCavity(n));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(106),LevelOneAssets.VoxelEdgeColor(n));Assert.IsNotNull(Resources.Load<GameObject>("Prefabs/Gameplay/"+Names[i]));
+    Assert.IsFalse(LevelOneAssets.HasVoxelEdges(n));Assert.IsTrue(LevelOneAssets.HasVoxelSeparation(n));Assert.IsTrue(LevelOneAssets.HasVoxelCavity(n));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(106),LevelOneAssets.VoxelEdgeColor(n));Assert.IsNotNull(Resources.Load<GameObject>("Prefabs/Gameplay/"+Names[i]));
    }
   }
   [TestCase(106,107,false)] [TestCase(107,108,false)] [TestCase(110,111,false)] [TestCase(111,112,false)]

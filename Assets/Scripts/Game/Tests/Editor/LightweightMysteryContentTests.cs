@@ -12,7 +12,7 @@ namespace BeeHarvest.Tests {
    var data=new LevelOneAssets().Level(number);Assert.AreEqual(name,LevelOneAssets.ModelKey(number));Assert.AreEqual(name,data.sourceName);Assert.AreEqual(cubes,data.cubes.Length);Assert.Less(data.cubes.Length,2000);Assert.AreEqual(hives,data.hives.Length);Assert.AreEqual(hidden,data.hives.Count(h=>h.isHidden));Assert.AreEqual(3,data.columns);
    Assert.AreEqual(cubes,data.cubes.Select(c=>c.name).Distinct().Count());Assert.AreEqual(cubes,data.cubes.Select(c=>new Vector3Int(c.x,c.y,c.z)).Distinct().Count());
    foreach(var group in data.cubes.GroupBy(c=>c.color))Assert.AreEqual(group.Count(),data.hives.Where(h=>h.color==group.Key).Sum(h=>h.quota));
-   Assert.IsTrue(LevelOneAssets.HasVoxelSeparation(number));Assert.IsTrue(LevelOneAssets.HasVoxelCavity(number));Assert.IsTrue(LevelOneAssets.HasVoxelEdges(number));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(6),LevelOneAssets.VoxelEdgeColor(number));Assert.IsNotNull(Resources.Load<GameObject>("Prefabs/Gameplay/"+name));
+   Assert.IsTrue(LevelOneAssets.HasVoxelSeparation(number));Assert.IsTrue(LevelOneAssets.HasVoxelCavity(number));Assert.IsFalse(LevelOneAssets.HasVoxelEdges(number));Assert.AreEqual(LevelOneAssets.VoxelEdgeColor(6),LevelOneAssets.VoxelEdgeColor(number));Assert.IsNotNull(Resources.Load<GameObject>("Prefabs/Gameplay/"+name));
   }
   [TestCase(111,112,false)] [TestCase(112,113,false)] [TestCase(113,114,false)] [TestCase(114,115,false)] [TestCase(115,116,false)] [TestCase(116,117,false)] [TestCase(117,118,false)] [TestCase(118,119,false)] [TestCase(119,1,true)]
   public void VictoryContinuesAcrossNewRangeOnceAndRejectsStaleGeneration(int from,int to,bool home){

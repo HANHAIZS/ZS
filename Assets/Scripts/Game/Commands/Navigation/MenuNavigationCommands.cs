@@ -3,7 +3,7 @@ namespace BeeHarvest {
  /// <summary>Resets transient selection once per application/Editor Play session, without notifying old scene listeners.</summary>
  public sealed class ResetMenuNavigationSessionCommand : AbstractCommand {
   protected override void OnExecute(){
-   var nav=this.GetModel<MenuNavigationModel>();nav.Initialized=false;nav.CurrentLevel=1;nav.IsHome=false;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
+   var nav=this.GetModel<MenuNavigationModel>();PlaytestRoute.End(((IBelongToArchitecture)this).GetArchitecture(),nav);nav.LevelSelectOpen=false;nav.LastPlaytestLevel=0;nav.LevelSelectScroll=1;nav.LevelLoadVersion=0;nav.Initialized=false;nav.CurrentLevel=1;nav.IsHome=false;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
   }
  }
  public sealed class InitializeMenuNavigationCommand : AbstractCommand {
@@ -11,7 +11,7 @@ namespace BeeHarvest {
   public InitializeMenuNavigationCommand(bool value,int number=1){home=value;levelNumber=number;}
   protected override void OnExecute(){
    LevelOneAssets.LevelKey(levelNumber);
-   var nav=this.GetModel<MenuNavigationModel>();nav.Initialized=true;nav.CurrentLevel=levelNumber;nav.IsHome=home;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
+   var nav=this.GetModel<MenuNavigationModel>();PlaytestRoute.End(((IBelongToArchitecture)this).GetArchitecture(),nav);nav.LevelSelectOpen=false;nav.Initialized=true;nav.CurrentLevel=levelNumber;nav.IsHome=home;nav.ResumePaused=false;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
    if(home)this.SendCommand(new PauseHarvestCommand(true));
    this.SendEvent(new MenuNavigationChangedEvent());
   }
@@ -21,6 +21,7 @@ namespace BeeHarvest {
   public ReturnHomeCommand(bool value){previousPause=value;}
   protected override void OnExecute(){
    var nav=this.GetModel<MenuNavigationModel>();if(nav.IsHome)return;
+   if(nav.IsPlaytest){this.SendCommand(new OpenPlaytestSelectorCommand());return;}
    var harvest=this.GetModel<HarvestModel>();
    if(harvest.Cubes.Count>0&&!harvest.Won)this.SendCommand(new SpendStaminaCommand());
    nav.ResumePaused=previousPause;nav.IsHome=true;nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
@@ -29,7 +30,7 @@ namespace BeeHarvest {
  }
  public sealed class StartGameCommand : AbstractCommand {
   protected override void OnExecute(){
-   var nav=this.GetModel<MenuNavigationModel>();if(!nav.IsHome)return;
+   var nav=this.GetModel<MenuNavigationModel>();if(!nav.IsHome||nav.LevelSelectOpen)return;
    this.SendCommand(new RefreshEconomyCommand());if(this.GetModel<EconomyModel>().Stamina<=0)return;
    nav.IsHome=false;this.SendCommand(new PauseHarvestCommand(nav.ResumePaused));
    this.SendEvent(new MenuNavigationChangedEvent());
@@ -42,6 +43,14 @@ namespace BeeHarvest {
    var nav=this.GetModel<MenuNavigationModel>();var model=this.GetModel<HarvestModel>();
    if(nav.IsHome||!model.Won||model.Generation!=generation||nav.CurrentLevel!=levelNumber)return;
    bool final=levelNumber>=LevelOneAssets.LastLevel;
+   if(nav.IsPlaytest){
+    if(final)this.SendCommand(new OpenPlaytestSelectorCommand());
+    else {
+     float position=levelNumber%PlaytestRoute.LevelsPerGroup==0?1f:nav.LevelSelectScroll;
+     PlaytestRoute.Enter(((IBelongToArchitecture)this).GetArchitecture(),nav,levelNumber+1,position);
+    }
+    return;
+   }
    nav.CurrentLevel=final?1:levelNumber+1;nav.IsHome=final;nav.ResumePaused=false;
    nav.SelectedTab=MainMenuTab.Home;nav.GalleryPage=0;
    this.SendCommand(new PauseHarvestCommand(true));
